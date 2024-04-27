@@ -1,10 +1,10 @@
 // NAVIGATION
 export const NAV_LINKS = [
   { href: '/', key: 'home', label: 'Home' },
-  { href: '/', key: 'how_hilink_work', label: 'How Hilink Work?' },
-  { href: '/', key: 'services', label: 'Services' },
-  { href: '/', key: 'pricing ', label: 'Pricing ' },
-  { href: '/', key: 'contact_us', label: 'Contact Us' },
+  // { href: '/', key: 'how_hilink_work', label: '?' },
+  { href: '/', key: 'services', label: 'Toko Buku' },
+  { href: '/', key: 'pricing ', label: 'Tentang Kami ' },
+  { href: '/', key: 'contact_us', label: 'Kontak Kami' },
 ];
 
 // CAMP SECTION
@@ -62,7 +62,7 @@ export const FOOTER_LINKS = [
   },
   {
     title: 'Our Community',
-    links: ['Climbing xixixi', 'Hiking hilink', 'Hilink kinthill'],
+    links: ['Yayasan Satu Visi Bagi Indonesia', 'Indonesia Christian Cancer Community', 'Indonesia Christian Cancer Community Filia'],
   },
 ];
 
@@ -79,8 +79,8 @@ export const SOCIALS = {
   links: [
     '/facebook.svg',
     '/instagram.svg',
-    '/twitter.svg',
+    // '/twitter.svg',
     '/youtube.svg',
-    '/wordpress.svg',
+    // '/wordpress.svg',
   ],
 };

@@ -126,8 +126,42 @@ body {
 
   /* Hero */
   .hero-map {
-    @apply absolute right-0 top-0 h-screen w-screen bg-pattern-2 bg-cover bg-center md:-right-28 xl:-top-60;
+    @apply absolute right-0 top-0 h-screen w-screen bg-pattern-2 bg-cover bg-center;
+  
+    /* Adjustments for medium screens */
+    @screen md {
+      right: -80px;
+    }
+  
+    /* Adjustments for large screens */
+    @screen lg {
+      top: -20px;
+    }
+  
+    /* Adjustments for extra-large screens */
+    @screen xl {
+      top: -10px;
+    }
+  
+    /* Adjustments for extra-small screens */
+    @screen xs {
+      right: 0px;
+      top: -40px;
+    }
+  
+    /* Adjustments for small screens */
+    @screen sm {
+      right: 0px;
+      top: -30px;
+    }
   }
+  
+  
+
+  
+
+  
+
 
   /* Camp */
   .camp-quote {
