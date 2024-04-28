@@ -60,9 +60,9 @@ const Navbar = () => {
         <Image src="/satuvisibagiindonesia-removebg.png" alt="logo" width={74} height={29} />
       </Link>
 
-      <Link href="components/about.tsx">
+      {/* <Link href="components/about.tsx">
         <Button title="Produk" variant="your_desired_button_variant" type={"button"} />
-      </Link>
+      </Link> */}
 
       <ul className="hidden h-full gap-12 lg:flex">
         {NAV_LINKS.map((link) => (
