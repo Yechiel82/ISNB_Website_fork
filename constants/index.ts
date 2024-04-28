@@ -2,10 +2,11 @@
 export const NAV_LINKS = [
   { href: '/', key: 'home', label: 'Home' },
   // { href: '/', key: 'how_hilink_work', label: '?' },
-  { href: '/', key: 'services', label: 'Toko Buku' },
-  { href: '/', key: 'pricing ', label: 'Tentang Kami ' },
+  { href: '/product', key: 'services', label: 'Toko Buku' },
+  { href: '/about', key: 'about', label: 'Tentang Kami' }, 
   { href: '/', key: 'contact_us', label: 'Kontak Kami' },
 ];
+// console.log(NAV_LINKS);
 
 // CAMP SECTION
 export const PEOPLE_URL = [

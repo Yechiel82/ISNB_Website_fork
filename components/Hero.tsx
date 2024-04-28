@@ -34,7 +34,7 @@ const Hero = () => {
 
           <p className="bold-16 lg:bold-20 text-blue-70">
             <span className="regular-16 lg:regular-20 ml-1">Berdiri Sejak </span>
-            2017
+            <span className='text-black bg-white bg-opacity-50 p-1 rounded-lg shadow-md'>2017</span>
           </p>
         </div>
 
