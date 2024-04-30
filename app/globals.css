@@ -191,3 +191,49 @@ body {
   scrollbar-width: none; /* Firefox */
 }
 
+.container {
+  display: flex;
+  align-items: center; /* Vertically center the content */
+  justify-content: space-between; /* Put space between the image and description */
+  margin: 20px auto; /* Add margin for spacing on top and bottom, auto for left and right */
+  padding: 10px; /* Add padding for space inside the container */
+  border: 1px solid #ddd; /* Add border for a neat look */
+  border-radius: 8px; /* Rounded corners for aesthetics */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for depth */
+  max-width: 600px; /* Limit the maximum width of the container */
+}
+
+
+
+.image-container {
+  flex: 1; 
+  margin-right: 20px; /* Add some space between the image and description */
+}
+
+.image-container img {
+  max-width: 100%; /* Make sure the image doesn't exceed its container */
+  display: block; /* Remove any default spacing */
+  border-radius: 8px; /* Rounded corners for aesthetics */
+}
+
+.description-container {
+  flex: 2; /* Take up twice the space of the image container */
+}
+
+.product-name {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.product-description {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.product-price {
+  font-size: 20px;
+  color: #333;
+  font-weight: bold;
+}

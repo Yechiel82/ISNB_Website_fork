@@ -5,6 +5,7 @@ export const NAV_LINKS = [
   { href: '/product', key: 'services', label: 'Toko Buku' },
   { href: '/about', key: 'about', label: 'Tentang Kami' }, 
   { href: '/', key: 'contact_us', label: 'Kontak Kami' },
+  // { href: '/temp_panggilangku', key: 'contact_us', label: 'Kontak Kami' },
 ];
 // console.log(NAV_LINKS);
 
@@ -85,3 +86,10 @@ export const SOCIALS = {
     // '/wordpress.svg',
   ],
 };
+
+export const products = [
+  { id: 1, name: 'Product 1', description: 'Description for Product 1', price: 10.99 },
+  { id: 2, name: 'Product 2', description: 'Description for Product 2', price: 19.99 },
+  // Add more products here
+];
+

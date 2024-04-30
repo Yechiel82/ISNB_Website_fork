@@ -1,0 +1,32 @@
+import Camp from "@/components/Camp";
+import Features from "@/components/Features";
+import GetApp from "@/components/GetApp";
+import Guide from "@/components/Guide";
+import Hero from "@/components/Hero";
+import '../app/globals.css'
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+
+
+
+export default function Home() {
+  return (
+    <>
+        <Navbar />
+        <div className="container">
+      <div className="image-container">
+        <img src="Melepas Dia Pergi.png" alt="Product Image" />
+      </div>
+      <div className="description-container">
+        <h2 className="product-name">Exquisite Crystal Pendant Necklace</h2>
+        <p className="product-description">Indulge in the elegance of our Exquisite Crystal Pendant Necklace. Handcrafted with precision, this enchanting piece features sparkling crystals delicately set in a timeless design. Elevate your style and captivate hearts with every wear.</p>
+        <p className="product-price">$99.99</p>
+        <button className="button" onClick={() => window.location.href='https://shopee.co.id/erika_arianto'}>Buy Now</button>
+    </div>  
+    </div>
+        <Footer />
+    </>
+    
+  )
+} 
+
