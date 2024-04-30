@@ -3,8 +3,8 @@ export const NAV_LINKS = [
   { href: '/', key: 'home', label: 'Home' },
   // { href: '/', key: 'how_hilink_work', label: '?' },
   { href: '/product', key: 'services', label: 'Toko Buku' },
-  { href: '/about', key: 'about', label: 'Tentang Kami' }, 
-  { href: '/', key: 'contact_us', label: 'Kontak Kami' },
+  // { href: '/about', key: 'about', label: 'Tentang Kami' }, 
+  // { href: '/', key: 'contact_us', label: 'Kontak Kami' },
   // { href: '/temp_panggilangku', key: 'contact_us', label: 'Kontak Kami' },
 ];
 // console.log(NAV_LINKS);
@@ -54,12 +54,12 @@ export const FOOTER_LINKS = [
   {
     title: 'Learn More',
     links: [
-      'About Hilink',
-      'Press Releases',
-      'Environment',
-      'Jobs',
-      'Privacy Policy',
-      'Contact Us',
+      'Coming Soon',
+      // 'Press Releases',
+      // 'Environment',
+      // 'Jobs',
+      // 'Privacy Policy',
+      // 'Contact Us',
     ],
   },
   {
@@ -71,8 +71,8 @@ export const FOOTER_LINKS = [
 export const FOOTER_CONTACT_INFO = {
   title: 'Contact Us',
   links: [
-    { label: 'Admin Officer', value: '123-456-7890' },
-    { label: 'Email Officer', value: 'hilink@akinthil.com' },
+    { label: '', value: '' },
+    // { label: 'Email ', value: 'hilink@akinthil.com' },
   ],
 };
 

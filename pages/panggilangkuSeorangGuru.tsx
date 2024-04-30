@@ -18,9 +18,9 @@ export default function Home() {
         <img src="Panggilanku_seorang_guru.jpeg" alt="Product Image" />
       </div>
       <div className="description-container">
-        <h2>Product Name</h2>
-        <p>Lorem ipsum dolor sit tie dui fermentum.</p>
-        <p>$99.99</p>
+        <h2 className="product-name">Panggilanku Seorang Guru</h2>
+        <p className="product-description">Buku ini ditulis oleh 16 guru, menguraikan soal panggilan menjadi guru dari berbagai sudut pandang. Semua kisah ini menarik untuk dibaca oleh semua yang rindu menjadi guru, atau sendang menjalani panggilan yang mulia ini.</p>
+        <p className="product-price">Rp60.000</p>
         <button className="button" onClick={() => window.location.href='https://shopee.co.id/erika_arianto'}>Buy Now</button>
     </div>  
     </div>

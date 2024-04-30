@@ -208,6 +208,7 @@ body {
 .image-container {
   flex: 1; 
   margin-right: 20px; /* Add some space between the image and description */
+  align-items: stretch;
 }
 
 .image-container img {
@@ -237,3 +238,4 @@ body {
   color: #333;
   font-weight: bold;
 }
+

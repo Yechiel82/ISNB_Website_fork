@@ -18,9 +18,9 @@ export default function Home() {
         <img src="Melepas Dia Pergi.png" alt="Product Image" />
       </div>
       <div className="description-container">
-        <h2 className="product-name">Exquisite Crystal Pendant Necklace</h2>
-        <p className="product-description">Indulge in the elegance of our Exquisite Crystal Pendant Necklace. Handcrafted with precision, this enchanting piece features sparkling crystals delicately set in a timeless design. Elevate your style and captivate hearts with every wear.</p>
-        <p className="product-price">$99.99</p>
+        <h2 className="product-name">Saat Aku Melepas Dia Pergi</h2>
+        <p className="product-description">Saat Aku Melepas Dia Pergi Siap atau tidak siap, perpisahan pasti akan terjadi. Perpisahan selamanya dalam dunia manyisakan kedukaan mendalam. Dulu selalu berdua, hidup dalam pernikahan. Kau dan aku menggenggam tangan untuk seia sekata. Namun, hidup kita di dunia tak selamanya. Kematian datang menjemputmu dan aku harus melepas genggammu untuk pergi... pergi... pergi... Bunga rampai tulisan para Single Parent menginspirasi tentang cinta sejati</p>
+        <p className="product-price">Rp80.000</p>
         <button className="button" onClick={() => window.location.href='https://shopee.co.id/erika_arianto'}>Buy Now</button>
     </div>  
     </div>

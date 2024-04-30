@@ -29,7 +29,7 @@ const CampSite = ({ backgroundImage, title, subtitle, peopleJoined }: CampProps)
 
       <div className="flexCenter gap-6">
         <span className="flex -space-x-4 overflow-hidden">
-          {PEOPLE_URL.map((url) => (
+          {/* {PEOPLE_URL.map((url) => (
             <Image 
               className="inline-block h-10 w-10 rounded-full"
               src={url}
@@ -38,7 +38,7 @@ const CampSite = ({ backgroundImage, title, subtitle, peopleJoined }: CampProps)
               width={52}
               height={52}
             />
-          ))}
+          ))} */}
         </span>
         <p className="bold-16 md:bold-20 text-white">{peopleJoined}</p>
       </div>
@@ -50,18 +50,39 @@ const CampSite = ({ backgroundImage, title, subtitle, peopleJoined }: CampProps)
 const Camp = () => {
   return (
     <section className="2xl:max-container relative flex flex-col py-10 lg:mb-10 lg:py-20 xl:mb-20">
+
+      <h1 className="bold-40 lg:bold-70 text-center mb-5" >Di bawah naungan Yayasan Satu Visi Bagi Indonesia</h1>
+
       <div className="hide-scrollbar flex h-[340px] w-full items-start justify-start gap-8 overflow-x-auto lg:h-[400px] xl:h-[640px]">
         <CampSite 
           backgroundImage="bg-bg-img-1"
-          title="Putuk Truno Camp"
-          subtitle="Prigen, Pasuruan"
-          peopleJoined="50+ Joined"
+          title="Indonesia Christian Cancer Community"
+          subtitle="Surabaya"
+          peopleJoined="Komunitas Penyintas Kanker dan Caregiver"
         />
         <CampSite 
           backgroundImage="bg-bg-img-2"
-          title="Mountain View Camp"
-          subtitle="Somewhere in the Wilderness"
-          peopleJoined="50+ Joined"
+          title="Indonesia Christian Cancer Community"
+          subtitle="Semarang"
+          peopleJoined="Komunitas Penyintas Kanker dan Caregiver"
+        />
+        <CampSite 
+          backgroundImage="bg-bg-img-3"
+          title="Indonesia Christian Cancer Community"
+          subtitle="Jakarta"
+          peopleJoined="Komunitas Penyintas Kanker dan Caregiver"
+        />
+        <CampSite 
+          backgroundImage="bg-bg-img-4"
+          title="Indonesia Christian Cancer Community"
+          subtitle="Yogyakarta"
+          peopleJoined="Komunitas Penyintas Kanker dan Caregiver"
+        />
+        <CampSite 
+          backgroundImage="bg-bg-img-5"
+          title="Indonesia Christian Cancer Community"
+          subtitle="Manado"
+          peopleJoined="Komunitas Penyintas Kanker dan Caregiver"
         />
       </div>
 

@@ -51,7 +51,7 @@ const Guide = () => {
           width={1440}
           height={580}
           // className="w-full object-cover object-center 2xl:rounded-5xl"
-          className="w-full object-cover object-center rounded-2xl lg:rounded-3xl xl:rounded-4xl 2xl:rounded-5xl"
+          className="w-full object-cover object-center rounded-2xl lg:rounded-3xl xl:rounded-4xl 2xl:rounded-5xl mb-10"
         />
       </div>
 
