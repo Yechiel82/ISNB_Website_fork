@@ -62,16 +62,12 @@ export const FOOTER_LINKS = [
       // 'Contact Us',
     ],
   },
-  {
-    title: 'Our Community',
-    links: ['Yayasan Satu Visi Bagi Indonesia', 'Indonesia Christian Cancer Community', 'Indonesia Christian Cancer Community Filia'],
-  },
 ];
 
 export const FOOTER_CONTACT_INFO = {
   title: 'Contact Us',
   links: [
-    { label: '', value: '' },
+    { label: 'Admin', value: '085731547274' },
     // { label: 'Email ', value: 'hilink@akinthil.com' },
   ],
 };
