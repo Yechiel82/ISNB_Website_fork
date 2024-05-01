@@ -4,7 +4,7 @@ import './globals.css'
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
-export default function RootLayout({
+function RootLayout({
   children,
 }: {
   children: React.ReactNode
@@ -21,3 +21,6 @@ export default function RootLayout({
     </html>
   )
 }
+
+export default RootLayout;
+
