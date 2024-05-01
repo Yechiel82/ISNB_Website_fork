@@ -1,13 +1,8 @@
 // NAVIGATION
 export const NAV_LINKS = [
   { href: '/', key: 'home', label: 'Home' },
-  // { href: '/', key: 'how_hilink_work', label: '?' },
   { href: '/product', key: 'services', label: 'Toko Buku' },
-  // { href: '/about', key: 'about', label: 'Tentang Kami' }, 
-  // { href: '/', key: 'contact_us', label: 'Kontak Kami' },
-  // { href: '/temp_panggilangku', key: 'contact_us', label: 'Kontak Kami' },
 ];
-// console.log(NAV_LINKS);
 
 // CAMP SECTION
 export const PEOPLE_URL = [
@@ -55,11 +50,6 @@ export const FOOTER_LINKS = [
     title: 'Learn More',
     links: [
       'Coming Soon',
-      // 'Press Releases',
-      // 'Environment',
-      // 'Jobs',
-      // 'Privacy Policy',
-      // 'Contact Us',
     ],
   },
 ];
@@ -68,7 +58,6 @@ export const FOOTER_CONTACT_INFO = {
   title: 'Contact Us',
   links: [
     { label: 'Admin', value: '085731547274' },
-    // { label: 'Email ', value: 'hilink@akinthil.com' },
   ],
 };
 
@@ -77,15 +66,8 @@ export const SOCIALS = {
   links: [
     '/facebook.svg',
     '/instagram.svg',
-    // '/twitter.svg',
     '/youtube.svg',
-    // '/wordpress.svg',
   ],
 };
 
-export const products = [
-  { id: 1, name: 'Product 1', description: 'Description for Product 1', price: 10.99 },
-  { id: 2, name: 'Product 2', description: 'Description for Product 2', price: 19.99 },
-  // Add more products here
-];
 
