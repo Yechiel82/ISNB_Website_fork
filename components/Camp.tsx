@@ -84,6 +84,30 @@ const Camp = () => {
           subtitle="Manado"
           peopleJoined="Komunitas Penyintas Kanker dan Caregiver"
         />
+        <CampSite 
+          backgroundImage="bg-bg-img-8"
+          title="Indonesia Christian Cancer Community"
+          subtitle="Pontianak"
+          peopleJoined="Komunitas Penyintas Kanker dan Caregiver"
+        />
+        <CampSite 
+          backgroundImage="bg-bg-img-9"
+          title="Indonesia Christian Cancer Community"
+          subtitle="Semarang"
+          peopleJoined="Komunitas Penyintas Kanker dan Caregiver"
+        />
+        <CampSite 
+          backgroundImage="bg-bg-img-10"
+          title="Indonesia Christian Cancer Community"
+          subtitle="Surabaya"
+          peopleJoined="Komunitas Penyintas Kanker dan Caregiver"
+        />
+        <CampSite 
+          backgroundImage="bg-bg-img-11"
+          title="Indonesia Christian Cancer Community"
+          subtitle="Yogyakarta"
+          peopleJoined="Komunitas Penyintas Kanker dan Caregiver"
+        />
       </div>
 
       <div className="flexEnd mt-10 px-6 lg:-mt-60 lg:mr-6">
@@ -110,6 +134,12 @@ const Camp = () => {
       <div className="hide-scrollbar flex h-[340px] w-full items-start justify-start gap-8 overflow-x-auto lg:h-[400px] xl:h-[640px]">
         <CampSite 
           backgroundImage="bg-bg-img-6"
+          title="Penerbitan Yayasan Satu Visi Bagi Indonesia"          
+          subtitle="Surabaya"
+          peopleJoined=""
+        />
+        <CampSite 
+          backgroundImage="bg-bg-img-7"
           title="Penerbitan Yayasan Satu Visi Bagi Indonesia"          
           subtitle="Surabaya"
           peopleJoined=""

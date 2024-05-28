@@ -36,7 +36,7 @@ const Guide = () => {
 
             <div className="flex flex-wrap justify-between gap-5 lg:gap-10">
               <h2 className="bold-40 lg:bold-64 xl:max-w-[390px]">4</h2>
-              <p className="regular-16 text-gray-30 xl:max-w-[520px] mb-5">Membuka PKBM (pusat kegiatan belajar mengajar) untuk masyarakat yang membutuhkan untuk mendapatkan kesetaraan pendidikan yang memadai, seperti ujian paket A, paket B, paket C.</p>
+              <p className="regular-16 text-gray-30 xl:max-w-[520px] mb-5"> PKBM (pusat kegiatan belajar mengajar) untuk masyarakat yang membutuhkan untuk mendapatkan kesetaraan pendidikan yang memadai, seperti ujian paket A, paket B, paket C.</p>
             </div>
 
           </div>

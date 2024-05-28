@@ -17,7 +17,7 @@ const Hero = () => {
 <h1 className="bold-52 lg:bold-88" >Yayasan Satu Visi Bagi Indonesia</h1>
         {/* <p className="regular-16 mt-6 text-gray-30 xl:max-w-[520px]"> */}
         <p className="regular-16 mt-6 text-gray-30 xl:max-w-[520px] bg-white bg-opacity-50 p-4 rounded-lg shadow-md">
-        Yayasan Satu Visi Bagi Indonesia adalah lembaga nirlaba, nonpolitik, dan independen dari partai atau golongan manapun. Memfokuskan pada bidang keagamaan, sosial, dan kemanusiaan, yayasan ini bertujuan membangun fondasi kuat dalam Iman Kristen untuk menghadapi tantangan hidup. Didirikan oleh Pdt. Erika Fanny, S.Th., M.Min., dan Pdt. Arianto, S.E., S.Th., M.Min.</p>
+        Yayasan Satu Visi Bagi Indonesia adalah lembaga nirlaba, nonpolitik, dan independen dari partai atau golongan manapun. Memfokuskan pada bidang keagamaan, sosial, dan kemanusiaan, yayasan ini bertujuan membangun fondasi kuat dalam Iman Kristen untuk menghadapi tantangan hidup. Didirikan oleh Pdt..Dr (cand) Erika Fanny dan Pdt. Dr (cand) Arianto.</p>
 
         <div className="my-11 flex flex-wrap gap-5">
           {/* <div className="flex items-center gap-2">
