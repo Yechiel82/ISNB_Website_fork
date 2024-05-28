@@ -85,6 +85,12 @@ const Camp = () => {
           peopleJoined="Komunitas Penyintas Kanker dan Caregiver"
         />
         <CampSite 
+          backgroundImage="bg-bg-img-12"
+          title="Indonesia Christian Cancer Community"
+          subtitle="Jakarta"
+          peopleJoined="Komunitas Penyintas Kanker dan Caregiver"
+        />
+        <CampSite 
           backgroundImage="bg-bg-img-8"
           title="Indonesia Christian Cancer Community"
           subtitle="Pontianak"

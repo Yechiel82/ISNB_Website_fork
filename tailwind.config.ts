@@ -32,7 +32,7 @@ module.exports = {
       backgroundImage: {
         'bg-img-1': "url('/img-1.png')",
         'bg-img-2': "url('/img-2.png')",
-        'bg-img-3': "url('/img-3-crop.png')",
+        'bg-img-3': "url('/img-3.jpeg')",
         'bg-img-4': "url('/img-4.png')",
         'bg-img-5': "url('/img-5.png')",
         'bg-img-6': "url('/img-6.png')",
@@ -41,6 +41,7 @@ module.exports = {
         'bg-img-9': "url('/Semarang.jpeg')",
         'bg-img-10': "url('/Surabaya.jpeg')",
         'bg-img-11': "url('/Yogyakarta.jpeg')",
+        'bg-img-12': "url('/jakarta.jpeg')",
         'feature-bg': "url('/feature-bg.png')",
         pattern: "url('/pattern.png')",
         'pattern-2': "url('/pattern-bg.png')",
