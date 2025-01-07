@@ -1,19 +1,109 @@
-import React from 'react'
-
+import React from 'react';
 
 const Product = () => {
-    return (
-//         <div className="padding-container max-container w-full pb-24">
-//         <div className="flex flex-wrap justify-between gap-5 lg:gap-10">
+  const products = [
+    {
+      id: 'panggilangkuSeorangGuru',
+      image: './Panggilanku_seorang_guru.jpeg',
+      badge: 'Preorder Now!',
+      title: 'Buku ini ditulis oleh 16 guru, menguraikan soal panggilan menjadi guru dari berbagai sudut pandang.',
+      price: "60.000",
+    },
+    {
+      id: 'saatAkuMelepasDiaPergi',
+      image: './Melepas Dia Pergi.png',
+      badge: 'Latest Product',
+      title: 'Saat Aku Melepas Dia Pergi Siap atau tidak siap, perpisahan pasti akan terjadi.',
+      price: "80.000",
+    },
+    {
+      id: 'meiAi',
+      image: './mei-ai.png',
+      badge: 'Kids Friendly',
+      title: 'buku kisah nyata diangkat dari seorang anak usia 5 tahun dimana mamanya tengah berjuang dalam kanker ganas.',
+      price: "50.000",
+    },
+    {
+      id: 'Ketabahan-di-Tengah-Badai-Kekuatan-Rohani-Di-Tengah-Ujian-Kehidupan',
+      image: './buku_rina.jpeg',
+      badge: 'Recommended Book',
+      title: 'Ketabahan di Tengah Badai adalah sebuah biografi yang mengisahkan perjalanan hidup dan pelayanan Rina Nahuway seorang wanita yang menghadapi badai kehidupan dengan kekuatan doa dan iman yang kokoh',
+      price: " Soon",
+    },
+    {
+      id: 'Setiap-Kita-Punya-Cerita',
+      image: './Setiap_Kita_Punya_Cerita.jpeg',
+      badge: 'Best Seller',
+      title: 'Setiap kita punya cerita. Perjalanan cerita harus dibagikan. Berbagai kisah ditulis disana dengan satu kerinduan bahwa hidup jadi berkat. Tiap penulis mengukir kisah dari perjalanan berbeda. Sakit, doa yang dijawab Tuhan dengan cara unik,  kisah mukjizat, impian yang indah, dll. ',
+      price: "80.000",
+    }
+  ];
+
+  return (
+    <div className="w-full py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {products.map((product) => (
+          <a
+            key={product.id}
+            href={`/${product.id}`}
+            className="group block"
+          >
+            <div className="rounded-lg border border-gray-200 bg-white shadow-sm transition-all duration-200 hover:shadow-md">
+              <div className="relative aspect-square overflow-hidden rounded-t-lg">
+                <img
+                  src={product.image}
+                  alt={product.title}
+                  className="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="absolute top-2 right-2">
+                  <span className="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-1 text-xs font-medium text-blue-800">
+                    {product.badge}
+                  </span>
+                </div>
+              </div>
+              
+              <div className="p-4">
+                <div className="mb-4">
+                  <p className="line-clamp-2 text-sm text-gray-600">
+                    {product.title}
+                  </p>
+                </div>
+                
+                <div className="flex items-center justify-between">
+                  <span className="text-lg font-medium text-gray-900">
+                    Rp{product.price.toLocaleString()}
+                  </span>
+                  <button className="rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+                    Buy Now
+                  </button>
+                </div>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default Product;
+
+// import React from 'react'
+
+
+// const Product = () => {
+//     return (
+
+// <div className="padding-container max-container w-full pb-24">
+//     <div className="flex flex-wrap justify-between gap-5 lg:gap-10">
 
 //         {/* Product 1 */}
 //         <a href="/panggilangkuSeorangGuru">
-
-//             <div className="product-box" style={{  border: '1px solid #ccc', padding: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-//                 <img src="./Panggilanku_seorang_guru.jpeg" alt="Product 1" className="product-image" style={{ maxWidth: '200px', maxHeight: '200px', width: 'auto', height: 'auto' }}  />
+//             <div className="product-box" style={{ border: '1px solid #ccc', padding: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+//                 <img src="./Panggilanku_seorang_guru.jpeg" alt="Product 1" className="product-image" style={{ maxWidth: '200px', maxHeight: '200px', width: 'auto', height: 'auto' }} />
 //                 <div className="product-details" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-//                     <h2 className="bold-40 lg:bold-50 xl:max-w-[390px] text-center">Preorder<br/>Now!</h2>
-//                     <p className="regular-16 text-gray-30 xl:max-w-[520px] mb-1 text-center">Buku ini ditulis oleh 16 guru, menguraikan soal panggilan menjadi guru dari berbagai sudut pandang.</p>
+//                     <h2 className="bold-40 lg:bold-50 xl:max-w-[390px] text-center">Preorder<br />Now!</h2>
+//                     <p className="regular-16 text-gray-30 xl:max-w-[520px] mb-1 text-center">Buku ini ditulis oleh 16 guru, menguraikan<br/>soal panggilan menjadi guru dari berbagai sudut pandang.</p>
 //                     <div className="flex flex-wrap justify-between gap-5 lg:gap-10">
 //                         <button className="button">Buy Now</button>
 //                         {/* <button className="button" onClick={() => window.location.href='https://shopee.co.id/erika_arianto'}>Buy Now</button> */}
@@ -22,89 +112,53 @@ const Product = () => {
 //                 </div>
 //             </div>
 //         </a>
-        
+
 //         {/* Product 2 */}
 //         <a href="/saatAkuMelepasDiaPergi">
-//         <div className="product-box" style={{ border: '1px solid #ccc', padding: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-//             <img src="./Melepas Dia Pergi.png" alt="Product 3" className="product-image" style={{ maxWidth: '200px', maxHeight: '200px', width: 'auto', height: 'auto' }} />
-//             <div className="product-details" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-//                 <h2 className="bold-40 lg:bold-50 xl:max-w-[390px] text-center">Latest<br/>Product</h2>
-//                 <p className="regular-16 text-gray-30 xl:max-w-[520px] mb-1 text-center">Saat Aku Melepas Dia Pergi Siap atau tidak siap, perpisahan pasti akan terjadi.</p>
-//                 <div className="flex flex-wrap justify-between gap-5 lg:gap-10">
-//                     <button className="button"> Buy Now</button>
-//                     <p className="regular-16 text-gray-30 xl:max-w-[520px]">Rp80.000</p>
+//             <div className="product-box" style={{ border: '1px solid #ccc', padding: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+//                 <img src="./Melepas Dia Pergi.png" alt="Product 3" className="product-image" style={{ maxWidth: '200px', maxHeight: '200px', width: 'auto', height: 'auto' }} />
+//                 <div className="product-details" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+//                     <h2 className="bold-40 lg:bold-50 xl:max-w-[390px] text-center">Latest<br />Product</h2>
+//                     <p className="regular-16 text-gray-30 xl:max-w-[520px] mb-1 text-center">Saat Aku Melepas Dia Pergi Siap atau tidak siap,<br/> perpisahan pasti akan terjadi.</p>
+//                     <div className="flex flex-wrap justify-between gap-5 lg:gap-10">
+//                         <button className="button"> Buy Now</button>
+//                         <p className="regular-16 text-gray-30 xl:max-w-[520px]">Rp80.000</p>
+//                     </div>
 //                 </div>
 //             </div>
-//         </div>
 //         </a>
+
 //         {/* Product 3 */}
 //         <a href="/meiAi">
-//         <div className="product-box" style={{ border: '1px solid #ccc', padding: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-//             <img src="./mei-ai.png" alt="Product 2" className="product-image" style={{ maxWidth: '200px', maxHeight: '200px', width: 'auto', height: 'auto' }}  />
-//             <div className="product-details" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-//                 <h2 className="bold-40 lg:bold-50 xl:max-w-[390px] text-center">Kids<br/>Friendly</h2>
-//                 <p className="regular-16 text-gray-30 xl:max-w-[520px] mb-1 text-center ">buku kisah nyata diangkat dari seorang anak usia 5 tahun dimana mamanya tengah berjuang dalam kanker ganas.</p>
-//                 <div className="flex flex-wrap justify-between gap-5 lg:gap-10">
-//                     <button className="button">Buy Now</button>
-//                     <p className="regular-16 text-gray-30 xl:max-w-[520px]">Rp50.000</p>
+//             <div className="product-box" style={{ border: '1px solid #ccc', padding: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+//                 <img src="./mei-ai.png" alt="Product 2" className="product-image" style={{ maxWidth: '200px', maxHeight: '200px', width: 'auto', height: 'auto' }} />
+//                 <div className="product-details" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+//                     <h2 className="bold-40 lg:bold-50 xl:max-w-[390px] text-center">Kids<br />Friendly</h2>
+//                     <p className="regular-16 text-gray-30 xl:max-w-[520px] mb-1 text-center ">buku kisah nyata diangkat dari seorang anak usia 5 tahun<br/>dimana mamanya tengah berjuang dalam kanker ganas.</p>
+//                     <div className="flex flex-wrap justify-between gap-5 lg:gap-10">
+//                         <button className="button">Buy Now</button>
+//                         <p className="regular-16 text-gray-30 xl:max-w-[520px]">Rp50.000</p>
+//                     </div>
 //                 </div>
 //             </div>
-//         </div>
-
 //         </a>
-//         </div>
+//         {/* Product 4 */}
+//         <a href="/Ketabahan-di-Tengah-Badai-Kekuatan-Rohani-Di-Tengah-Ujian-Kehidupan">
+//             <div className="product-box" style={{ border: '1px solid #ccc', padding: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+//                 <img src="./buku_rina.jpeg" alt="Product 4" className="product-image" style={{ maxWidth: '200px', maxHeight: '200px', width: 'auto', height: 'auto' }} />
+//                 <div className="product-details" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+//                     <h2 className="bold-40 lg:bold-50 xl:max-w-[390px] text-center">Recommended<br />Book</h2>
+//                     <p className="regular-16 text-gray-30 xl:max-w-[520px] mb-1 text-center ">etabahan di Tengah Badai adalah sebuah biografi yang mengisahkan perjalanan hidup dan pelayanan Rina Nahuway<br/>seorang wanita yang menghadapi badai kehidupan dengan kekuatan doa dan iman yang kokoh</p>
+//                     <div className="flex flex-wrap justify-between gap-5 lg:gap-10">
+//                         <button className="button">Buy Now</button>
+//                         <p className="regular-16 text-gray-30 xl:max-w-[520px]">Rp50.000</p>
+//                     </div>
+//                 </div>
+//             </div>
+//         </a>
+//     </div>
 // </div>
-<div className="padding-container max-container w-full pb-24">
-    <div className="flex flex-wrap justify-between gap-5 lg:gap-10">
-
-        {/* Product 1 */}
-        <a href="/panggilangkuSeorangGuru">
-            <div className="product-box" style={{ border: '1px solid #ccc', padding: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <img src="./Panggilanku_seorang_guru.jpeg" alt="Product 1" className="product-image" style={{ maxWidth: '200px', maxHeight: '200px', width: 'auto', height: 'auto' }} />
-                <div className="product-details" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                    <h2 className="bold-40 lg:bold-50 xl:max-w-[390px] text-center">Preorder<br />Now!</h2>
-                    <p className="regular-16 text-gray-30 xl:max-w-[520px] mb-1 text-center">Buku ini ditulis oleh 16 guru, menguraikan<br/>soal panggilan menjadi guru dari berbagai sudut pandang.</p>
-                    <div className="flex flex-wrap justify-between gap-5 lg:gap-10">
-                        <button className="button">Buy Now</button>
-                        {/* <button className="button" onClick={() => window.location.href='https://shopee.co.id/erika_arianto'}>Buy Now</button> */}
-                        <p className="regular-16 text-gray-30 xl:max-w-[520px]">Rp60.000</p>
-                    </div>
-                </div>
-            </div>
-        </a>
-
-        {/* Product 2 */}
-        <a href="/saatAkuMelepasDiaPergi">
-            <div className="product-box" style={{ border: '1px solid #ccc', padding: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <img src="./Melepas Dia Pergi.png" alt="Product 3" className="product-image" style={{ maxWidth: '200px', maxHeight: '200px', width: 'auto', height: 'auto' }} />
-                <div className="product-details" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                    <h2 className="bold-40 lg:bold-50 xl:max-w-[390px] text-center">Latest<br />Product</h2>
-                    <p className="regular-16 text-gray-30 xl:max-w-[520px] mb-1 text-center">Saat Aku Melepas Dia Pergi Siap atau tidak siap,<br/> perpisahan pasti akan terjadi.</p>
-                    <div className="flex flex-wrap justify-between gap-5 lg:gap-10">
-                        <button className="button"> Buy Now</button>
-                        <p className="regular-16 text-gray-30 xl:max-w-[520px]">Rp80.000</p>
-                    </div>
-                </div>
-            </div>
-        </a>
-
-        {/* Product 3 */}
-        <a href="/meiAi">
-            <div className="product-box" style={{ border: '1px solid #ccc', padding: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <img src="./mei-ai.png" alt="Product 2" className="product-image" style={{ maxWidth: '200px', maxHeight: '200px', width: 'auto', height: 'auto' }} />
-                <div className="product-details" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                    <h2 className="bold-40 lg:bold-50 xl:max-w-[390px] text-center">Kids<br />Friendly</h2>
-                    <p className="regular-16 text-gray-30 xl:max-w-[520px] mb-1 text-center ">buku kisah nyata diangkat dari seorang anak usia 5 tahun<br/>dimana mamanya tengah berjuang dalam kanker ganas.</p>
-                    <div className="flex flex-wrap justify-between gap-5 lg:gap-10">
-                        <button className="button">Buy Now</button>
-                        <p className="regular-16 text-gray-30 xl:max-w-[520px]">Rp50.000</p>
-                    </div>
-                </div>
-            </div>
-        </a>
-    </div>
-</div>
 
 
-    )}
-export default Product;
+//     )}
+// export default Product;
