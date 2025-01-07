@@ -12,7 +12,7 @@ export default function Home() {
           <div className="md:w-1/2">
             <div className="rounded-lg overflow-hidden shadow-md">
               <img
-                src="./buku_rina.jpeg"
+                src="./Setiap_Kita_Punya_Cerita.jpeg"
                 alt="Product Image"
                 className="w-full h-auto object-cover"
               />
@@ -22,14 +22,14 @@ export default function Home() {
           {/* Content Section */}
           <div className="md:w-1/2 space-y-6">
             <h2 className="text-2xl font-bold text-gray-800">
-            Ketabahan di Tengah Badai Kekuatan Rohani Di Tengah Ujian Kehidupan
+            Setiap Kita Punya Cerita
             </h2>
 
             <div className="text-gray-600 space-y-4">
               <p>
               Setiap kita punya cerita. Perjalanan cerita harus dibagikan. Berbagai kisah ditulis disana dengan satu kerinduan bahwa hidup jadi berkat. Tiap penulis mengukir kisah dari perjalanan berbeda. Sakit, doa yang dijawab Tuhan dengan cara unik,  kisah mukjizat, impian yang indah, dll. 
               </p>
-    
+
             </div>
 
             <p className="text-xl font-semibold text-gray-800">
