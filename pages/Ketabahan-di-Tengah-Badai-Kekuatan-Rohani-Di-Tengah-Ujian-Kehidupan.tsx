@@ -44,7 +44,7 @@ export default function Home() {
               onClick={() => window.location.href='https://shp.ee/6kl0cs8'}
               className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
             >
-              Buy Now
+              Contact for info
             </button>
           </div>
         </div>
