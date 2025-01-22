@@ -22,7 +22,7 @@ export default function Home() {
           {/* Content Section */}
           <div className="md:w-1/2 space-y-6">
             <h2 className="text-2xl font-bold text-gray-800">
-            Setiap Kita Punya Cerita
+            Dewasa Di tengah Luka, Luka yang Membentuk Kasih yang Menyembuhkan
             </h2>
 
             <div className="text-gray-600 space-y-4">
