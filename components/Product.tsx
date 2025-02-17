@@ -43,7 +43,14 @@ const Product = () => {
       badge: 'Best Seller',
       title: 'Kenangan adalah mozaik kehidupan yang tersusun dari serpihan masa lalu mengajarkan kita untuk untuk melihat setiap momen, baik manis maupun pahit sebagai bagian dari rencana indah Tuhan. Luka-luka yang kita alami bukan untuk membuat kita tenggelam dalam kepahitan, melainkan untuk menempa kita menjadi pribadi yang dewasa, matang, dan anggun. Menjalani hidup ini dengan penuh iman, kesabaran, dan pengharapan memberi kekuatan untuk terus melangkah, meski tantangan dan cobaan menghadang.\nBuku ini berbagi nilai-nilai kehidupan yang telah menempa perjalanan seorang hamba Tuhan: bahwa keteguhan dalam iman kepada Tuhan, kesabaran dalam perjuangan, kasih dan pengampunan di tengah luka, serta kemandirian dan ketangguhan untuk bertahan, berbuah manis. Melalui kisah-kisah nyata yang tertuang didalamnya, kita akan menemukan inspirasi dan kekuatan untuk menghadapi masa-masa sulit, serta belajar memandang setiap kenangan sebagai warisan tak ternilai yang membentuk pribadi lebih baik.\nBuku ini mengingatkan bahwa hidup adalah perjuangan yang harus dijalani dalam pengharapan dan keyakinan bahwa bahwa hari esok selalu membawa kebaikan baru. Mari berjalan bersama menapaki jejak kehidupan, meresapi hikmah di balik setiap cerita, dan menemukan keindahan dalam perjalanan hidup yang penuh dengan warna, di bawah naungan kasih dan pertolongan Tuhan.',
       price: " Soon"
-    }
+    },
+    {
+      id: 'melepas-untuk-terbang',
+      image: './img-8.jpeg',
+      badge: 'Best Seller',
+      title: 'Kenangan adalah mozaik kehidupan yang tersusun dari serpihan masa lalu mengajarkan kita untuk untuk melihat setiap momen, baik manis maupun pahit sebagai bagian dari rencana indah Tuhan. Luka-luka yang kita alami bukan untuk membuat kita tenggelam dalam kepahitan, melainkan untuk menempa kita menjadi pribadi yang dewasa, matang, dan anggun. Menjalani hidup ini dengan penuh iman, kesabaran, dan pengharapan memberi kekuatan untuk terus melangkah, meski tantangan dan cobaan menghadang.\nBuku ini berbagi nilai-nilai kehidupan yang telah menempa perjalanan seorang hamba Tuhan: bahwa keteguhan dalam iman kepada Tuhan, kesabaran dalam perjuangan, kasih dan pengampunan di tengah luka, serta kemandirian dan ketangguhan untuk bertahan, ',
+      price: " Soon"
+    },
     
   ];
 
