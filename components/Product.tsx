@@ -46,7 +46,7 @@ const Product = () => {
     },
     {
       id: 'melepas-untuk-terbang',
-      image: './img-8.jpeg',
+      image: './empty-nest.jpg',
       badge: 'Best Seller',
       title: 'Empty Nest bukanlah akhir dari sebuah perjalanan, melainkan awal dari penemuan diri yang baru. Dalam keheningan, ada kesempatan untuk bertumbuh, mencintai, dan merangkul harapan. Temukan kebijaksanaan, inspirasi, dan dorongan untuk menjadikan fase ini sebagai momen transformasi yang indah. Mari bersama-sama merayakan setiap langkah menuju masa depan yang penuh kemungkinan.',
       price: " Soon"

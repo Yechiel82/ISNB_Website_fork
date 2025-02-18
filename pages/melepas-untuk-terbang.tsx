@@ -12,7 +12,7 @@ export default function Home() {
           <div className="md:w-1/2">
             <div className="rounded-lg overflow-hidden shadow-md">
               <img
-                src="./img-8.jpeg"
+                src="./empty-nest.jpg"
                 alt="Product Image"
                 className="w-full h-auto object-cover"
               />
@@ -32,7 +32,7 @@ export default function Home() {
             </div>
 
             <p className="text-xl font-semibold text-gray-800">
-              Price Rp80.000
+              Price Coming Soon
             </p>
 
             <button
