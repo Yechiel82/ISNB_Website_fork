@@ -52,6 +52,14 @@ const Product = () => {
       price: " Soon"
     },
     
+    {
+      id: 'kesehatan-mental',
+      image: './kesehatan_mental.jpg',
+      badge: 'New Released',
+      title: 'Kesehatan Mental Pendamping Pasien Kanker',
+      price: " Soon"
+    },
+    
   ];
 
   return (
