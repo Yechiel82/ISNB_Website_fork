@@ -60,7 +60,7 @@ const Product = () => {
       price: " Soon"
     },
     {
-      id: 'langkah_kecil',
+      id: 'langkah-kecil-kasih-besar',
       image: 'Langkah_Kecil.jpg',
       badge: 'New Released',
       title: 'Kumpulan 52 renungan yang berisi nilai-nilai kehidupan tentang pernikahan, parenting dan dinamika rumah tangga ini bukan sekedar tulisan, melainkan wujud panggilan untuk membangun warisan sejarah iman bagi generasi.',
