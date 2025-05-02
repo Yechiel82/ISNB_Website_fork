@@ -66,6 +66,13 @@ const Product = () => {
       title: 'Kumpulan 52 renungan yang berisi nilai-nilai kehidupan tentang pernikahan, parenting dan dinamika rumah tangga ini bukan sekedar tulisan, melainkan wujud panggilan untuk membangun warisan sejarah iman bagi generasi.',
       price: " Soon"
     },
+    {
+      id: 'piala-wanitaku',
+      image: 'buku-Piala-WanitaKU.png',
+      badge: 'New Released',
+      title: 'Piala WanitaKu adalah sebuah perjalanan rohani yang menggugah, menyentuh relung hati terdalam setiap wanita yang merindukan hidup dalam kehendak Allah. Melalui simbol "piala" yang diurai secara mendalam dan puitis, buku ini membukakan makna kehidupan perempuan yang dibentuk, ditempa, dan dimurnikan untuk menjadi kehormatan bagi Tuhan.',
+      price: " Soon"
+    },
     
   ];
 
