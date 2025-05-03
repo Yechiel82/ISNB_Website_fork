@@ -73,6 +73,13 @@ const Product = () => {
       title: 'Piala WanitaKu adalah sebuah perjalanan rohani yang menggugah, menyentuh relung hati terdalam setiap wanita yang merindukan hidup dalam kehendak Allah. Melalui simbol "piala" yang diurai secara mendalam dan puitis, buku ini membukakan makna kehidupan perempuan yang dibentuk, ditempa, dan dimurnikan untuk menjadi kehormatan bagi Tuhan.',
       price: " Soon"
     },
+    {
+      id: '7-Pilar-Kekuatan-Gereja',
+      image: '7-Pilar-Kekuatan-Gereja.png',
+      badge: 'New Released',
+      title: 'Dalam denyut nadi zaman yang tak pernah berhenti, tersembunyi kerinduan mendalam akan gereja yang berdiri tegak bagai mercusuar di tengah badai kehidupan. Buku "7 Pilar Kekuatan Gereja" hadir sebagai peta bintang, menuntun kita menelusuri fondasi abadi yang memancarkan daya ilahi.',
+      price: " Soon"
+    },
     
   ];
 
