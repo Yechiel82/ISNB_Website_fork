@@ -78,7 +78,14 @@ const Product = () => {
       image: '7-Pilar-Kekuatan-Gereja.png',
       badge: 'New Released',
       title: 'Dalam denyut nadi zaman yang tak pernah berhenti, tersembunyi kerinduan mendalam akan gereja yang berdiri tegak bagai mercusuar di tengah badai kehidupan. Buku "7 Pilar Kekuatan Gereja" hadir sebagai peta bintang, menuntun kita menelusuri fondasi abadi yang memancarkan daya ilahi.',
-      price: " Soon"
+      price: "Soon"
+    },
+    {
+      id: 'Sepatu-Kaca-yang-telah-Usang',
+      image: 'SepatuKaca_page.jpg',
+      badge: 'New Released',
+      title: ' Buku "Sepatu Kaca" bukanlah sekadar untaian kata yang berkilauan layaknya kisah-kisah istana yang megah. Ia justru terlahir dari sunyi dan pilu, di mana sepatu kaca impian telah retak oleh jejak panjang penderitaan dan pergumulan batin.',
+      price: "Soon"
     },
     
   ];
