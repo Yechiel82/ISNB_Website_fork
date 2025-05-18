@@ -87,6 +87,20 @@ const Product = () => {
       title: ' Buku "Sepatu Kaca" bukanlah sekadar untaian kata yang berkilauan layaknya kisah-kisah istana yang megah. Ia justru terlahir dari sunyi dan pilu, di mana sepatu kaca impian telah retak oleh jejak panjang penderitaan dan pergumulan batin.',
       price: "Soon"
     },
+    {
+      id: 'menjangkau-jiwa-di-dunia-maya',
+      image: 'menjangkau-jiwa-di-dunia-maya.png',
+      badge: 'New Released',
+      title: 'Menjangkau Jiwa di Dunia Maya: Penginjilan dan Pemuridan dalam Era DigitalDi tengah dunia yang semakin terkoneksi namun terasing, ketika kabar berseliweran lebih cepat dari doa, dan notifikasi mengalahkan suara hati',
+      price: "Soon"
+    },
+    {
+      id: 'Penggembalaan-di-Era-Digital',
+      image: 'penggembalaan-di-era-digital.png',
+      badge: 'New Released',
+      title: 'Buku ini adalah panggilan bagi gereja untuk hadir secara nyata di tengah arus digital yang kian deras—ketika media sosial menjadi ruang perjumpaan baru dan layar menjadi mimbar kehidupan.',
+      price: "Soon"
+    },
     
   ];
 
