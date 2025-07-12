@@ -110,7 +110,7 @@ const Product = () => {
     },
     {
       id: 'Kristen-dan-budaya-tionghoa',
-      image: 'kristen_tionghwa.jpeg',
+      image: 'Cover Book - Kristen dan Budaya Tionghoa-1-1.png',
       badge: 'New Released',
       title: 'Buku "Kristen dan Budaya Tionghoa: Harmoni Pelayanan dalam Pemuridan Jemaat Etnis Tionghoa" karya Pendeta Dr. Nicodemus Chen, M.Th., hadir sebagai panduan esensial di tengah dinamika Kekristenan global. ',
       price: "Soon"

@@ -12,7 +12,8 @@ export default function Home() {
           <div className="md:w-1/2">
             <div className="rounded-lg overflow-hidden shadow-md">
               <img
-                src="./kristen_tionghwa.jpeg"
+                src="./Cover Book - Kristen dan Budaya Tionghoa-1-1.png"
+
                 alt="Product Image"
                 className="w-full h-auto object-cover"
               />
