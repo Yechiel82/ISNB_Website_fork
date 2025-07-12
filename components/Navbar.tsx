@@ -35,15 +35,25 @@ const Navbar = () => {
       {/* Mobile Menu Button */}
       <button 
         onClick={toggleMenu}
-        className="inline-block cursor-pointer lg:hidden"
+        className="inline-block cursor-pointer lg:hidden p-2"
         aria-label="Toggle menu"
       >
-        <Image 
-          src={isMenuOpen ? "/close.svg" : "/menu.svg"} 
-          alt={isMenuOpen ? "close" : "menu"} 
-          width={32} 
-          height={32} 
-        />
+        {isMenuOpen ? (
+          // Custom close icon (X)
+          <div className="w-8 h-8 flex items-center justify-center">
+            <div className="relative w-6 h-6">
+              <div className="absolute top-1/2 left-0 w-full h-0.5 bg-gray-600 transform -translate-y-1/2 rotate-45"></div>
+              <div className="absolute top-1/2 left-0 w-full h-0.5 bg-gray-600 transform -translate-y-1/2 -rotate-45"></div>
+            </div>
+          </div>
+        ) : (
+          <Image 
+            src="/menu.svg" 
+            alt="menu" 
+            width={32} 
+            height={32} 
+          />
+        )}
       </button>
 
       {/* Mobile Navigation Menu */}

@@ -57,7 +57,7 @@ const Product = () => {
       image: './kesehatan_mental.jpg',
       badge: 'New Released',
       title: 'Kesehatan Mental Pendamping Pasien Kanker',
-      price: " Soon"
+      price: " Rp70.000"
     },
     {
       id: 'langkah-kecil-kasih-besar',
@@ -71,21 +71,21 @@ const Product = () => {
       image: 'buku-Piala-WanitaKU.png',
       badge: 'New Released',
       title: 'Piala WanitaKu adalah sebuah perjalanan rohani yang menggugah, menyentuh relung hati terdalam setiap wanita yang merindukan hidup dalam kehendak Allah. Melalui simbol "piala" yang diurai secara mendalam dan puitis, buku ini membukakan makna kehidupan perempuan yang dibentuk, ditempa, dan dimurnikan untuk menjadi kehormatan bagi Tuhan.',
-      price: " Soon"
+      price: "Rp100.000"
     },
     {
       id: '7-Pilar-Kekuatan-Gereja',
       image: '7-Pilar-Kekuatan-Gereja.png',
       badge: 'New Released',
       title: 'Dalam denyut nadi zaman yang tak pernah berhenti, tersembunyi kerinduan mendalam akan gereja yang berdiri tegak bagai mercusuar di tengah badai kehidupan. Buku "7 Pilar Kekuatan Gereja" hadir sebagai peta bintang, menuntun kita menelusuri fondasi abadi yang memancarkan daya ilahi.',
-      price: "Soon"
+      price: "Rp100.000"
     },
     {
       id: 'Sepatu-Kaca-yang-telah-Usang',
       image: 'SepatuKaca_page.jpg',
       badge: 'New Released',
       title: ' Buku "Sepatu Kaca" bukanlah sekadar untaian kata yang berkilauan layaknya kisah-kisah istana yang megah. Ia justru terlahir dari sunyi dan pilu, di mana sepatu kaca impian telah retak oleh jejak panjang penderitaan dan pergumulan batin.',
-      price: "Soon"
+      price: "Rp99.000"
     },
     {
       id: 'menjangkau-jiwa-di-dunia-maya',

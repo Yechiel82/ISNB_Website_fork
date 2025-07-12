@@ -36,7 +36,7 @@ Buku ini bukan sekedar bacaan, tetapi sahabat perjalanan. Ia mengajak kita berhe
             </div>
 
             <p className="text-xl font-semibold text-gray-800">
-              Price Coming Soon
+              Price Rp70.000
             </p>
 
             <button

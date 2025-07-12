@@ -35,7 +35,7 @@ export default function Home() {
             </div>
 
             <p className="text-xl font-semibold text-gray-800">
-              Price Soon
+              Price Rp100.000
             </p>
 
             <button
