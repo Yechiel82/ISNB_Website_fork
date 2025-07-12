@@ -108,6 +108,13 @@ const Product = () => {
       title: 'Bagaikan pelita yang berkobar di tengah gemerlap layar dan alunan kode digital, Dari Jemari ke Hati: Mengalirkan Berkat melalui Dunia Digital mengundang jemaat untuk menari dalam ritme iman, menjadikan setiap ketikan doa dan setiap unggahan kesaksian kasih Kristus. Berpijak pada firman Tuhan seperti Amsal 4:23 dan Ibrani 10:24-25, buku ini adalah panggilan suci untuk merangkul dunia maya sebagai ladang misi, membangun komunitas virtual yang hangat, menjaga hati di tengah distraksi, dan memancarkan terang ilahi hingga ke ujung bumi. Dengan penuh harapan, buku ini mengalirkan semangat untuk melayani, mengubah layar menjadi jendela rohani, dan menginspirasi setiap jiwa untuk menjadi berkat dari jemari ke hati, dari dunia ke surga.',
       price: "Soon"
     },
+    {
+      id: 'Kristen-dan-budaya-tionghoa',
+      image: 'kristen_tionghwa.jpeg',
+      badge: 'New Released',
+      title: 'Buku "Kristen dan Budaya Tionghoa: Harmoni Pelayanan dalam Pemuridan Jemaat Etnis Tionghoa" karya Pendeta Dr. Nicodemus Chen, M.Th., hadir sebagai panduan esensial di tengah dinamika Kekristenan global. ',
+      price: "Soon"
+    },
     
   ];
 
