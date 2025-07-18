@@ -2,6 +2,8 @@
 export const NAV_LINKS = [
   { href: '/', key: 'home', label: 'Home' },
   { href: '/product', key: 'services', label: 'Toko Buku' },
+    { href: '/flip-book', key: 'flipbook', label: 'Flip Book' }, // Add this line
+
 ];
 
 // CAMP SECTION
