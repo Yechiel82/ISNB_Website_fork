@@ -11,7 +11,7 @@ const FlipBook = () => {
   const [pages, setPages] = React.useState<string[]>([]);
   const [currentPage, setCurrentPage] = React.useState(0);
   const [loading, setLoading] = React.useState(false);
-  const [bookSize, setBookSize] = React.useState<{ width: number; height: number }>({ width: 340, height: 360 });
+  const [bookSize, setBookSize] = React.useState<{ width: number; height: number }>({ width: 900, height: 1272 });
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setLoading(true);
@@ -39,11 +39,11 @@ const FlipBook = () => {
               // Set FlipBook size based on first PDF page
               if (!pdfSizeSet) {
                 const aspect = viewport.height / viewport.width;
-                let width = 340;
+                let width = 900;
                 let height = Math.round(width * aspect);
                 // Clamp height to reasonable range
-                if (height < 320) height = 320;
-                if (height > 600) height = 600;
+                if (height < 900) height = 900;
+                if (height > 1800) height = 1800;
                 setBookSize({ width, height });
                 pdfSizeSet = true;
               }
@@ -84,6 +84,8 @@ const FlipBook = () => {
 
   const bookContainerRef = useRef<HTMLDivElement>(null);
   const [isFullscreen, setIsFullscreen] = React.useState(false);
+  // Key to force FlipBook remount only when exiting fullscreen
+  const [flipBookKey, setFlipBookKey] = React.useState(0);
 
   const handleFullscreen = () => {
     const elem = bookContainerRef.current;
@@ -99,7 +101,15 @@ const FlipBook = () => {
 
   React.useEffect(() => {
     const onFullscreenChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
+      const isFs = !!document.fullscreenElement;
+      setIsFullscreen(isFs);
+      if (!isFs) {
+        // Only when exiting fullscreen, force FlipBook remount and trigger resize
+        setFlipBookKey((k) => k + 1);
+        setTimeout(() => {
+          window.dispatchEvent(new Event('resize'));
+        }, 50);
+      }
     };
     document.addEventListener('fullscreenchange', onFullscreenChange);
     return () => document.removeEventListener('fullscreenchange', onFullscreenChange);
@@ -107,7 +117,7 @@ const FlipBook = () => {
 
   return (
     <div className="bg-white flex items-center justify-center px-1">
-      <div className="w-full max-w-xl bg-white shadow-md rounded-lg p-2 flex flex-col items-center my-4">
+      <div className="w-full bg-white shadow-md rounded-lg p-2 flex flex-col items-center my-4">
         <h1 className="text-2xl font-bold mb-4 text-center text-gray-900 tracking-tight">Flip Book</h1>
         <label htmlFor="flipbook-upload" className="mb-4 flex flex-col items-center cursor-pointer">
           <span className="text-base font-medium text-gray-700 mb-1 flex items-center gap-2">
@@ -152,19 +162,20 @@ const FlipBook = () => {
             style={isFullscreen ? { width: '100vw', height: '100vh' } : {}}
           >
             <HTMLFlipBook
+              key={flipBookKey}
               width={isFullscreen ? window.innerWidth : bookSize.width}
               height={isFullscreen ? window.innerHeight : bookSize.height}
               size="stretch"
               minWidth={isFullscreen ? window.innerWidth : 200}
               minHeight={isFullscreen ? window.innerHeight : 220}
-              maxWidth={isFullscreen ? window.innerWidth : 400}
-              maxHeight={isFullscreen ? window.innerHeight : 600}
+              maxWidth={isFullscreen ? window.innerWidth : 900}
+              maxHeight={isFullscreen ? window.innerHeight : 1800}
               drawShadow={true}
               flippingTime={700}
               useMouseEvents={true}
               showPageCorners={true}
               className={`shadow-lg border rounded-lg ${isFullscreen ? '' : ''}`}
-              style={isFullscreen ? { margin: 0, background: '#222' } : { background: '#fff' }}
+              style={isFullscreen ? { margin: 0, background: '#222', width: '100vw', height: '100vh' } : { background: '#fff' }}
               startPage={0}
               mobileScrollSupport={true}
               swipeDistance={50}
