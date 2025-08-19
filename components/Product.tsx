@@ -115,6 +115,13 @@ const Product = () => {
       title: 'Buku "Kristen dan Budaya Tionghoa: Harmoni Pelayanan dalam Pemuridan Jemaat Etnis Tionghoa" karya Pendeta Dr. Nicodemus Chen, M.Th., hadir sebagai panduan esensial di tengah dinamika Kekristenan global. ',
       price: "Soon"
     },
+    {
+      id: 'Panggilanku-Seorang-Guru-2',
+      image: './COVERFRONTBACK-1.png',
+      badge: 'New Released',
+      title: 'Panggilanku Seorang Guru 2: Strategi Pengajaran Brilian untuk Transformasi Pembelajaran hadir untuk menginspirasi guru agar berani keluar dari pola lama, mencoba hal baru, dan menemukan kembali sukacita mengajar. ',
+      price: "Soon"
+    },
     
   ];
 
