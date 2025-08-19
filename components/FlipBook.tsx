@@ -2,7 +2,9 @@
 "use client";
 import React, { useRef } from 'react';
 import HTMLFlipBook from 'react-pageflip';
+// @ts-ignore: pdfjs-dist does not provide TypeScript declarations in this project
 import * as pdfjsLib from 'pdfjs-dist/build/pdf';
+// @ts-ignore: pdfjs-dist does not provide TypeScript declarations in this project
 import { GlobalWorkerOptions } from 'pdfjs-dist/build/pdf';
 GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
 
