@@ -122,6 +122,13 @@ const Product = () => {
       title: 'Panggilanku Seorang Guru 2: Strategi Pengajaran Brilian untuk Transformasi Pembelajaran hadir untuk menginspirasi guru agar berani keluar dari pola lama, mencoba hal baru, dan menemukan kembali sukacita mengajar. ',
       price: "Soon"
     },
+    {
+      id: 'gereja_penjaga_asa',
+      image: './gereja_penjaga_asa.jpeg',
+      badge: 'New Released',
+      title: 'Di tengah badai senyap yang mengoyak sendi-sendi bangsa, bahaya Narkoba telah menjelma menjadi ancaman multidimensional yang merenggut tunas harapan dan mengancam cita-cita luhur Indonesia Emas 2045. ',
+      price: "Soon"
+    },
     
   ];
 
