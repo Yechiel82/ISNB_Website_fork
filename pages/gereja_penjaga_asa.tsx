@@ -12,7 +12,7 @@ export default function Home() {
           <div className="md:w-1/2">
             <div className="rounded-lg overflow-hidden shadow-md">
               <img
-                src="./COVERFRONTBACK-1.png"
+                src="./gereja_penjaga_asa.jpeg"
 
                 alt="Product Image"
                 className="w-full h-auto object-cover"
@@ -23,16 +23,12 @@ export default function Home() {
           {/* Content Section */}
           <div className="md:w-1/2 space-y-6">
             <h2 className="text-2xl font-bold text-gray-800">
-Panggilanku Seorang Guru 2: Strategi Pengajaran Brilian untuk Transformasi Pembelajaran
-            </h2>
+Gereja Penjaga Asa :  Membangun fondasi Indonesia Emas 2045 dari ancaman bahaya penyalahgunaan Narkoba.            </h2>
 
             <div className="text-gray-600 space-y-4">
               <p>
-Strategi Pengajaran Brilian untuk Transformasi Pembelajaran hadir untuk menginspirasi guru agar berani keluar dari pola lama, mencoba hal baru, dan menemukan kembali sukacita mengajar. Buku ini bukan untuk menghakimi, melainkan mengingatkan kita akan alasan awal mengajar: bukan sekadar menuntaskan materi, tetapi menghidupkan kelas dan membangkitkan semangat belajar. 
-
-Penulisnya pun adalah orang-orang biasa yang menyimpan kerinduan sama: menjadi inspirasi, sekecil apa pun bentuknya. Di dalamnya, Anda akan menemukan gagasan dan strategi yang bukan hanya teknis, tetapi juga menyentuh hati. Sebab transformasi pembelajaran lahir dari guru yang mau terus belajar, berani berinovasi, dan menghadirkan energi positif di kelasnya. 
-
-Mari menjadi guru yang hadir, bukan sekadar untuk mengajar tetapi untuk menginspirasi, memberi kehidupan yang terus berdenyut di hati murid, bahkan setelah mereka meninggalkan bangku sekolah.
+Di tengah badai senyap yang mengoyak sendi-sendi bangsa, bahaya Narkoba telah menjelma menjadi ancaman multidimensional yang merenggut tunas harapan dan mengancam cita-cita luhur Indonesia Emas 2045. Buku ini hadir bukan hanya sebagai cermin realitas pahit tersebut, melainkan sebagai manifesto tegas yang menyuarakan sebuah kebenaran fundamental: bahwa di balik setiap kehancuran, terbitlah fajar pemulihan melalui "Peran Krusial" Gereja Tuhan. Dengan mengurai anatomi ancaman secara lugas dan menawarkan "Bimbingan Konseling Kristen" sebagai solusi holistik yang menyentuh tubuh, jiwa, dan roh, buku ini adalah "Seruan Aksi" yang menggerakkan. 
+Ini adalah panduan strategis yang menuntun Pemimpin Gereja untuk mengemban "Peran Preventif" dan "Rehabilitatif", membangun benteng pertahanan moral, dan merangkul kaum muda. Mari kita singkap tabir kegelapan, kuatkan tekad, dan melangkah bersama dalam "Kolaborasi Strategis" yang sinergis, karena Optimisme untuk Indonesia yang bebas narkoba, berkarakter kuat, dan berdaya saing global Harus Diwujudkan.
               </p>
 
             </div>
