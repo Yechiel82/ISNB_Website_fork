@@ -136,6 +136,13 @@ const Product = () => {
       title: 'Dalam menghadapi kabar buruk dan diagnosis penyakit berat yang mengguncang, buku "60 Days Self-Healing for Terminal Illness" hadir sebagai panduan yang tegas namun penuh kasih. Ditulis oleh Pdt. Dr. Erika Fanny dari pengalaman pribadinya sebagai pejuang penyakit kronis, buku ini mengajak Anda pada sebuah perjalanan batin selama 60 hari. Ini bukanlah janji kesembuhan instan, melainkan sebuah deklarasi bahwa pemulihan sejati dimulai dari dalam, dari kesiapan untuk menghadapi luka, air mata, dan kebingungan tanpa rasa malu. Buku ini secara lugas menegaskan bahwa nilai hidup tidak ditentukan oleh seberapa sempurna atau sehatnya tubuh, tetapi oleh keberanian untuk tetap berjuang dan menemukan arti di tengah badai. Melalui setiap hari refleksi dan doa, Anda akan dipimpin untuk menyusun ulang harapan, berdamai dengan tubuh, dan menemukan kekuatan di tengah kelemahan. Dengan nada yang profesional dan penuh pengharapan, buku ini membimbing Anda untuk menyadari bahwa Anda berharga, bahkan di saat tak berdaya. Pesan utamanya urgen: jangan biarkan diagnosis merampas martabat dan sukacita Anda. Dengan setiap bab yang menyentuh, buku ini menjadi sahabat yang mengingatkan bahwa di balik sakit yang nyata, ada jiwa yang bisa tetap utuh dan kuat, dan bahwa terang bisa muncul dari dalam diri.',
       price: "Soon"
     },
+    {
+      id: 'Applied-Ethics-In-The-Light-Of-Gods-Word',
+      image: './Sampul Applied Ethics-1.png',
+      badge: 'New Released',
+      title: 'Di tengah dunia yang kehilangan kompas moralnya, buku ini hadir sebagai panggilan untuk keberanian intelektual dan spiritual, mengundang Anda untuk menjadi duta besar Kerajaan yang diperlengkapi. Dengan fondasi kokoh dalam teologi Reformed, "Etika Terapan: Di Bawah Kedaulatan-Nya" akan membongkar isu-isu paling kompleks bukan untuk memberi Anda daftar aturan, melainkan untuk menempa sebuah imajinasi moral yang dibentuk oleh narasi agung Alkitab.',
+      price: "Soon"
+    },
     
   ];
 
