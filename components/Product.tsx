@@ -143,6 +143,13 @@ const Product = () => {
       title: 'Di tengah dunia yang kehilangan kompas moralnya, buku ini hadir sebagai panggilan untuk keberanian intelektual dan spiritual, mengundang Anda untuk menjadi duta besar Kerajaan yang diperlengkapi. Dengan fondasi kokoh dalam teologi Reformed, "Etika Terapan: Di Bawah Kedaulatan-Nya" akan membongkar isu-isu paling kompleks bukan untuk memberi Anda daftar aturan, melainkan untuk menempa sebuah imajinasi moral yang dibentuk oleh narasi agung Alkitab.',
       price: "Soon"
     },
+    {
+      id: 'Kita_Hanya_Punya_Saat_Ini',
+      image: './Kita_Hanya_Punya_Saat_Ini.png',
+      badge: 'New Released',
+      title: 'Kita Hanya Punya Saat Ini adalah seruan tegas bagi setiap anak Tuhan yang merindukan hubungan mendalam dengan Tuhan untuk merangkul momen kini sebagai anugerah ilahi yang suci. Berpijak pada kebenaran Alkitab seperti Pengkhotbah 3:1-8 dan Efesus 5:16, buku ini mengajak pembaca untuk melepaskan belenggu masa lalu dan kecemasan masa depan, menegaskan bahwa saat ini adalah waktu yang ditentukan Tuhan untuk iman, kasih, dan pelayanan.',
+      price: "Soon"
+    },
     
   ];
 
