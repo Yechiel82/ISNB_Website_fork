@@ -150,6 +150,20 @@ const Product = () => {
       title: 'Kita Hanya Punya Saat Ini adalah seruan tegas bagi setiap anak Tuhan yang merindukan hubungan mendalam dengan Tuhan untuk merangkul momen kini sebagai anugerah ilahi yang suci. Berpijak pada kebenaran Alkitab seperti Pengkhotbah 3:1-8 dan Efesus 5:16, buku ini mengajak pembaca untuk melepaskan belenggu masa lalu dan kecemasan masa depan, menegaskan bahwa saat ini adalah waktu yang ditentukan Tuhan untuk iman, kasih, dan pelayanan.',
       price: "Soon"
     },
+    {
+      id: 'Buku_Ajar_Konseling_Kristen',
+      image: './Konseling.png',
+      badge: 'New Released',
+      title: 'buku ini menyajikan pedoman pembelajaran yang sistematis, mendalam, dan aplikatif untuk memahami serta menerapkan konseling yang berlandaskan iman Kristen.',
+      price: "Soon"
+    },
+    {
+      id: 'Buku_Ajar_Pendidikan_Kewarganegaraan',
+      image: './PKN.png',
+      badge: 'New Released',
+      title: 'buku ini berfungsi sebagai panduan yang komprehensif dan tegas untuk menanamkan nilai-nilai kewarganegaraan yang berlandaskan Pancasila, UUD 1945, NKRI, dan semangat Bhinneka Tunggal Ika.',
+      price: "Soon"
+    },
     
   ];
 
