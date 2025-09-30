@@ -171,6 +171,13 @@ const Product = () => {
       title: 'Buku ini menyajikan panduan komprehensif untuk penginjilan di Bali, sebuah pulau dengan dominasi Hindu (92,11%) dan tantangan spiritual yang kompleks, seperti sistem Desa Adat, praktik okultisme, dan resistensi budaya. Melalui analisis konteks geografis, demografis, dan budaya Bali, buku ini menguraikan strategi kontekstual seperti doa, puasa, pujian, dan penggunaan seni lokal untuk mematahkan benteng kegelapan dalam peperangan rohani. Dengan landasan Alkitabiah dari ayat-ayat seperti Matius 28:19-20, 2 Korintus 10:4, dan Kolose 4:5-6, buku ini menawarkan kesaksian nyata, panduan praktis, dan sumber daya teologi untuk memobilisasi gereja, membangun kelompok sel, dan memanfaatkan media sosial serta pariwisata, dengan visi menjadikan Bali mercusuar Injil melalui kerjasama antar-gereja dan doa yang penuh kuasa.',
       price: "Soon"
     },
+    {
+      id: 'Sejauh_Langkah_Kaki',
+      image: './sampul-sejauh-langkah-Kaki.png',
+      badge: 'New Released',
+      title: ' "Sejauh Langkah Kaki" adalah sebuah kompilasi kisah otentik yang dihimpun dari pengalaman hidup para penjelajah kehidupan yang telah "banyak makan asam garam." ',
+      price: "Soon"
+    },
     
   ];
 
