@@ -178,6 +178,13 @@ const Product = () => {
       title: ' "Sejauh Langkah Kaki" adalah sebuah kompilasi kisah otentik yang dihimpun dari pengalaman hidup para penjelajah kehidupan yang telah "banyak makan asam garam." ',
       price: "Soon"
     },
+    {
+      id: 'Logika_Salib',
+      image: './logika_salib.jpeg',
+      badge: 'New Released',
+      title: 'Logika Salib adalah sebuah perjalanan intelektual dan spiritual yang berani menembus jantung misteri iman Kristen: mengapa Sang Putra Allah harus disalibkan di depan publik dunia? Buku ini menyingkapkan paradoks salib, skandal sekaligus kemuliaan, kelemahan sekaligus kekuatan, kebodohan di mata manusia namun hikmat Allah yang menyelamatkan. Dengan nada kritis, rasional, dan tetap penuh kehangatan iman, penulis mengajak pembaca merenungi salib bukan hanya sebagai simbol religius, tetapi sebagai pusat logika ilahi yang membongkar kesombongan dunia dan membangkitkan pengharapan yang baru.',
+      price: "Soon"
+    },
     
   ];
 
