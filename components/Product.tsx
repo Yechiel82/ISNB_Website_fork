@@ -192,6 +192,13 @@ const Product = () => {
       title: 'Jauh di dalam diri setiap individu, tersembunyi sebuah "Taman Eden", sebuah lanskap unik berisi potensi ilahi yang menunggu untuk diolah. Buku ini bukan sekadar panduan motivasi, melainkan sebuah peta strategis yang tegas dan praktis untuk perjalanan transformatif Anda. Anda akan dibimbing untuk menemukan benih-benih anugerah yang spesifik bagi Anda, melampaui identifikasi talenta biasa menuju pengenalan panggilan sejati. Selanjutnya, Anda akan diperlengkapi untuk mengusahakan taman tersebut dengan disiplin seorang pengelola yang setia, mengubah kerja keras menjadi ibadah dan tantangan menjadi pupuk pertumbuhan. Puncaknya, buku ini akan menunjukkan cara menuai berkat yang berkelanjutan, buah-buah keberhasilan yang tidak hanya memperkaya hidup Anda, tetapi juga menjadi persembahan kemuliaan bagi Sang Tuan Kebun. "Taman Edenku" adalah undangan radikal untuk berhenti menjadi penonton dan mulai menjadi penjaga kebun yang ahli atas takdir ilahi Anda.',
       price: "Soon"
     },
+    {
+      id: 'Sukabumi_Kota_Polisi_Polisi_Bersama_Rakyat_Menjaga_Negeri',
+      image: './Sukabumi_Kota_Polisi.jpeg',
+      badge: 'New Released',
+      title: 'SUKABUMI KOTA POLISI: Polisi Bersama Rakyat Menjaga Negeri',
+      price: "Soon"
+    },
     
   ];
 
