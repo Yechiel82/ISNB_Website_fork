@@ -247,12 +247,73 @@ const FlipBook = () => {
   const [flipBookKey, setFlipBookKey] = React.useState(0);
   // Control whether media is embedded inline over the black box
   const [embedInline, setEmbedInline] = React.useState(true);
+  // High-accuracy detection using OpenCV.js (lazy-loaded)
+  const [useOpenCV, setUseOpenCV] = React.useState(false);
+  const [cvReady, setCvReady] = React.useState(false);
+  const opencvLoadingRef = React.useRef(false);
   // Box detection tuning parameters
   const [boxThreshold, setBoxThreshold] = React.useState(80);
   const [boxMarginX, setBoxMarginX] = React.useState(0.04);
   const [boxMarginY, setBoxMarginY] = React.useState(0.04);
   const [boxMinWidthRatio, setBoxMinWidthRatio] = React.useState(0.08);
   const [boxMinHeightRatio, setBoxMinHeightRatio] = React.useState(0.06);
+  // Inset media overlay slightly inside the detected box (per-side percentage of box size)
+  const [boxShrinkRatio, setBoxShrinkRatio] = React.useState(0.03);
+
+  // Lazy-load OpenCV.js when high-accuracy mode is enabled
+  const loadOpenCV = React.useCallback((): Promise<void> => {
+    if (cvReady) return Promise.resolve();
+    if (typeof window === 'undefined') return Promise.resolve();
+    const w = window as any;
+    if (w.cv && typeof w.cv.imread === 'function') {
+      setCvReady(true);
+      return Promise.resolve();
+    }
+    if (opencvLoadingRef.current) {
+      // Poll until cv is ready
+      return new Promise((resolve) => {
+        const check = () => {
+          if (w.cv && typeof w.cv.imread === 'function') {
+            setCvReady(true);
+            resolve();
+          } else {
+            setTimeout(check, 60);
+          }
+        };
+        check();
+      });
+    }
+    opencvLoadingRef.current = true;
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = 'https://docs.opencv.org/4.x/opencv.js';
+      script.async = true;
+      script.crossOrigin = 'anonymous';
+      script.onload = () => {
+        const cv = (window as any).cv;
+        if (cv && typeof cv.onRuntimeInitialized !== 'undefined') {
+          cv.onRuntimeInitialized = () => {
+            setCvReady(true);
+            resolve();
+          };
+        } else {
+          setCvReady(!!cv);
+          resolve();
+        }
+      };
+      script.onerror = () => {
+        opencvLoadingRef.current = false;
+        reject(new Error('Failed to load OpenCV.js'));
+      };
+      document.head.appendChild(script);
+    });
+  }, [cvReady]);
+
+  React.useEffect(() => {
+    if (useOpenCV && !cvReady) {
+      loadOpenCV().catch(() => {});
+    }
+  }, [useOpenCV, cvReady, loadOpenCV]);
 
   const handleFullscreen = () => {
     const elem = bookContainerRef.current;
@@ -358,7 +419,10 @@ const FlipBook = () => {
           const top = (imgRect2.top - parent.getBoundingClientRect().top) + imgRect2.height * 0.6 - h / 2;
           targetRect = { left, top, width: w, height: h };
         }
-        newMedia[i] = { ...targetRect!, kind: mediaInfo.kind, src: mediaInfo.src };
+        // Inset the media overlay so it never exceeds the visual box
+  const shrunk = shrinkRect(targetRect!, boxShrinkRatio);
+  const fitted = shouldFit16x9(mediaInfo) ? fitRectToAspect(shrunk, 16 / 9) : shrunk;
+  newMedia[i] = { ...fitted, kind: mediaInfo.kind, src: mediaInfo.src };
         // Exclude the embedded candidate from clickable overlays if present
         if (mediaCandidate) newAreas[i] = (filtered || []).slice(1); else newAreas[i] = (filtered || []);
       } else {
@@ -369,7 +433,7 @@ const FlipBook = () => {
     setBoxRects(newBoxes);
     setLinkAreas(newAreas);
     setMediaEmbeds(newMedia);
-  }, []);
+  }, [boxThreshold, boxMarginX, boxMarginY, boxMinWidthRatio, boxMinHeightRatio, useOpenCV, cvReady, boxShrinkRatio]);
 
   // Re-detect overlay boxes and map link rectangles on resize (image size changes with container)
   React.useEffect(() => {
@@ -386,10 +450,35 @@ const FlipBook = () => {
   React.useEffect(() => {
     if (imgRefs.current.length) recomputeAllOverlays();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [boxThreshold, boxMarginX, boxMarginY, boxMinWidthRatio, boxMinHeightRatio]);
+  }, [boxThreshold, boxMarginX, boxMarginY, boxMinWidthRatio, boxMinHeightRatio, useOpenCV, cvReady, boxShrinkRatio]);
 
   // Utility: detect a dark bordered rectangle ("black box") on the displayed <img>
-  const detectBoxOnDisplayedImage = (imgEl: HTMLImageElement, threshold: number = 80, marginXRatio: number = 0.04, marginYRatio: number = 0.04, minWidthRatio: number = 0.08, minHeightRatio: number = 0.06) => {
+  // Chooses OpenCV-based detection when enabled and ready; otherwise falls back to lightweight projection method.
+  const detectBoxOnDisplayedImage = (
+    imgEl: HTMLImageElement,
+    threshold: number = 80,
+    marginXRatio: number = 0.04,
+    marginYRatio: number = 0.04,
+    minWidthRatio: number = 0.08,
+    minHeightRatio: number = 0.06
+  ) => {
+    // Prefer OpenCV path when available
+    if (useOpenCV && cvReady) {
+      const rect = detectBoxWithOpenCV(imgEl, minWidthRatio, minHeightRatio);
+      if (rect) return rect;
+    }
+    return detectBoxSimple(imgEl, threshold, marginXRatio, marginYRatio, minWidthRatio, minHeightRatio);
+  };
+
+  // Lightweight JS method (existing approach): luminance threshold + projections
+  const detectBoxSimple = (
+    imgEl: HTMLImageElement,
+    threshold: number,
+    marginXRatio: number,
+    marginYRatio: number,
+    minWidthRatio: number,
+    minHeightRatio: number
+  ) => {
     try {
       const w = imgEl.clientWidth;
       const h = imgEl.clientHeight;
@@ -401,7 +490,6 @@ const FlipBook = () => {
       if (!ctx) return null;
       ctx.drawImage(imgEl, 0, 0, w, h);
       const { data } = ctx.getImageData(0, 0, w, h);
-      // Build binary map for dark pixels (luminance threshold)
       const dark = new Uint8Array(w * h);
       for (let y = 0; y < h; y++) {
         for (let x = 0; x < w; x++) {
@@ -409,12 +497,10 @@ const FlipBook = () => {
           const r = data[idx];
           const g = data[idx + 1];
           const b = data[idx + 2];
-          // Luminance
           const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b;
           dark[y * w + x] = lum < threshold ? 1 : 0;
         }
       }
-      // Horizontal and vertical projections (focus on center band to avoid page borders)
       const marginX = Math.floor(w * marginXRatio);
       const marginY = Math.floor(h * marginYRatio);
       const rowSum: number[] = new Array(h).fill(0);
@@ -429,33 +515,92 @@ const FlipBook = () => {
         for (let y = marginY; y < h - marginY; y++) s += dark[y * w + x];
         colSum[x] = s;
       }
-      // Find strongest rows in top and bottom halves (robust separation)
       const halfY = Math.floor(h / 2);
       let top = marginY, bottom = h - marginY - 1;
       let topVal = -1, bottomVal = -1;
-      for (let y = marginY; y < halfY; y++) {
-        if (rowSum[y] > topVal) { topVal = rowSum[y]; top = y; }
-      }
-      for (let y = halfY; y < h - marginY; y++) {
-        if (rowSum[y] > bottomVal) { bottomVal = rowSum[y]; bottom = y; }
-      }
-      // Find strongest cols in left and right halves
+      for (let y = marginY; y < halfY; y++) if (rowSum[y] > topVal) { topVal = rowSum[y]; top = y; }
+      for (let y = halfY; y < h - marginY; y++) if (rowSum[y] > bottomVal) { bottomVal = rowSum[y]; bottom = y; }
       const halfX = Math.floor(w / 2);
       let left = marginX, right = w - marginX - 1;
       let leftVal = -1, rightVal = -1;
-      for (let x = marginX; x < halfX; x++) {
-        if (colSum[x] > leftVal) { leftVal = colSum[x]; left = x; }
-      }
-      for (let x = halfX; x < w - marginX; x++) {
-        if (colSum[x] > rightVal) { rightVal = colSum[x]; right = x; }
-      }
-
-      // Basic sanity checks
+      for (let x = marginX; x < halfX; x++) if (colSum[x] > leftVal) { leftVal = colSum[x]; left = x; }
+      for (let x = halfX; x < w - marginX; x++) if (colSum[x] > rightVal) { rightVal = colSum[x]; right = x; }
       if (!isFinite(top) || !isFinite(bottom) || !isFinite(left) || !isFinite(right)) return null;
       if (bottom - top < h * minHeightRatio || right - left < w * minWidthRatio) return null;
+      return { x: left, y: top, width: right - left, height: bottom - top };
+    } catch {
+      return null;
+    }
+  };
 
-      const box = { x: left, y: top, width: right - left, height: bottom - top };
-      return box;
+  // OpenCV-based method: grayscale -> blur -> adaptive threshold (inv) -> morphology close -> Canny -> contours -> largest bounding rect
+  const detectBoxWithOpenCV = (
+    imgEl: HTMLImageElement,
+    minWidthRatio: number,
+    minHeightRatio: number
+  ) => {
+    try {
+      const w = imgEl.clientWidth;
+      const h = imgEl.clientHeight;
+      if (!w || !h) return null;
+      const tmp = document.createElement('canvas');
+      tmp.width = w; tmp.height = h;
+      const ctx = tmp.getContext('2d');
+      if (!ctx) return null;
+      ctx.drawImage(imgEl, 0, 0, w, h);
+      const cv = (window as any).cv;
+      if (!cv || typeof cv.imread !== 'function') return null;
+
+      const src = cv.imread(tmp);
+      const gray = new cv.Mat();
+      cv.cvtColor(src, gray, cv.COLOR_RGBA2GRAY);
+      const blurred = new cv.Mat();
+      const ksize = new cv.Size(5, 5);
+      cv.GaussianBlur(gray, blurred, ksize, 0, 0);
+
+      const thresh = new cv.Mat();
+      // Invert threshold to make dark box white in binary image
+      cv.adaptiveThreshold(
+        blurred,
+        thresh,
+        255,
+        cv.ADAPTIVE_THRESH_GAUSSIAN_C,
+        cv.THRESH_BINARY_INV,
+        11,
+        2
+      );
+
+      // Morphological close to fill gaps in the box border
+      const kernel = cv.Mat.ones(3, 3, cv.CV_8U);
+      const closed = new cv.Mat();
+      cv.morphologyEx(thresh, closed, cv.MORPH_CLOSE, kernel);
+
+      // Edge detection and contour search
+      const edges = new cv.Mat();
+      cv.Canny(closed, edges, 50, 150);
+      const contours = new cv.MatVector();
+      const hierarchy = new cv.Mat();
+      cv.findContours(edges, contours, hierarchy, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE);
+
+      let bestRect: { x: number; y: number; width: number; height: number } | null = null;
+      let bestArea = 0;
+      const minW = w * (minWidthRatio || 0.08);
+      const minH = h * (minHeightRatio || 0.06);
+      for (let i = 0; i < contours.size(); i++) {
+        const cnt = contours.get(i);
+        const rect = cv.boundingRect(cnt);
+        const area = rect.width * rect.height;
+        if (rect.width >= minW && rect.height >= minH && area > bestArea) {
+          bestRect = { x: rect.x, y: rect.y, width: rect.width, height: rect.height };
+          bestArea = area;
+        }
+        cnt.delete();
+      }
+
+      // Cleanup mats
+      src.delete(); gray.delete(); blurred.delete(); thresh.delete(); closed.delete(); edges.delete(); contours.delete(); hierarchy.delete(); kernel.delete();
+
+      return bestRect;
     } catch {
       return null;
     }
@@ -557,12 +702,63 @@ const FlipBook = () => {
           const top = (imgRect2.top - parentRect2.top) + imgRect2.height * 0.6 - h / 2;
           targetRect = { left, top, width: w, height: h };
         }
-        next[pageIndex] = { ...targetRect!, kind: mediaInfo.kind, src: mediaInfo.src };
+  const shrunk = shrinkRect(targetRect!, boxShrinkRatio);
+  const fitted = shouldFit16x9(mediaInfo) ? fitRectToAspect(shrunk, 16 / 9) : shrunk;
+  next[pageIndex] = { ...fitted, kind: mediaInfo.kind, src: mediaInfo.src };
       } else {
         next[pageIndex] = null;
       }
       return next;
     });
+  };
+
+  // Geometry helper: shrink a rect by a per-side ratio of its own size
+  const shrinkRect = (
+    rect: { left: number; top: number; width: number; height: number },
+    ratio: number
+  ): { left: number; top: number; width: number; height: number } => {
+    const r = Math.max(0, Math.min(0.2, isFinite(ratio) ? ratio : 0));
+    const insetX = rect.width * r;
+    const insetY = rect.height * r;
+    const w = Math.max(1, rect.width - 2 * insetX);
+    const h = Math.max(1, rect.height - 2 * insetY);
+    return {
+      left: rect.left + insetX,
+      top: rect.top + insetY,
+      width: w,
+      height: h,
+    };
+  };
+
+  // Fit a rectangle with a given aspect ratio inside a container, anchored to top-left (avoid covering below text)
+  const fitRectToAspect = (
+    container: { left: number; top: number; width: number; height: number },
+    aspect: number // width / height
+  ): { left: number; top: number; width: number; height: number } => {
+    if (!isFinite(aspect) || aspect <= 0) return container;
+    const containerAspect = container.width / (container.height || 1);
+    if (containerAspect >= aspect) {
+      // Container is wider than desired; limit by height
+      const height = container.height;
+      const width = height * aspect;
+      return { left: container.left, top: container.top, width, height };
+    } else {
+      // Container is taller/narrower; limit by width
+      const width = container.width;
+      const height = width / aspect;
+      return { left: container.left, top: container.top, width, height };
+    }
+  };
+
+  const shouldFit16x9 = (media: { kind: 'iframe' | 'video'; src: string } | null): boolean => {
+    if (!media) return false;
+    // Apply to YouTube embeds specifically to prevent overly tall iframes hiding text
+    try {
+      const u = new URL(media.src);
+      return /youtube\.com$/i.test(u.hostname) || /youtube\.com/i.test(media.src);
+    } catch {
+      return /youtube\.com/i.test(media.src);
+    }
   };
 
   // Utilities: YouTube URL handling (used by detectMedia and text parsing)
@@ -700,6 +896,17 @@ const FlipBook = () => {
               <input type="checkbox" checked={embedInline} onChange={(e) => setEmbedInline(e.target.checked)} />
               Embed media inline
             </label>
+            <label className="flex items-center gap-1 text-xs text-gray-600">
+              <input
+                type="checkbox"
+                checked={useOpenCV}
+                onChange={(e) => setUseOpenCV(e.target.checked)}
+              />
+              High accuracy (OpenCV)
+            </label>
+            {useOpenCV && (
+              <span className="text-xs text-gray-500">OpenCV: {cvReady ? 'ready' : 'loading…'}</span>
+            )}
             <span className="text-xs text-gray-500">Links are auto-extracted from the PDF inside the black box</span>
           </div>
         )}
@@ -763,6 +970,18 @@ const FlipBook = () => {
                   step="0.01"
                   value={boxMinHeightRatio}
                   onChange={(e) => setBoxMinHeightRatio(Number(e.target.value))}
+                  className="mt-1"
+                />
+              </label>
+              <label className="flex flex-col">
+                <span className="text-xs text-gray-600">Shrink inside box: {(boxShrinkRatio * 100).toFixed(1)}% per side</span>
+                <input
+                  type="range"
+                  min="0"
+                  max="0.2"
+                  step="0.005"
+                  value={boxShrinkRatio}
+                  onChange={(e) => setBoxShrinkRatio(Number(e.target.value))}
                   className="mt-1"
                 />
               </label>
@@ -908,6 +1127,7 @@ const FlipBook = () => {
                         <div>… and { (pdfLinkRectsRef.current[i]!.length - 3) } more</div>
                       )}
                       <div>Text URL: {pageTextUrlRef.current[i] || '—'}</div>
+                      <div>Detector: {useOpenCV ? (cvReady ? 'OpenCV (ready)' : 'OpenCV (loading…)') : 'Simple'}</div>
                       <div>Media: {mediaEmbeds[i] ? `${mediaEmbeds[i]!.kind} → ${mediaEmbeds[i]!.src}` : '—'} {mediaEmbeds[i] && (embedInline ? '(inline)' : '(hidden)')}</div>
                       <div style={{marginTop:4, opacity:0.85}}>Text:</div>
                       <div style={{whiteSpace:'pre-wrap'}}>
