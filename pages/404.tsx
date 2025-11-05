@@ -1,13 +1,10 @@
-// pages/Custom404.js
 import React from 'react';
 
-function Custom404() {
+export default function Page404() {
   return (
-    <div>
+    <main style={{ padding: 24 }}>
       <h1>404 - Page Not Found</h1>
       <p>We couldn't find the page you were looking for.</p>
-    </div>
+    </main>
   );
 }
-
-export default Custom404;
