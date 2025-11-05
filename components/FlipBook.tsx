@@ -245,6 +245,14 @@ const FlipBook = () => {
   const [isFullscreen, setIsFullscreen] = React.useState(false);
   // Key to force FlipBook remount only when exiting fullscreen
   const [flipBookKey, setFlipBookKey] = React.useState(0);
+  // Control whether media is embedded inline over the black box
+  const [embedInline, setEmbedInline] = React.useState(true);
+  // Box detection tuning parameters
+  const [boxThreshold, setBoxThreshold] = React.useState(80);
+  const [boxMarginX, setBoxMarginX] = React.useState(0.04);
+  const [boxMarginY, setBoxMarginY] = React.useState(0.04);
+  const [boxMinWidthRatio, setBoxMinWidthRatio] = React.useState(0.08);
+  const [boxMinHeightRatio, setBoxMinHeightRatio] = React.useState(0.06);
 
   const handleFullscreen = () => {
     const elem = bookContainerRef.current;
@@ -282,7 +290,7 @@ const FlipBook = () => {
     imgRefs.current.forEach((img, i) => {
       const parent = pageDivRefs.current[i] || (img?.parentElement as HTMLDivElement | null);
       if (!img || !parent) { newAreas[i] = []; newBoxes[i] = null; return; }
-      const box = detectBoxOnDisplayedImage(img);
+      const box = detectBoxOnDisplayedImage(img, boxThreshold, boxMarginX, boxMarginY, boxMinWidthRatio, boxMinHeightRatio);
       let displayBox: { left: number; top: number; width: number; height: number } | null = null;
       if (box) {
         const imgRect = img.getBoundingClientRect();
@@ -334,10 +342,25 @@ const FlipBook = () => {
       // Determine embeddable media (prefer the first inside-box link)
       const mediaCandidate = (filtered || [])[0];
       const mediaInfo = mediaCandidate ? detectMedia(mediaCandidate.url) : null;
-      if (mediaInfo && displayBox) {
-        newMedia[i] = { ...displayBox, kind: mediaInfo.kind, src: mediaInfo.src };
-        // Exclude the embedded candidate from clickable overlays
-        newAreas[i] = (filtered || []).slice(1);
+      if (mediaInfo) {
+        // Choose target rect: box > candidate rect > default centered 16:9
+        let targetRect: { left: number; top: number; width: number; height: number } | null = null;
+        if (displayBox) {
+          targetRect = displayBox;
+        } else if (mediaCandidate) {
+          targetRect = { left: mediaCandidate.left, top: mediaCandidate.top, width: mediaCandidate.width, height: mediaCandidate.height };
+        } else {
+          // default: centered 16:9 within the image rect
+          const imgRect2 = img.getBoundingClientRect();
+          const w = Math.max(120, imgRect2.width * 0.6);
+          const h = w / (16 / 9);
+          const left = (imgRect2.left - parent.getBoundingClientRect().left) + (imgRect2.width - w) / 2;
+          const top = (imgRect2.top - parent.getBoundingClientRect().top) + imgRect2.height * 0.6 - h / 2;
+          targetRect = { left, top, width: w, height: h };
+        }
+        newMedia[i] = { ...targetRect!, kind: mediaInfo.kind, src: mediaInfo.src };
+        // Exclude the embedded candidate from clickable overlays if present
+        if (mediaCandidate) newAreas[i] = (filtered || []).slice(1); else newAreas[i] = (filtered || []);
       } else {
         newMedia[i] = null;
         newAreas[i] = (filtered || []);
@@ -359,8 +382,14 @@ const FlipBook = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imgRefs.current.length, recomputeAllOverlays]);
 
+  // Recompute overlays when detection parameters change
+  React.useEffect(() => {
+    if (imgRefs.current.length) recomputeAllOverlays();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [boxThreshold, boxMarginX, boxMarginY, boxMinWidthRatio, boxMinHeightRatio]);
+
   // Utility: detect a dark bordered rectangle ("black box") on the displayed <img>
-  const detectBoxOnDisplayedImage = (imgEl: HTMLImageElement) => {
+  const detectBoxOnDisplayedImage = (imgEl: HTMLImageElement, threshold: number = 80, marginXRatio: number = 0.04, marginYRatio: number = 0.04, minWidthRatio: number = 0.08, minHeightRatio: number = 0.06) => {
     try {
       const w = imgEl.clientWidth;
       const h = imgEl.clientHeight;
@@ -382,13 +411,12 @@ const FlipBook = () => {
           const b = data[idx + 2];
           // Luminance
           const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-          // more tolerant threshold for dark-ish borders
-          dark[y * w + x] = lum < 80 ? 1 : 0;
+          dark[y * w + x] = lum < threshold ? 1 : 0;
         }
       }
       // Horizontal and vertical projections (focus on center band to avoid page borders)
-      const marginX = Math.floor(w * 0.04);
-      const marginY = Math.floor(h * 0.04);
+      const marginX = Math.floor(w * marginXRatio);
+      const marginY = Math.floor(h * marginYRatio);
       const rowSum: number[] = new Array(h).fill(0);
       const colSum: number[] = new Array(w).fill(0);
       for (let y = marginY; y < h - marginY; y++) {
@@ -424,7 +452,7 @@ const FlipBook = () => {
 
       // Basic sanity checks
       if (!isFinite(top) || !isFinite(bottom) || !isFinite(left) || !isFinite(right)) return null;
-      if (bottom - top < h * 0.06 || right - left < w * 0.08) return null;
+      if (bottom - top < h * minHeightRatio || right - left < w * minWidthRatio) return null;
 
       const box = { x: left, y: top, width: right - left, height: bottom - top };
       return box;
@@ -442,7 +470,7 @@ const FlipBook = () => {
     const offsetLeft = imgRect.left - parentRect.left;
     const offsetTop = imgRect.top - parentRect.top;
 
-    const box = detectBoxOnDisplayedImage(imgEl);
+    const box = detectBoxOnDisplayedImage(imgEl, boxThreshold, boxMarginX, boxMarginY, boxMinWidthRatio, boxMinHeightRatio);
     const displayBox = box ? { left: offsetLeft + box.x, top: offsetTop + box.y, width: box.width, height: box.height } : null;
     setBoxRects((prev) => {
       const next = [...prev];
@@ -513,7 +541,26 @@ const FlipBook = () => {
     });
     setMediaEmbeds((prev) => {
       const next = [...prev];
-      next[pageIndex] = (mediaInfo && displayBox) ? { ...displayBox, kind: mediaInfo.kind, src: mediaInfo.src } : null;
+      if (mediaInfo) {
+        // Choose target rect: box > candidate rect > default centered 16:9
+        let targetRect: { left: number; top: number; width: number; height: number } | null = null;
+        if (displayBox) {
+          targetRect = displayBox;
+        } else if (mediaCandidate) {
+          targetRect = { left: mediaCandidate.left, top: mediaCandidate.top, width: mediaCandidate.width, height: mediaCandidate.height };
+        } else {
+          const imgRect2 = imgEl.getBoundingClientRect();
+          const w = Math.max(120, imgRect2.width * 0.6);
+          const h = w / (16 / 9);
+          const parentRect2 = (pageDivRefs.current[pageIndex] || (imgEl.parentElement as HTMLDivElement)).getBoundingClientRect();
+          const left = (imgRect2.left - parentRect2.left) + (imgRect2.width - w) / 2;
+          const top = (imgRect2.top - parentRect2.top) + imgRect2.height * 0.6 - h / 2;
+          targetRect = { left, top, width: w, height: h };
+        }
+        next[pageIndex] = { ...targetRect!, kind: mediaInfo.kind, src: mediaInfo.src };
+      } else {
+        next[pageIndex] = null;
+      }
       return next;
     });
   };
@@ -649,7 +696,77 @@ const FlipBook = () => {
               <input type="checkbox" checked={overlayDebug} onChange={(e) => setOverlayDebug(e.target.checked)} />
               Show overlays
             </label>
+            <label className="flex items-center gap-1 text-xs text-gray-600">
+              <input type="checkbox" checked={embedInline} onChange={(e) => setEmbedInline(e.target.checked)} />
+              Embed media inline
+            </label>
             <span className="text-xs text-gray-500">Links are auto-extracted from the PDF inside the black box</span>
+          </div>
+        )}
+        {pages.length > 0 && !loading && overlayDebug && (
+          <div className="mb-2 w-full max-w-[720px] bg-gray-50 p-3 rounded border">
+            <div className="text-xs font-semibold text-gray-700 mb-2">Box Detection Tuning</div>
+            <div className="grid grid-cols-2 gap-4">
+              <label className="flex flex-col">
+                <span className="text-xs text-gray-600">Luminance Threshold: {boxThreshold}</span>
+                <input
+                  type="range"
+                  min="0"
+                  max="255"
+                  value={boxThreshold}
+                  onChange={(e) => setBoxThreshold(Number(e.target.value))}
+                  className="mt-1"
+                />
+              </label>
+              <label className="flex flex-col">
+                <span className="text-xs text-gray-600">Margin X: {(boxMarginX * 100).toFixed(1)}%</span>
+                <input
+                  type="range"
+                  min="0"
+                  max="0.2"
+                  step="0.01"
+                  value={boxMarginX}
+                  onChange={(e) => setBoxMarginX(Number(e.target.value))}
+                  className="mt-1"
+                />
+              </label>
+              <label className="flex flex-col">
+                <span className="text-xs text-gray-600">Margin Y: {(boxMarginY * 100).toFixed(1)}%</span>
+                <input
+                  type="range"
+                  min="0"
+                  max="0.2"
+                  step="0.01"
+                  value={boxMarginY}
+                  onChange={(e) => setBoxMarginY(Number(e.target.value))}
+                  className="mt-1"
+                />
+              </label>
+              <label className="flex flex-col">
+                <span className="text-xs text-gray-600">Min Width: {(boxMinWidthRatio * 100).toFixed(1)}%</span>
+                <input
+                  type="range"
+                  min="0"
+                  max="0.5"
+                  step="0.01"
+                  value={boxMinWidthRatio}
+                  onChange={(e) => setBoxMinWidthRatio(Number(e.target.value))}
+                  className="mt-1"
+                />
+              </label>
+              <label className="flex flex-col">
+                <span className="text-xs text-gray-600">Min Height: {(boxMinHeightRatio * 100).toFixed(1)}%</span>
+                <input
+                  type="range"
+                  min="0"
+                  max="0.5"
+                  step="0.01"
+                  value={boxMinHeightRatio}
+                  onChange={(e) => setBoxMinHeightRatio(Number(e.target.value))}
+                  className="mt-1"
+                />
+              </label>
+            </div>
           </div>
         )}
         {loading && <div className="text-center text-gray-700 mb-2 animate-pulse">Loading pages...</div>}
@@ -725,7 +842,7 @@ const FlipBook = () => {
                     />
                   ))}
                   {/* Media player overlay if present */}
-                  {mediaEmbeds[i] && (
+                  {embedInline && mediaEmbeds[i] && (
                     mediaEmbeds[i]!.kind === 'video' ? (
                       <video
                         src={mediaEmbeds[i]!.src}
@@ -791,7 +908,7 @@ const FlipBook = () => {
                         <div>… and { (pdfLinkRectsRef.current[i]!.length - 3) } more</div>
                       )}
                       <div>Text URL: {pageTextUrlRef.current[i] || '—'}</div>
-                      <div>Media: {mediaEmbeds[i] ? `${mediaEmbeds[i]!.kind} → ${mediaEmbeds[i]!.src}` : '—'}</div>
+                      <div>Media: {mediaEmbeds[i] ? `${mediaEmbeds[i]!.kind} → ${mediaEmbeds[i]!.src}` : '—'} {mediaEmbeds[i] && (embedInline ? '(inline)' : '(hidden)')}</div>
                       <div style={{marginTop:4, opacity:0.85}}>Text:</div>
                       <div style={{whiteSpace:'pre-wrap'}}>
                         {(pageTextRawRef.current[i] || '').slice(0,300)}{(pageTextRawRef.current[i] || '').length > 300 ? '…' : ''}
