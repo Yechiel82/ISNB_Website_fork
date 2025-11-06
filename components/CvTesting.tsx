@@ -31,6 +31,19 @@ const CvTesting: React.FC = () => {
   const [containerWidth, setContainerWidth] = React.useState<number>(0);
   const bookRef = React.useRef<any>(null);
   const [bookSize, setBookSize] = React.useState<{ width: number; height: number }>({ width: 900, height: 1200 });
+  // During page flipping, disable iframe pointer events to avoid drag/hover capture
+  const [inputLock, setInputLock] = React.useState(false);
+  const flipLockTimeoutRef = React.useRef<number | null>(null);
+  const FLIP_DURATION_MS = 700; // keep in sync with HTMLFlipBook flippingTime
+  const beginFlipLock = React.useCallback((duration: number = FLIP_DURATION_MS + 150) => {
+    setInputLock(true);
+    if (flipLockTimeoutRef.current) window.clearTimeout(flipLockTimeoutRef.current);
+    flipLockTimeoutRef.current = window.setTimeout(() => {
+      setInputLock(false);
+      flipLockTimeoutRef.current = null;
+    }, duration) as unknown as number;
+  }, []);
+  React.useEffect(() => () => { if (flipLockTimeoutRef.current) window.clearTimeout(flipLockTimeoutRef.current); }, []);
 
   const loadOpenCV = React.useCallback((): Promise<void> => {
     if (cvReady) return Promise.resolve();
@@ -361,12 +374,12 @@ const CvTesting: React.FC = () => {
   React.useEffect(() => {
     if (viewMode !== 'flipbook') return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft') { e.preventDefault(); bookRef.current?.pageFlip()?.flipPrev(); }
-      if (e.key === 'ArrowRight') { e.preventDefault(); bookRef.current?.pageFlip()?.flipNext(); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); beginFlipLock(); bookRef.current?.pageFlip()?.flipPrev(); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); beginFlipLock(); bookRef.current?.pageFlip()?.flipNext(); }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [viewMode, pages.length]);
+  }, [viewMode, pages.length, beginFlipLock]);
 
   // Compute scale for the current spread so both pages fit container width
   const computeSpreadScale = (leftIdx: number): number => {
@@ -483,11 +496,15 @@ const CvTesting: React.FC = () => {
           <div ref={containerRef} className="mt-3 w-screen -mx-2 md:-mx-4">
             {/* Controls */}
             <div className="flex items-center justify-between mb-2 px-2 md:px-4">
-              <button onClick={() => bookRef.current?.pageFlip()?.flipPrev()} className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 text-sm disabled:opacity-50" disabled={currentPage <= 0}>&larr; Prev</button>
+              <button onClick={() => { beginFlipLock(); bookRef.current?.pageFlip()?.flipPrev(); }} className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 text-sm disabled:opacity-50" disabled={currentPage <= 0}>&larr; Prev</button>
               <div className="text-sm text-gray-700">Page {currentPage + 1} of {pages.length}</div>
-              <button onClick={() => bookRef.current?.pageFlip()?.flipNext()} className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 text-sm disabled:opacity-50" disabled={currentPage >= pages.length - 1}>Next &rarr;</button>
+              <button onClick={() => { beginFlipLock(); bookRef.current?.pageFlip()?.flipNext(); }} className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 text-sm disabled:opacity-50" disabled={currentPage >= pages.length - 1}>Next &rarr;</button>
             </div>
-            <div className="w-full flex items-center justify-center">
+            <div className="w-full flex items-center justify-center"
+                 onMouseDown={() => beginFlipLock()}
+                 onTouchStart={() => beginFlipLock()}
+                 onDragStart={() => beginFlipLock()}
+            >
               <HTMLFlipBook
                 ref={bookRef}
                 width={bookSize.width}
@@ -540,7 +557,7 @@ const CvTesting: React.FC = () => {
                               className="absolute rounded"
                               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                               allowFullScreen
-                              style={{ ...toPercentStyle(b, p), zIndex: 30, background: '#000' }}
+                              style={{ ...toPercentStyle(b, p), zIndex: 30, background: '#000', pointerEvents: inputLock ? 'none' : 'auto' }}
                               title={`YouTube overlay ${i+1}-${j+1}`}
                             />
                           ))}
