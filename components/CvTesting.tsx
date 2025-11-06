@@ -1,5 +1,6 @@
 "use client";
 import React from 'react';
+import HTMLFlipBook from 'react-pageflip';
 // @ts-ignore: pdfjs-dist types not available here
 import * as pdfjsLib from 'pdfjs-dist/build/pdf';
 // @ts-ignore
@@ -28,6 +29,8 @@ const CvTesting: React.FC = () => {
   const [currentPage, setCurrentPage] = React.useState(0); // index of left page in the spread
   const containerRef = React.useRef<HTMLDivElement | null>(null);
   const [containerWidth, setContainerWidth] = React.useState<number>(0);
+  const bookRef = React.useRef<any>(null);
+  const [bookSize, setBookSize] = React.useState<{ width: number; height: number }>({ width: 900, height: 1200 });
 
   const loadOpenCV = React.useCallback((): Promise<void> => {
     if (cvReady) return Promise.resolve();
@@ -301,6 +304,15 @@ const CvTesting: React.FC = () => {
       setPages(out);
       setYtSrcPerPage(ytList);
       setCurrentPage(0);
+      // Compute book page size based on first page aspect ratio
+      if (out.length > 0) {
+        const aspect = out[0].height / (out[0].width || 1);
+        let width = 900;
+        let height = Math.round(width * aspect);
+        if (height < 900) height = 900;
+        if (height > 1800) height = 1800;
+        setBookSize({ width, height });
+      }
     } catch (err) {
       console.error('[CV Testing] Failed to process PDF:', err);
       setErrorMsg('Failed to process PDF. Check browser console for details.');
@@ -349,8 +361,8 @@ const CvTesting: React.FC = () => {
   React.useEffect(() => {
     if (viewMode !== 'flipbook') return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft') { e.preventDefault(); goPrev(); }
-      if (e.key === 'ArrowRight') { e.preventDefault(); goNext(); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); bookRef.current?.pageFlip()?.flipPrev(); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); bookRef.current?.pageFlip()?.flipNext(); }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
@@ -367,44 +379,13 @@ const CvTesting: React.FC = () => {
     return scale;
   };
 
-  const renderPageScaled = (p: PageView, idx: number, scale: number) => {
-    const pageW = p.width;
-    const pageH = p.height;
-    return (
-      <div key={`spread-page-${idx}`} className="relative" style={{ width: pageW * scale, height: pageH * scale }}>
-        <div className="relative" style={{ width: pageW, height: pageH, transform: `scale(${scale})`, transformOrigin: 'top left' }}>
-          {/* Page image */}
-          <img src={p.src} alt={`Page ${idx+1}`} width={pageW} height={pageH} className="block select-none" draggable={false} />
-          {/* Boxes overlay */}
-          {p.boxes.map((b, j) => (
-            <div key={j} className="absolute border-2" style={{ left: b.x, top: b.y, width: b.width, height: b.height, borderColor: '#ff0000' }} />
-          ))}
-          {/* YouTube overlays (match each box size/position) */}
-          {embedYouTube && p.boxes.length > 0 && (() => {
-            const manualId = extractYouTubeId(manualYTUrl || '') || findYouTubeIdInText(manualYTUrl || '');
-            const src = manualId ? toYouTubeEmbedUrl(manualId) : (ytSrcPerPage[idx] || '');
-            if (!src) return null;
-            return (
-              <>
-                {p.boxes.map((b, j) => (
-                  <iframe
-                    key={`yt-spread-${idx}-${j}`}
-                    src={src}
-                    className="absolute rounded"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen
-                    style={{ left: b.x, top: b.y, width: b.width, height: b.height, zIndex: 30, background: '#000' }}
-                    title={`YouTube overlay ${idx+1}-${j+1}`}
-                  />
-                ))}
-              </>
-            );
-          })()}
-          <div className="absolute left-2 top-2 text-xs px-2 py-1 bg-white/80 rounded shadow">Page {idx+1} · {p.boxes.length} boxes</div>
-        </div>
-      </div>
-    );
-  };
+  // Convert absolute pixels to percentage for responsive overlays inside the page container
+  const toPercentStyle = (b: Box, p: PageView) => ({
+    left: `${(b.x / p.width) * 100}%`,
+    top: `${(b.y / p.height) * 100}%`,
+    width: `${(b.width / p.width) * 100}%`,
+    height: `${(b.height / p.height) * 100}%`,
+  } as React.CSSProperties);
 
   return (
     <div className="bg-white flex items-center justify-center px-2">
@@ -501,35 +482,75 @@ const CvTesting: React.FC = () => {
         {pages.length > 0 && viewMode === 'flipbook' && (
           <div ref={containerRef} className="mt-3 w-screen -mx-2 md:-mx-4">
             {/* Controls */}
-            <div className="flex items-center justify-between mb-2">
-              <button onClick={goPrev} className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 text-sm disabled:opacity-50" disabled={currentPage <= 0}>&larr; Prev</button>
-              <div className="text-sm text-gray-700">Pages {Math.min(currentPage+1, pages.length)}{pages[currentPage+1] ? `–${Math.min(currentPage+2, pages.length)}` : ''} of {pages.length}</div>
-              <button onClick={goNext} className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 text-sm disabled:opacity-50" disabled={currentPage >= lastEvenLeft}>Next &rarr;</button>
+            <div className="flex items-center justify-between mb-2 px-2 md:px-4">
+              <button onClick={() => bookRef.current?.pageFlip()?.flipPrev()} className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 text-sm disabled:opacity-50" disabled={currentPage <= 0}>&larr; Prev</button>
+              <div className="text-sm text-gray-700">Page {currentPage + 1} of {pages.length}</div>
+              <button onClick={() => bookRef.current?.pageFlip()?.flipNext()} className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 text-sm disabled:opacity-50" disabled={currentPage >= pages.length - 1}>Next &rarr;</button>
             </div>
-            {/* Spread */}
-            <div className="w-full overflow-x-hidden">
-              <div className="flex items-start justify-center gap-4">
-                {(() => {
-                  const leftIdx = currentPage;
-                  const left = pages[leftIdx];
-                  const right = pages[leftIdx + 1];
-                  const scale = computeSpreadScale(leftIdx);
-                  return (
-                    <>
-                      {left && (
-                        <div onClick={goPrev} className="cursor-pointer select-none">
-                          {renderPageScaled(left, leftIdx, scale)}
-                        </div>
-                      )}
-                      {right && (
-                        <div onClick={goNext} className="cursor-pointer select-none">
-                          {renderPageScaled(right, leftIdx + 1, scale)}
-                        </div>
-                      )}
-                    </>
-                  );
-                })()}
-              </div>
+            <div className="w-full flex items-center justify-center">
+              <HTMLFlipBook
+                ref={bookRef}
+                width={bookSize.width}
+                height={bookSize.height}
+                size="stretch"
+                minWidth={200}
+                minHeight={220}
+                maxWidth={1200}
+                maxHeight={1800}
+                drawShadow={true}
+                flippingTime={700}
+                useMouseEvents={true}
+                showPageCorners={true}
+                className="shadow-md border rounded-md"
+                style={{ background: '#fff', width: '100%' }}
+                startPage={0}
+                mobileScrollSupport={true}
+                swipeDistance={50}
+                maxShadowOpacity={0.5}
+                showCover={false}
+                onFlip={(e: any) => setCurrentPage(e.data)}
+                usePortrait={true}
+                startZIndex={0}
+                autoSize={true}
+                clickEventForward={true}
+                disableFlipByClick={false}
+              >
+                {pages.map((p, i) => (
+                  <div key={i} className="w-full h-full bg-white p-0 m-0 relative">
+                    {/* Page image fills the page */}
+                    <img src={p.src} alt={`Page ${i + 1}`} className="w-full h-full object-contain select-none" draggable={false} />
+                    {/* Boxes overlay (percentage-based to scale with page) */}
+                    {p.boxes.map((b, j) => (
+                      <div key={j} className="absolute border-2" style={{
+                        ...toPercentStyle(b, p),
+                        borderColor: '#ff0000'
+                      }} />
+                    ))}
+                    {/* YouTube overlay, matched to each box */}
+                    {embedYouTube && p.boxes.length > 0 && (() => {
+                      const manualId = extractYouTubeId(manualYTUrl || '') || findYouTubeIdInText(manualYTUrl || '');
+                      const src = manualId ? toYouTubeEmbedUrl(manualId) : (ytSrcPerPage[i] || '');
+                      if (!src) return null;
+                      return (
+                        <>
+                          {p.boxes.map((b, j) => (
+                            <iframe
+                              key={`yt-fb-${i}-${j}`}
+                              src={src}
+                              className="absolute rounded"
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                              allowFullScreen
+                              style={{ ...toPercentStyle(b, p), zIndex: 30, background: '#000' }}
+                              title={`YouTube overlay ${i+1}-${j+1}`}
+                            />
+                          ))}
+                        </>
+                      );
+                    })()}
+                    <div className="absolute left-2 top-2 text-xs px-2 py-1 bg-white/80 rounded shadow">Page {i+1} · {p.boxes.length} boxes</div>
+                  </div>
+                ))}
+              </HTMLFlipBook>
             </div>
           </div>
         )}
