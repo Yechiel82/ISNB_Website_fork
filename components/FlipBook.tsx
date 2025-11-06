@@ -22,6 +22,8 @@ const FlipBook = () => {
   const [mediaEmbeds, setMediaEmbeds] = React.useState<Array<{ left: number; top: number; width: number; height: number; kind: 'iframe' | 'video'; src: string } | null>>([]);
   // For debugging, allow showing the overlay rectangles
   const [overlayDebug, setOverlayDebug] = React.useState(false);
+  // Debug: show only the detected black box (no media or links)
+  const [justBoundingBox, setJustBoundingBox] = React.useState(false);
   const imgRefs = React.useRef<Array<HTMLImageElement | null>>([]);
   const pageDivRefs = React.useRef<Array<HTMLDivElement | null>>([]);
   // Store raw PDF annotation rectangles in canvas coordinates for each page
@@ -259,6 +261,12 @@ const FlipBook = () => {
   const [boxMinHeightRatio, setBoxMinHeightRatio] = React.useState(0.06);
   // Inset media overlay slightly inside the detected box (per-side percentage of box size)
   const [boxShrinkRatio, setBoxShrinkRatio] = React.useState(0.03);
+  // Additional control to scale down media inside the fitted box (helps avoid covering text)
+  const [mediaScale, setMediaScale] = React.useState(1);
+  // If true, constrain YouTube embeds to 16:9; otherwise fill the detected box exactly
+  const [force16x9, setForce16x9] = React.useState(false);
+  // Additional fixed pixel inset to stay inside a stroked outline border
+  const [borderShrinkPx, setBorderShrinkPx] = React.useState(2);
 
   // Lazy-load OpenCV.js when high-accuracy mode is enabled
   const loadOpenCV = React.useCallback((): Promise<void> => {
@@ -420,9 +428,12 @@ const FlipBook = () => {
           targetRect = { left, top, width: w, height: h };
         }
         // Inset the media overlay so it never exceeds the visual box
-  const shrunk = shrinkRect(targetRect!, boxShrinkRatio);
-  const fitted = shouldFit16x9(mediaInfo) ? fitRectToAspect(shrunk, 16 / 9) : shrunk;
-  newMedia[i] = { ...fitted, kind: mediaInfo.kind, src: mediaInfo.src };
+  // Apply ratio shrink, then fixed-pixel border shrink, then optional 16:9 fitting, then scale
+  let placed = shrinkRect(targetRect!, boxShrinkRatio);
+  placed = shrinkRectPx(placed, borderShrinkPx);
+  if (force16x9 && shouldFit16x9(mediaInfo)) placed = fitRectToAspect(placed, 16 / 9);
+  const scaled = scaleRect(placed, mediaScale);
+  newMedia[i] = { ...scaled, kind: mediaInfo.kind, src: mediaInfo.src };
         // Exclude the embedded candidate from clickable overlays if present
         if (mediaCandidate) newAreas[i] = (filtered || []).slice(1); else newAreas[i] = (filtered || []);
       } else {
@@ -433,7 +444,7 @@ const FlipBook = () => {
     setBoxRects(newBoxes);
     setLinkAreas(newAreas);
     setMediaEmbeds(newMedia);
-  }, [boxThreshold, boxMarginX, boxMarginY, boxMinWidthRatio, boxMinHeightRatio, useOpenCV, cvReady, boxShrinkRatio]);
+  }, [boxThreshold, boxMarginX, boxMarginY, boxMinWidthRatio, boxMinHeightRatio, useOpenCV, cvReady, boxShrinkRatio, mediaScale, force16x9, borderShrinkPx]);
 
   // Re-detect overlay boxes and map link rectangles on resize (image size changes with container)
   React.useEffect(() => {
@@ -450,7 +461,7 @@ const FlipBook = () => {
   React.useEffect(() => {
     if (imgRefs.current.length) recomputeAllOverlays();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [boxThreshold, boxMarginX, boxMarginY, boxMinWidthRatio, boxMinHeightRatio, useOpenCV, cvReady, boxShrinkRatio]);
+  }, [boxThreshold, boxMarginX, boxMarginY, boxMinWidthRatio, boxMinHeightRatio, useOpenCV, cvReady, boxShrinkRatio, mediaScale, force16x9, borderShrinkPx]);
 
   // Utility: detect a dark bordered rectangle ("black box") on the displayed <img>
   // Chooses OpenCV-based detection when enabled and ready; otherwise falls back to lightweight projection method.
@@ -483,6 +494,7 @@ const FlipBook = () => {
       const w = imgEl.clientWidth;
       const h = imgEl.clientHeight;
       if (w === 0 || h === 0) return null;
+      // Draw the currently displayed image into a same-size canvas
       const canvas = document.createElement('canvas');
       canvas.width = w;
       canvas.height = h;
@@ -490,6 +502,8 @@ const FlipBook = () => {
       if (!ctx) return null;
       ctx.drawImage(imgEl, 0, 0, w, h);
       const { data } = ctx.getImageData(0, 0, w, h);
+
+      // Binary dark mask and summed-area table (integral image) for fast area sums
       const dark = new Uint8Array(w * h);
       for (let y = 0; y < h; y++) {
         for (let x = 0; x < w; x++) {
@@ -501,33 +515,185 @@ const FlipBook = () => {
           dark[y * w + x] = lum < threshold ? 1 : 0;
         }
       }
+
+      const satW = w + 1;
+      const satH = h + 1;
+      const sat = new Uint32Array(satW * satH);
+      // sat[y+1,x+1] = sum of dark in [0..y][0..x]
+      for (let y = 1; y <= h; y++) {
+        let rowSum = 0;
+        const yy = y - 1;
+        const base = y * satW;
+        const prev = (y - 1) * satW;
+        for (let x = 1; x <= w; x++) {
+          rowSum += dark[yy * w + (x - 1)];
+          sat[base + x] = sat[prev + x] + rowSum;
+        }
+      }
+      const sumRect = (x1: number, y1: number, x2: number, y2: number) => {
+        // x2,y2 are exclusive
+        const X1 = Math.max(0, Math.min(w, x1));
+        const Y1 = Math.max(0, Math.min(h, y1));
+        const X2 = Math.max(0, Math.min(w, x2));
+        const Y2 = Math.max(0, Math.min(h, y2));
+        return (
+          sat[Y2 * satW + X2] -
+          sat[Y1 * satW + X2] -
+          sat[Y2 * satW + X1] +
+          sat[Y1 * satW + X1]
+        );
+      };
+
       const marginX = Math.floor(w * marginXRatio);
       const marginY = Math.floor(h * marginYRatio);
-      const rowSum: number[] = new Array(h).fill(0);
-      const colSum: number[] = new Array(w).fill(0);
+
+      const usableW = Math.max(1, w - 2 * marginX);
+      const usableH = Math.max(1, h - 2 * marginY);
+
+      // Row/column dark fractions across the central band (exclude margins)
+      const rowFrac: number[] = new Array(h).fill(0);
       for (let y = marginY; y < h - marginY; y++) {
-        let s = 0;
-        for (let x = marginX; x < w - marginX; x++) s += dark[y * w + x];
-        rowSum[y] = s;
+        const s = sumRect(marginX, y, w - marginX, y + 1);
+        rowFrac[y] = s / usableW; // fraction of dark pixels in this row within margins
       }
+      const colFrac: number[] = new Array(w).fill(0);
       for (let x = marginX; x < w - marginX; x++) {
-        let s = 0;
-        for (let y = marginY; y < h - marginY; y++) s += dark[y * w + x];
-        colSum[x] = s;
+        const s = sumRect(x, marginY, x + 1, h - marginY);
+        colFrac[x] = s / usableH; // fraction of dark pixels in this column within margins
       }
-      const halfY = Math.floor(h / 2);
-      let top = marginY, bottom = h - marginY - 1;
-      let topVal = -1, bottomVal = -1;
-      for (let y = marginY; y < halfY; y++) if (rowSum[y] > topVal) { topVal = rowSum[y]; top = y; }
-      for (let y = halfY; y < h - marginY; y++) if (rowSum[y] > bottomVal) { bottomVal = rowSum[y]; bottom = y; }
-      const halfX = Math.floor(w / 2);
-      let left = marginX, right = w - marginX - 1;
-      let leftVal = -1, rightVal = -1;
-      for (let x = marginX; x < halfX; x++) if (colSum[x] > leftVal) { leftVal = colSum[x]; left = x; }
-      for (let x = halfX; x < w - marginX; x++) if (colSum[x] > rightVal) { rightVal = colSum[x]; right = x; }
+
+      // Heuristics: borders appear as the first strong dark rows/cols from margins
+      const baseRowThresh = 0.25; // require at least 25% dark along row to qualify as border
+      const colThresh = 0.25; // similar for columns
+
+      // 1) Determine left/right using full vertical bands (excluding margins)
+      let left = -1;
+      for (let x = marginX; x < Math.floor(w / 2); x++) {
+        if (colFrac[x] >= colThresh) { left = x; break; }
+      }
+      let right = -1;
+      for (let x = w - marginX - 1; x >= Math.floor(w / 2); x--) {
+        if (colFrac[x] >= colThresh) { right = x; break; }
+      }
+      if (left < 0 || right < 0) {
+        const halfX = Math.floor(w / 2);
+        let leftVal = -1, rightVal = -1;
+        for (let x = marginX; x < halfX; x++) if (colFrac[x] > leftVal) { leftVal = colFrac[x]; left = x; }
+        for (let x = halfX; x < w - marginX; x++) if (colFrac[x] > rightVal) { rightVal = colFrac[x]; right = x; }
+      }
+      if (left < 0 || right < 0 || right - left < 4) return null;
+      const xPad = Math.max(2, Math.floor((right - left) * 0.02));
+      const x1n = Math.max(marginX, left + xPad);
+      const x2n = Math.min(w - marginX, right - xPad);
+
+      // 2) Determine top/bottom only within [x1n, x2n] so outside text doesn't interfere
+      const rowFracN: number[] = new Array(h).fill(0);
+      const usableWn = Math.max(1, x2n - x1n);
+      for (let y = marginY; y < h - marginY; y++) {
+        const s = sumRect(x1n, y, x2n, y + 1);
+        rowFracN[y] = s / usableWn;
+      }
+      const rowThresh = Math.max(0.15, baseRowThresh * 0.7);
+      let top = -1;
+      for (let y = marginY; y < Math.floor(h / 2); y++) {
+        if (rowFracN[y] >= rowThresh) { top = y; break; }
+      }
+      let bottom = -1;
+      for (let y = h - marginY - 1; y >= Math.floor(h / 2); y--) {
+        if (rowFracN[y] >= rowThresh) { bottom = y; break; }
+      }
+
+      // Fallback to maxima method just for top/bottom if needed
+      if (top < 0 || bottom < 0) {
+        const halfY = Math.floor(h / 2);
+        let topVal = -1, bottomVal = -1;
+        for (let y = marginY; y < halfY; y++) if (rowFracN[y] > topVal) { topVal = rowFracN[y]; top = y; }
+        for (let y = halfY; y < h - marginY; y++) if (rowFracN[y] > bottomVal) { bottomVal = rowFracN[y]; bottom = y; }
+      }
+
       if (!isFinite(top) || !isFinite(bottom) || !isFinite(left) || !isFinite(right)) return null;
+      if (top < 0 || left < 0 || bottom <= top || right <= left) return null;
       if (bottom - top < h * minHeightRatio || right - left < w * minWidthRatio) return null;
-      return { x: left, y: top, width: right - left, height: bottom - top };
+
+      // Validate that the interior is mostly light; if not, adjust edges inward until it is
+      let x1 = left, y1 = top, x2 = right, y2 = bottom; // inclusive indices
+      const toExclusive = (v: number) => v + 1; // for sumRect exclusive endpoint
+      const maxAdjustX = Math.floor((x2 - x1) * 0.25);
+      const maxAdjustY = Math.floor((y2 - y1) * 0.25);
+      const interiorDarkMax = 0.12; // interior should be <12% dark
+      const borderInset = 2; // avoid counting the border stroke itself
+
+      // Helper to compute dark fraction inside shrunken interior
+      const interiorFrac = () => {
+        const ix1 = Math.min(x2 - 1, x1 + borderInset);
+        const iy1 = Math.min(y2 - 1, y1 + borderInset);
+        const ix2 = Math.max(ix1 + 1, x2 - borderInset);
+        const iy2 = Math.max(iy1 + 1, y2 - borderInset);
+        const area = Math.max(1, (ix2 - ix1) * (iy2 - iy1));
+        const s = sumRect(ix1, iy1, toExclusive(ix2), toExclusive(iy2));
+        return s / area;
+      };
+
+      // Adjust bottom up if a strip near the bottom is too dark (likely touching text)
+      let adjustCount = 0;
+      const bandH = Math.max(2, Math.floor((y2 - y1) * 0.06));
+      while (adjustCount < maxAdjustY && (y2 - y1) > h * minHeightRatio) {
+        const stripY1 = Math.max(y1 + borderInset, y2 - bandH);
+        const stripY2 = y2;
+        const s = sumRect(x1 + borderInset, stripY1, toExclusive(x2 - borderInset), toExclusive(stripY2));
+        const area = Math.max(1, (x2 - x1 - 2 * borderInset) * (stripY2 - stripY1));
+        const frac = s / area;
+        if (frac > interiorDarkMax) {
+          y2 -= 1; // move bottom up
+          adjustCount++;
+        } else break;
+      }
+
+      // Adjust top down if a strip near the top is too dark
+      adjustCount = 0;
+      while (adjustCount < maxAdjustY && (y2 - y1) > h * minHeightRatio) {
+        const stripY1 = y1;
+        const stripY2 = Math.min(y2 - borderInset, y1 + bandH);
+        const s = sumRect(x1 + borderInset, stripY1, toExclusive(x2 - borderInset), toExclusive(stripY2));
+        const area = Math.max(1, (x2 - x1 - 2 * borderInset) * (stripY2 - stripY1));
+        const frac = s / area;
+        if (frac > interiorDarkMax) {
+          y1 += 1; // move top down
+          adjustCount++;
+        } else break;
+      }
+
+      // Adjust right/left similarly if needed
+      adjustCount = 0;
+      const bandW = Math.max(2, Math.floor((x2 - x1) * 0.06));
+      while (adjustCount < maxAdjustX && (x2 - x1) > w * minWidthRatio) {
+        const stripX1 = Math.max(x1 + borderInset, x2 - bandW);
+        const stripX2 = x2;
+        const s = sumRect(stripX1, y1 + borderInset, toExclusive(stripX2), toExclusive(y2 - borderInset));
+        const area = Math.max(1, (stripX2 - stripX1) * (y2 - y1 - 2 * borderInset));
+        const frac = s / area;
+        if (frac > interiorDarkMax) {
+          x2 -= 1; // move right inward
+          adjustCount++;
+        } else break;
+      }
+
+      adjustCount = 0;
+      while (adjustCount < maxAdjustX && (x2 - x1) > w * minWidthRatio) {
+        const stripX1 = x1;
+        const stripX2 = Math.min(x2 - borderInset, x1 + bandW);
+        const s = sumRect(stripX1, y1 + borderInset, toExclusive(stripX2), toExclusive(y2 - borderInset));
+        const area = Math.max(1, (stripX2 - stripX1) * (y2 - y1 - 2 * borderInset));
+        const frac = s / area;
+        if (frac > interiorDarkMax) {
+          x1 += 1; // move left inward
+          adjustCount++;
+        } else break;
+      }
+
+      if (y2 - y1 < h * minHeightRatio || x2 - x1 < w * minWidthRatio) return null;
+
+      return { x: x1, y: y1, width: x2 - x1, height: y2 - y1 };
     } catch {
       return null;
     }
@@ -558,11 +724,11 @@ const FlipBook = () => {
       const ksize = new cv.Size(5, 5);
       cv.GaussianBlur(gray, blurred, ksize, 0, 0);
 
-      const thresh = new cv.Mat();
-      // Invert threshold to make dark box white in binary image
+      const bin = new cv.Mat();
+      // Invert threshold so dark strokes become white
       cv.adaptiveThreshold(
         blurred,
-        thresh,
+        bin,
         255,
         cv.ADAPTIVE_THRESH_GAUSSIAN_C,
         cv.THRESH_BINARY_INV,
@@ -570,37 +736,77 @@ const FlipBook = () => {
         2
       );
 
-      // Morphological close to fill gaps in the box border
+      // Close small gaps in the rectangle border
       const kernel = cv.Mat.ones(3, 3, cv.CV_8U);
       const closed = new cv.Mat();
-      cv.morphologyEx(thresh, closed, cv.MORPH_CLOSE, kernel);
+      cv.morphologyEx(bin, closed, cv.MORPH_CLOSE, kernel);
 
-      // Edge detection and contour search
-      const edges = new cv.Mat();
-      cv.Canny(closed, edges, 50, 150);
+      // Find contours on the closed binary image
       const contours = new cv.MatVector();
       const hierarchy = new cv.Mat();
-      cv.findContours(edges, contours, hierarchy, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE);
+      cv.findContours(closed, contours, hierarchy, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE);
 
-      let bestRect: { x: number; y: number; width: number; height: number } | null = null;
+      let best: { x: number; y: number; width: number; height: number } | null = null;
       let bestArea = 0;
       const minW = w * (minWidthRatio || 0.08);
       const minH = h * (minHeightRatio || 0.06);
+
       for (let i = 0; i < contours.size(); i++) {
         const cnt = contours.get(i);
-        const rect = cv.boundingRect(cnt);
-        const area = rect.width * rect.height;
-        if (rect.width >= minW && rect.height >= minH && area > bestArea) {
-          bestRect = { x: rect.x, y: rect.y, width: rect.width, height: rect.height };
-          bestArea = area;
+        const peri = cv.arcLength(cnt, true);
+        const approx = new cv.Mat();
+        cv.approxPolyDP(cnt, approx, 0.02 * peri, true);
+        // Prefer convex 4-point polygons (rectangles)
+        let rectCandidate: { x: number; y: number; width: number; height: number } | null = null;
+        if (approx.rows === 4) {
+          // @ts-ignore: OpenCV.js typings not present
+          const isConvex = cv.isContourConvex ? cv.isContourConvex(approx) : true;
+          if (isConvex) {
+            const r = cv.boundingRect(approx);
+            rectCandidate = { x: r.x, y: r.y, width: r.width, height: r.height };
+          }
         }
+        if (!rectCandidate) {
+          const r = cv.boundingRect(cnt);
+          rectCandidate = { x: r.x, y: r.y, width: r.width, height: r.height };
+        }
+
+        if (rectCandidate.width >= minW && rectCandidate.height >= minH) {
+          // Validate interior is mostly light on the binary mask (few white pixels inside shrunken ROI)
+          const inset = Math.max(2, Math.floor(Math.min(rectCandidate.width, rectCandidate.height) * 0.03));
+          const rx = rectCandidate.x + inset;
+          const ry = rectCandidate.y + inset;
+          const rw = Math.max(1, rectCandidate.width - 2 * inset);
+          const rh = Math.max(1, rectCandidate.height - 2 * inset);
+          const roi = closed.roi(new cv.Rect(rx, ry, rw, rh));
+          const nz = cv.countNonZero(roi);
+          roi.delete();
+          const frac = nz / (rw * rh);
+          // For a hollow black box, interior in inverted mask should be near 0
+          if (frac < 0.12) {
+            const area = rectCandidate.width * rectCandidate.height;
+            if (area > bestArea) {
+              best = rectCandidate;
+              bestArea = area;
+            }
+          }
+        }
+
         cnt.delete();
+        approx.delete();
       }
 
       // Cleanup mats
-      src.delete(); gray.delete(); blurred.delete(); thresh.delete(); closed.delete(); edges.delete(); contours.delete(); hierarchy.delete(); kernel.delete();
+      src.delete();
+      gray.delete();
+      blurred.delete();
+      bin.delete();
+      closed.delete();
+      contours.delete();
+      hierarchy.delete();
+      kernel.delete();
 
-      return bestRect;
+      return best;
     } catch {
       return null;
     }
@@ -702,9 +908,11 @@ const FlipBook = () => {
           const top = (imgRect2.top - parentRect2.top) + imgRect2.height * 0.6 - h / 2;
           targetRect = { left, top, width: w, height: h };
         }
-  const shrunk = shrinkRect(targetRect!, boxShrinkRatio);
-  const fitted = shouldFit16x9(mediaInfo) ? fitRectToAspect(shrunk, 16 / 9) : shrunk;
-  next[pageIndex] = { ...fitted, kind: mediaInfo.kind, src: mediaInfo.src };
+  let placed = shrinkRect(targetRect!, boxShrinkRatio);
+  placed = shrinkRectPx(placed, borderShrinkPx);
+  if (force16x9 && shouldFit16x9(mediaInfo)) placed = fitRectToAspect(placed, 16 / 9);
+  const scaled = scaleRect(placed, mediaScale);
+  next[pageIndex] = { ...scaled, kind: mediaInfo.kind, src: mediaInfo.src };
       } else {
         next[pageIndex] = null;
       }
@@ -727,6 +935,20 @@ const FlipBook = () => {
       top: rect.top + insetY,
       width: w,
       height: h,
+    };
+  };
+
+  // Geometry helper: shrink a rect by a fixed pixel amount per side
+  const shrinkRectPx = (
+    rect: { left: number; top: number; width: number; height: number },
+    px: number
+  ): { left: number; top: number; width: number; height: number } => {
+    const p = Math.max(0, isFinite(px) ? px : 0);
+    return {
+      left: rect.left + p,
+      top: rect.top + p,
+      width: Math.max(1, rect.width - 2 * p),
+      height: Math.max(1, rect.height - 2 * p),
     };
   };
 
@@ -759,6 +981,20 @@ const FlipBook = () => {
     } catch {
       return /youtube\.com/i.test(media.src);
     }
+  };
+
+  // Scale a rectangle around its top-left corner by a factor (0.5..1.0)
+  const scaleRect = (
+    rect: { left: number; top: number; width: number; height: number },
+    factor: number
+  ): { left: number; top: number; width: number; height: number } => {
+    const f = Math.max(0.3, Math.min(1.0, isFinite(factor) ? factor : 1));
+    return {
+      left: rect.left,
+      top: rect.top,
+      width: rect.width * f,
+      height: rect.height * f,
+    };
   };
 
   // Utilities: YouTube URL handling (used by detectMedia and text parsing)
@@ -893,6 +1129,10 @@ const FlipBook = () => {
               Show overlays
             </label>
             <label className="flex items-center gap-1 text-xs text-gray-600">
+              <input type="checkbox" checked={justBoundingBox} onChange={(e) => setJustBoundingBox(e.target.checked)} />
+              Just bounding box (no media)
+            </label>
+            <label className="flex items-center gap-1 text-xs text-gray-600">
               <input type="checkbox" checked={embedInline} onChange={(e) => setEmbedInline(e.target.checked)} />
               Embed media inline
             </label>
@@ -985,6 +1225,38 @@ const FlipBook = () => {
                   className="mt-1"
                 />
               </label>
+              <label className="flex flex-col">
+                <span className="text-xs text-gray-600">Media size inside box: {(mediaScale * 100).toFixed(0)}%</span>
+                <input
+                  type="range"
+                  min="0.3"
+                  max="1"
+                  step="0.01"
+                  value={mediaScale}
+                  onChange={(e) => setMediaScale(Number(e.target.value))}
+                  className="mt-1"
+                />
+              </label>
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={force16x9}
+                  onChange={(e) => setForce16x9(e.target.checked)}
+                />
+                <span className="text-xs text-gray-600">Force 16:9 for YouTube</span>
+              </label>
+              <label className="flex flex-col">
+                <span className="text-xs text-gray-600">Border shrink (px): {borderShrinkPx}px</span>
+                <input
+                  type="range"
+                  min="0"
+                  max="20"
+                  step="1"
+                  value={borderShrinkPx}
+                  onChange={(e) => setBorderShrinkPx(Number(e.target.value))}
+                  className="mt-1"
+                />
+              </label>
             </div>
           </div>
         )}
@@ -1038,8 +1310,25 @@ const FlipBook = () => {
                       computeOverlaysForPage(i, img);
                     }}
                   />
+                  {/* Visualize detected black box rectangle */}
+                  {(overlayDebug || justBoundingBox) && boxRects[i] && (
+                    <div
+                      className="absolute pointer-events-none"
+                      style={{
+                        left: boxRects[i]!.left,
+                        top: boxRects[i]!.top,
+                        width: boxRects[i]!.width,
+                        height: boxRects[i]!.height,
+                        border: '2px dashed rgba(255,165,0,0.9)',
+                        background: overlayDebug ? 'rgba(255,165,0,0.08)' : 'transparent',
+                        borderRadius: 2,
+                        zIndex: 25,
+                      }}
+                      aria-label={`Detected black box for page ${i + 1}`}
+                    />
+                  )}
                   {/* Non-YouTube clickable link overlays */}
-                  {linkAreas[i] && linkAreas[i].map((area, idx) => (
+                  {!justBoundingBox && linkAreas[i] && linkAreas[i].map((area, idx) => (
                     <a
                       key={idx}
                       href={area.url}
@@ -1061,7 +1350,7 @@ const FlipBook = () => {
                     />
                   ))}
                   {/* Media player overlay if present */}
-                  {embedInline && mediaEmbeds[i] && (
+                  {embedInline && !justBoundingBox && mediaEmbeds[i] && (
                     mediaEmbeds[i]!.kind === 'video' ? (
                       <video
                         src={mediaEmbeds[i]!.src}
