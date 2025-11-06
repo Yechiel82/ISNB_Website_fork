@@ -23,6 +23,11 @@ const CvTesting: React.FC = () => {
   const [embedYouTube, setEmbedYouTube] = React.useState(true);
   const [manualYTUrl, setManualYTUrl] = React.useState('');
   const [ytSrcPerPage, setYtSrcPerPage] = React.useState<string[]>([]);
+  // Flipbook state
+  const [viewMode, setViewMode] = React.useState<'grid' | 'flipbook'>('grid');
+  const [currentPage, setCurrentPage] = React.useState(0); // index of left page in the spread
+  const containerRef = React.useRef<HTMLDivElement | null>(null);
+  const [containerWidth, setContainerWidth] = React.useState<number>(0);
 
   const loadOpenCV = React.useCallback((): Promise<void> => {
     if (cvReady) return Promise.resolve();
@@ -58,6 +63,21 @@ const CvTesting: React.FC = () => {
   }, [cvReady]);
 
   React.useEffect(() => { loadOpenCV().catch(() => {}); }, [loadOpenCV]);
+
+  // Measure container width for flipbook scaling
+  React.useEffect(() => {
+    const handleResize = () => {
+      // In flipbook mode, use viewport width to allow full-bleed layout
+      if (viewMode === 'flipbook') {
+        setContainerWidth(window.innerWidth || document.documentElement.clientWidth || 0);
+      } else if (containerRef.current) {
+        setContainerWidth(containerRef.current.clientWidth || 0);
+      }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [viewMode]);
 
   // Utilities: YouTube URL helpers
   const extractYouTubeId = (url: string): string | null => {
@@ -280,6 +300,7 @@ const CvTesting: React.FC = () => {
       }
       setPages(out);
       setYtSrcPerPage(ytList);
+      setCurrentPage(0);
     } catch (err) {
       console.error('[CV Testing] Failed to process PDF:', err);
       setErrorMsg('Failed to process PDF. Check browser console for details.');
@@ -316,9 +337,80 @@ const CvTesting: React.FC = () => {
     setPages(out);
   };
 
+  // Flipbook helpers
+  const lastEvenLeft = Math.max(0, (pages.length - 1) - ((pages.length - 1) % 2));
+  const goPrev = () => setCurrentPage((p) => Math.max(0, p - 2));
+  const goNext = () => setCurrentPage((p) => Math.min(lastEvenLeft, p + 2));
+  const goTo = (idx: number) => setCurrentPage(() => {
+    const evenIdx = Math.max(0, Math.min(idx, pages.length - 1));
+    return evenIdx - (evenIdx % 2);
+  });
+
+  React.useEffect(() => {
+    if (viewMode !== 'flipbook') return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') { e.preventDefault(); goPrev(); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); goNext(); }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [viewMode, pages.length]);
+
+  // Compute scale for the current spread so both pages fit container width
+  const computeSpreadScale = (leftIdx: number): number => {
+    if (!pages.length || !containerWidth) return 1;
+    const gap = 16; // px gap between pages
+    const left = pages[leftIdx];
+    const right = pages[leftIdx + 1];
+    const totalWidth = left.width + (right ? right.width : 0) + (right ? gap : 0);
+    const scale = Math.min(1, (containerWidth - 2 /* padding guard */) / Math.max(1, totalWidth));
+    return scale;
+  };
+
+  const renderPageScaled = (p: PageView, idx: number, scale: number) => {
+    const pageW = p.width;
+    const pageH = p.height;
+    return (
+      <div key={`spread-page-${idx}`} className="relative" style={{ width: pageW * scale, height: pageH * scale }}>
+        <div className="relative" style={{ width: pageW, height: pageH, transform: `scale(${scale})`, transformOrigin: 'top left' }}>
+          {/* Page image */}
+          <img src={p.src} alt={`Page ${idx+1}`} width={pageW} height={pageH} className="block select-none" draggable={false} />
+          {/* Boxes overlay */}
+          {p.boxes.map((b, j) => (
+            <div key={j} className="absolute border-2" style={{ left: b.x, top: b.y, width: b.width, height: b.height, borderColor: '#ff0000' }} />
+          ))}
+          {/* YouTube overlays (match each box size/position) */}
+          {embedYouTube && p.boxes.length > 0 && (() => {
+            const manualId = extractYouTubeId(manualYTUrl || '') || findYouTubeIdInText(manualYTUrl || '');
+            const src = manualId ? toYouTubeEmbedUrl(manualId) : (ytSrcPerPage[idx] || '');
+            if (!src) return null;
+            return (
+              <>
+                {p.boxes.map((b, j) => (
+                  <iframe
+                    key={`yt-spread-${idx}-${j}`}
+                    src={src}
+                    className="absolute rounded"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                    style={{ left: b.x, top: b.y, width: b.width, height: b.height, zIndex: 30, background: '#000' }}
+                    title={`YouTube overlay ${idx+1}-${j+1}`}
+                  />
+                ))}
+              </>
+            );
+          })()}
+          <div className="absolute left-2 top-2 text-xs px-2 py-1 bg-white/80 rounded shadow">Page {idx+1} · {p.boxes.length} boxes</div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="bg-white flex items-center justify-center px-2">
-      <div className="w-full max-w-5xl bg-white shadow rounded-lg p-4 my-6">
+      <div className={viewMode === 'flipbook'
+        ? "w-screen max-w-none bg-white p-2 md:p-4 md:my-2"
+        : "w-full max-w-5xl bg-white shadow rounded-lg p-4 my-6"}>
         <h1 className="text-2xl font-bold mb-3 text-gray-900">CV TESTING</h1>
         <p className="text-sm text-gray-600 mb-2">Upload a PDF and detect rectangular boxes (OpenCV.js, threshold + Canny + contours, external). Overlays shown as red boxes.</p>
 
@@ -328,6 +420,16 @@ const CvTesting: React.FC = () => {
             <input type="file" accept="application/pdf" onChange={handleFile} />
           </label>
           <span className="text-xs text-gray-500">OpenCV: {cvReady ? 'ready' : (cvFailed ? 'failed (using JS fallback)' : 'loading…')}</span>
+          <div className="flex items-center gap-3">
+            <label className="flex items-center gap-2 text-sm">
+              <input type="radio" name="viewMode" value="grid" checked={viewMode==='grid'} onChange={()=>setViewMode('grid')} />
+              <span className="text-gray-700">Grid</span>
+            </label>
+            <label className="flex items-center gap-2 text-sm">
+              <input type="radio" name="viewMode" value="flipbook" checked={viewMode==='flipbook'} onChange={()=>setViewMode('flipbook')} />
+              <span className="text-gray-700">Flipbook</span>
+            </label>
+          </div>
           <label className="flex items-center gap-2 text-sm ml-auto">
             <input type="checkbox" checked={embedYouTube} onChange={(e)=>setEmbedYouTube(e.target.checked)} />
             <span className="text-gray-700">Embed YouTube overlay</span>
@@ -359,7 +461,7 @@ const CvTesting: React.FC = () => {
   {loading && <div className="text-gray-700">Processing PDF…</div>}
   {errorMsg && <div className="text-red-600 text-sm mb-2">{errorMsg}</div>}
 
-        {pages.length > 0 && (
+        {pages.length > 0 && viewMode === 'grid' && (
           <div className="mt-3 space-y-6">
             {pages.map((p, idx) => (
               <div key={idx} className="relative inline-block" style={{ width: p.width, height: p.height }}>
@@ -367,17 +469,10 @@ const CvTesting: React.FC = () => {
                 <img src={p.src} alt={`Page ${idx+1}`} width={p.width} height={p.height} className="block" />
                 {/* Boxes overlay */}
                 {p.boxes.map((b, j) => (
-                  <div key={j} className="absolute border-2" style={{
-                    left: b.x,
-                    top: b.y,
-                    width: b.width,
-                    height: b.height,
-                    borderColor: '#ff0000'
-                  }} />
+                  <div key={j} className="absolute border-2" style={{ left: b.x, top: b.y, width: b.width, height: b.height, borderColor: '#ff0000' }} />
                 ))}
                 {/* YouTube overlays (match each box size/position) */}
                 {embedYouTube && p.boxes.length > 0 && (() => {
-                  // Determine source: manual override > auto-detected per page
                   const manualId = extractYouTubeId(manualYTUrl || '') || findYouTubeIdInText(manualYTUrl || '');
                   const src = manualId ? toYouTubeEmbedUrl(manualId) : (ytSrcPerPage[idx] || '');
                   if (!src) return null;
@@ -400,6 +495,42 @@ const CvTesting: React.FC = () => {
                 <div className="absolute left-2 top-2 text-xs px-2 py-1 bg-white/80 rounded shadow">Page {idx+1} · {p.boxes.length} boxes</div>
               </div>
             ))}
+          </div>
+        )}
+
+        {pages.length > 0 && viewMode === 'flipbook' && (
+          <div ref={containerRef} className="mt-3 w-screen -mx-2 md:-mx-4">
+            {/* Controls */}
+            <div className="flex items-center justify-between mb-2">
+              <button onClick={goPrev} className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 text-sm disabled:opacity-50" disabled={currentPage <= 0}>&larr; Prev</button>
+              <div className="text-sm text-gray-700">Pages {Math.min(currentPage+1, pages.length)}{pages[currentPage+1] ? `–${Math.min(currentPage+2, pages.length)}` : ''} of {pages.length}</div>
+              <button onClick={goNext} className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 text-sm disabled:opacity-50" disabled={currentPage >= lastEvenLeft}>Next &rarr;</button>
+            </div>
+            {/* Spread */}
+            <div className="w-full overflow-x-hidden">
+              <div className="flex items-start justify-center gap-4">
+                {(() => {
+                  const leftIdx = currentPage;
+                  const left = pages[leftIdx];
+                  const right = pages[leftIdx + 1];
+                  const scale = computeSpreadScale(leftIdx);
+                  return (
+                    <>
+                      {left && (
+                        <div onClick={goPrev} className="cursor-pointer select-none">
+                          {renderPageScaled(left, leftIdx, scale)}
+                        </div>
+                      )}
+                      {right && (
+                        <div onClick={goNext} className="cursor-pointer select-none">
+                          {renderPageScaled(right, leftIdx + 1, scale)}
+                        </div>
+                      )}
+                    </>
+                  );
+                })()}
+              </div>
+            </div>
           </div>
         )}
       </div>
