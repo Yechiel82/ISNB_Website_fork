@@ -199,6 +199,13 @@ const Product = () => {
       title: 'SUKABUMI KOTA POLISI: Polisi Bersama Rakyat Menjaga Negeri',
       price: "Soon"
     },
+    {
+      id: 'Logika_Anugerah',
+      image: './Sampul Logika Anugerah-1.png',
+      badge: 'New Released',
+      title: 'Logika Anugerah adalah sebuah eksplorasi mendalam yang secara kritis membongkar logika marketplace, sebuah sistem transaksional berbasis kinerja, utang, dan ketakutan yang tanpa sadar mendominasi kehidupan kita. Sebagai antitesis yang radikal, buku ini memperkenalkan Logika Anugerah sebagai sistem operasi ilahi yang membebaskan, di mana identitas kita tidak lagi dibangun di atas pencapaian, melainkan di atas penerimaan tak bersyarat di dalam Kristus. ',
+      price: "Soon"
+    },
     
   ];
 
