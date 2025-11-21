@@ -207,6 +207,14 @@ const Product = () => {
       price: "Soon"
     },
     
+    {
+      id: 'Pulih_Atas_Luka_Emosi',
+      image: './Pulih_Atas_Luka_Emosi.jpg',
+      badge: 'New Released',
+      title: '“Pulih Atas Luka Emosi” adalah sebuah perjalanan sunyi menuju ruang-ruang batin yang sering kita sembunyikan—tempat di mana rasa sakit memahat kita tanpa suara. Buku ini menuntun pembaca menelusuri jejak luka yang pernah diremehkan, disentuh dengan kelembutan Firman dan kejujuran reflektif yang memulihkan. Setiap halamannya mengajak kita berhenti sejenak, bernapas lebih dalam, dan menyadari bahwa di balik remuknya hati masih tersisa cahaya kasih Allah yang sanggup menata ulang hidup kita. ',
+      price: "Soon"
+    },
+    
   ];
 
   return (
