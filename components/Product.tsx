@@ -215,6 +215,14 @@ const Product = () => {
       price: "Soon"
     },
     
+    {
+      id: 'Panggilanku-Seorang-Guru-3-di-Era-Digital',
+      image: './Panggilanku-Seorang-Guru-3-di-Era-Digital.jpeg',
+      badge: 'New Released',
+      title: '“Panggilanku Seorang Guru ke-3 di Era Digital” adalah sebuah simfoni refleksi bagi para pejuang di garda depan peradaban—para guru. Buku ini mengajak pembaca menapaki lorong-lorong pemahaman baru tentang panggilan suci, di mana papan tulis digital bertemu dengan hati nurani yang teguh. Di tengah badai disrupsi teknologi, tulisan-tulisan di dalamnya berfungsi sebagai kompas, memandu guru untuk tidak hanya bertahan, namun justru bersinar sebagai Kurator Pengetahuan dan Arsitek Karakter. Ini adalah sebuah deklarasi tentang peran guru yang melampaui sekat kelas; sebuah janji bahwa melalui pemahaman mendalam, penyelesaian masalah yang humanis, dan kontribusi yang signifikan, seorang guru dapat menabur benih makna abadi dalam jiwa anak didiknya, menjadikan teknologi sebagai sayap, bukan rantai, bagi masa depan pendidikan.',
+      price: "Soon"
+    },
+    
   ];
 
   return (
