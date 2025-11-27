@@ -1,13 +1,15 @@
 import '../app/globals.css'
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Seo from "@/components/Seo";
 
 
 
 export default function Home() {
   return (
     <>
-        <Navbar />
+        <Seo title="Saat Aku Melepas Dia Pergi" description="Saat Aku Melepas Dia Pergi Siap atau tidak siap, perpisahan pasti akan terjadi. Perpisahan selamanya dalam dunia manyisakan kedukaan mendalam. Dulu selalu berdu" />
+      <Navbar />
         <div className="container">
       <div className="image-container">
         <img src="Melepas Dia Pergi.png" alt="Product Image" />

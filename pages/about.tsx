@@ -6,12 +6,14 @@ import Hero from "@/components/Hero";
 import '../app/globals.css'
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Seo from "@/components/Seo";
 
 
 
 export default function Home() {
   return (
     <>
+      <Seo title="About Us" />
       <Navbar />
       <Hero />
       <Camp />

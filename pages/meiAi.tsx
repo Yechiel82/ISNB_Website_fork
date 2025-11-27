@@ -1,13 +1,15 @@
 import '../app/globals.css'
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Seo from "@/components/Seo";
 
 
 
 export default function Home() {
   return (
     <>   
-        <Navbar />
+        <Seo title="Mei Ai" description="buku kisah nyata diangkat dari seorang anak usia 5 tahun dimana mamanya tengah berjuang dalam kanker ganas. Kata &quot;Kanker&quot; adalah sebuah kata asing baginya. Mei " />
+      <Navbar />
         
         <div className="container">
       <div className="image-container">

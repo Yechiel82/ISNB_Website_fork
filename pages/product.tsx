@@ -2,12 +2,14 @@ import '../app/globals.css'
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Product from "@/components/Product";
+import Seo from "@/components/Seo";
 
 
 
 export default function Home() {
   return (
     <>
+      <Seo title="Products" description="Explore our books and publications." />
       <Navbar />
       <Product />
       <Footer />

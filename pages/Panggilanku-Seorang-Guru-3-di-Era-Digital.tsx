@@ -1,10 +1,12 @@
 import '../app/globals.css'
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Seo from "@/components/Seo";
 
 export default function Home() {
   return (
     <>
+      <Seo title="Panggilanku Seorang Guru 3 di Era Digital" description="&quot;Panggilanku Seorang Guru ke-3 di Era Digital&quot; adalah sebuah simfoni refleksi bagi para pejuang di garda depan peradaban—para guru. Buku ini mengajak pembaca me" />
       <Navbar />
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row gap-8">
