@@ -1,10 +1,12 @@
 import '../app/globals.css'
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Seo from "@/components/Seo";
 
 export default function Home() {
   return (
     <>
+      <Seo title="Kesehatan Mental Seorang Pendamping Pejuang Kanker" description="Menjadi pendamping seorang pejuang kanker bukan pilihan. Melainkan panggilan yang justru datang dan memilih kita. Ada masa ketikahati terasa penuh kasih dan pen" />
       <Navbar />
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row gap-8">

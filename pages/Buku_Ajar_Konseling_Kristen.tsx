@@ -1,10 +1,12 @@
 import '../app/globals.css'
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Seo from "@/components/Seo";
 
 export default function Home() {
   return (
     <>
+      <Seo title="Buku Ajar Konseling Kristen" description="buku ini menyajikan pedoman pembelajaran yang sistematis, mendalam, dan aplikatif untuk memahami serta menerapkan konseling yang berlandaskan iman Kristen. Buku" />
       <Navbar />
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row gap-8">

@@ -1,10 +1,12 @@
 import '../app/globals.css'
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Seo from "@/components/Seo";
 
 export default function Home() {
   return (
     <>
+      <Seo title="Setiap Kita Punya Cerita" description="Setiap kita punya cerita. Perjalanan cerita harus dibagikan. Berbagai kisah ditulis disana dengan satu kerinduan bahwa hidup jadi berkat. Tiap penulis mengukir " />
       <Navbar />
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row gap-8">
