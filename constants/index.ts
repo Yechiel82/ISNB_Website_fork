@@ -1,10 +1,10 @@
 // NAVIGATION
 export const NAV_LINKS = [
   { href: '/', key: 'home', label: 'Home' },
-  { href: '/product', key: 'services', label: 'Toko Buku' },
-    { href: '/flip-book', key: 'flipbook', label: 'Flip Book' }, // Add this line
-    { href: '/cv-testing', key: 'cvtesting', label: 'CV Testing' },
-
+  { href: '/product', key: 'product', label: 'Toko Buku' },
+  { href: '/flip-book', key: 'flipbook', label: 'Flip Book' },
+  { href: '/cv-testing', key: 'cvtesting', label: 'CV Testing' },
+  { href: '/contact', key: 'contact', label: 'Contact' },
 ];
 
 // CAMP SECTION
@@ -52,7 +52,9 @@ export const FOOTER_LINKS = [
   {
     title: 'Learn More',
     links: [
-      'Coming Soon',
+      'About Us',
+      'Services',
+      'Contact',
     ],
   },
 ];
@@ -72,5 +74,3 @@ export const SOCIALS = {
     '/youtube.svg',
   ],
 };
-
-
