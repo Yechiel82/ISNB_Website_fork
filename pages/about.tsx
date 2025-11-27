@@ -1,14 +1,10 @@
-import Camp from "@/components/Camp";
-import Features from "@/components/Features";
-import GetApp from "@/components/GetApp";
-import Guide from "@/components/Guide";
-import Hero from "@/components/Hero";
 import '../app/globals.css'
+import Hero from "@/components/Hero";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Seo from "@/components/Seo";
-
-
+import About from '@/components/About';
+import Communities from '@/components/Communities';
 
 export default function Home() {
   return (
@@ -16,13 +12,9 @@ export default function Home() {
       <Seo title="About Us" />
       <Navbar />
       <Hero />
-      <Camp />
-      <Guide />
-      <Features />
-      <GetApp />  
+      <About />
+      <Communities />
       <Footer />
     </>
-    
   )
 } 
-
