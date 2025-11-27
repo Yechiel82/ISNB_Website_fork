@@ -1,10 +1,12 @@
 import '../app/globals.css'
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Seo from "@/components/Seo";
 
 export default function Home() {
   return (
     <>
+      <Seo title="Logika Salib" description="Logika Salib adalah sebuah perjalanan intelektual dan spiritual yang berani menembus jantung misteri iman Kristen: mengapa Sang Putra Allah harus disalibkan di " />
       <Navbar />
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row gap-8">

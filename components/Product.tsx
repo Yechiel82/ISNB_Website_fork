@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const Product = () => {
   const products = [
@@ -225,126 +225,114 @@ const Product = () => {
     
   ];
 
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('All');
+
+  // Extract unique categories
+  const categories = ['All', ...Array.from(new Set(products.map(p => p.badge)))];
+
+  // Filter products
+  const filteredProducts = products.filter(product => {
+    const matchesSearch = product.title.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = selectedCategory === 'All' || product.badge === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
+
+  const formatPrice = (price: string) => {
+    const lowerPrice = price.toLowerCase().trim();
+    if (lowerPrice.includes('soon')) return price;
+    if (lowerPrice.includes('rp')) return price;
+    return `Rp${price}`;
+  };
+
   return (
     <div className="w-full py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {products.map((product) => (
-          <a
-            key={product.id}
-            href={`/${product.id}`}
-            className="group block"
-          >
-            <div className="rounded-lg border border-gray-200 bg-white shadow-sm transition-all duration-200 hover:shadow-md">
-              <div className="relative aspect-square overflow-hidden rounded-t-lg">
-                <img
-                  src={product.image}
-                  alt={product.title}
-                  className="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
-                />
-                <div className="absolute top-2 right-2">
-                  <span className="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-1 text-xs font-medium text-blue-800">
-                    {product.badge}
-                  </span>
-                </div>
-              </div>
-              
-              <div className="p-4">
-                <div className="mb-4">
-                  <p className="line-clamp-2 text-sm text-gray-600">
-                    {product.title}
-                  </p>
+
+      {/* Search and Filter Section */}
+      <div className="flex flex-col gap-6 mb-10">
+        <h1 className="text-4xl font-bold text-center mb-6">Toko Buku</h1>
+
+        {/* Search Bar */}
+        <div className="relative max-w-lg mx-auto w-full">
+          <input
+            type="text"
+            placeholder="Search books..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full px-4 py-3 pl-12 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm"
+          />
+          <svg className="w-6 h-6 text-gray-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+        </div>
+
+        {/* Categories */}
+        <div className="flex flex-wrap justify-center gap-2">
+          {categories.map((category) => (
+            <button
+              key={category}
+              onClick={() => setSelectedCategory(category)}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200
+                ${selectedCategory === category
+                  ? 'bg-blue-600 text-white shadow-md'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Product Grid */}
+      {filteredProducts.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {filteredProducts.map((product) => (
+            <a
+              key={product.id}
+              href={`/${product.id}`}
+              className="group block"
+            >
+              <div className="rounded-lg border border-gray-200 bg-white shadow-sm transition-all duration-200 hover:shadow-md flex flex-col h-full">
+                <div className="relative aspect-square overflow-hidden rounded-t-lg">
+                  <img
+                    src={product.image}
+                    alt={product.title}
+                    className="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
+                  />
+                  <div className="absolute top-2 right-2">
+                    <span className="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-1 text-xs font-medium text-blue-800">
+                      {product.badge}
+                    </span>
+                  </div>
                 </div>
                 
-                <div className="flex items-center justify-between">
-                  <span className="text-lg font-medium text-gray-900">
-                    Rp{product.price.toLocaleString()}
-                  </span>
-                  <button className="rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
-                    Buy Now
-                  </button>
+                <div className="p-4 flex flex-col flex-grow">
+                  <div className="mb-4 flex-grow">
+                    <p className="line-clamp-2 text-sm text-gray-600">
+                      {product.title}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center justify-between mt-auto">
+                    <span className="text-lg font-medium text-gray-900">
+                      {formatPrice(product.price)}
+                    </span>
+                    <button className="rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+                      Buy Now
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          </a>
-        ))}
-      </div>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <div className="text-center py-20">
+          <p className="text-gray-500 text-lg">No books found matching your criteria.</p>
+        </div>
+      )}
     </div>
   );
 };
 
 export default Product;
-
-// import React from 'react'
-
-
-// const Product = () => {
-//     return (
-
-// <div className="padding-container max-container w-full pb-24">
-//     <div className="flex flex-wrap justify-between gap-5 lg:gap-10">
-
-//         {/* Product 1 */}
-//         <a href="/panggilangkuSeorangGuru">
-//             <div className="product-box" style={{ border: '1px solid #ccc', padding: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-//                 <img src="./Panggilanku_seorang_guru.jpeg" alt="Product 1" className="product-image" style={{ maxWidth: '200px', maxHeight: '200px', width: 'auto', height: 'auto' }} />
-//                 <div className="product-details" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-//                     <h2 className="bold-40 lg:bold-50 xl:max-w-[390px] text-center">Preorder<br />Now!</h2>
-//                     <p className="regular-16 text-gray-30 xl:max-w-[520px] mb-1 text-center">Buku ini ditulis oleh 16 guru, menguraikan<br/>soal panggilan menjadi guru dari berbagai sudut pandang.</p>
-//                     <div className="flex flex-wrap justify-between gap-5 lg:gap-10">
-//                         <button className="button">Buy Now</button>
-//                         {/* <button className="button" onClick={() => window.location.href='https://shopee.co.id/erika_arianto'}>Buy Now</button> */}
-//                         <p className="regular-16 text-gray-30 xl:max-w-[520px]">Rp60.000</p>
-//                     </div>
-//                 </div>
-//             </div>
-//         </a>
-
-//         {/* Product 2 */}
-//         <a href="/saatAkuMelepasDiaPergi">
-//             <div className="product-box" style={{ border: '1px solid #ccc', padding: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-//                 <img src="./Melepas Dia Pergi.png" alt="Product 3" className="product-image" style={{ maxWidth: '200px', maxHeight: '200px', width: 'auto', height: 'auto' }} />
-//                 <div className="product-details" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-//                     <h2 className="bold-40 lg:bold-50 xl:max-w-[390px] text-center">Latest<br />Product</h2>
-//                     <p className="regular-16 text-gray-30 xl:max-w-[520px] mb-1 text-center">Saat Aku Melepas Dia Pergi Siap atau tidak siap,<br/> perpisahan pasti akan terjadi.</p>
-//                     <div className="flex flex-wrap justify-between gap-5 lg:gap-10">
-//                         <button className="button"> Buy Now</button>
-//                         <p className="regular-16 text-gray-30 xl:max-w-[520px]">Rp80.000</p>
-//                     </div>
-//                 </div>
-//             </div>
-//         </a>
-
-//         {/* Product 3 */}
-//         <a href="/meiAi">
-//             <div className="product-box" style={{ border: '1px solid #ccc', padding: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-//                 <img src="./mei-ai.png" alt="Product 2" className="product-image" style={{ maxWidth: '200px', maxHeight: '200px', width: 'auto', height: 'auto' }} />
-//                 <div className="product-details" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-//                     <h2 className="bold-40 lg:bold-50 xl:max-w-[390px] text-center">Kids<br />Friendly</h2>
-//                     <p className="regular-16 text-gray-30 xl:max-w-[520px] mb-1 text-center ">buku kisah nyata diangkat dari seorang anak usia 5 tahun<br/>dimana mamanya tengah berjuang dalam kanker ganas.</p>
-//                     <div className="flex flex-wrap justify-between gap-5 lg:gap-10">
-//                         <button className="button">Buy Now</button>
-//                         <p className="regular-16 text-gray-30 xl:max-w-[520px]">Rp50.000</p>
-//                     </div>
-//                 </div>
-//             </div>
-//         </a>
-//         {/* Product 4 */}
-//         <a href="/Ketabahan-di-Tengah-Badai-Kekuatan-Rohani-Di-Tengah-Ujian-Kehidupan">
-//             <div className="product-box" style={{ border: '1px solid #ccc', padding: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-//                 <img src="./buku_rina.jpeg" alt="Product 4" className="product-image" style={{ maxWidth: '200px', maxHeight: '200px', width: 'auto', height: 'auto' }} />
-//                 <div className="product-details" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-//                     <h2 className="bold-40 lg:bold-50 xl:max-w-[390px] text-center">Recommended<br />Book</h2>
-//                     <p className="regular-16 text-gray-30 xl:max-w-[520px] mb-1 text-center ">etabahan di Tengah Badai adalah sebuah biografi yang mengisahkan perjalanan hidup dan pelayanan Rina Nahuway<br/>seorang wanita yang menghadapi badai kehidupan dengan kekuatan doa dan iman yang kokoh</p>
-//                     <div className="flex flex-wrap justify-between gap-5 lg:gap-10">
-//                         <button className="button">Buy Now</button>
-//                         <p className="regular-16 text-gray-30 xl:max-w-[520px]">Rp50.000</p>
-//                     </div>
-//                 </div>
-//             </div>
-//         </a>
-//     </div>
-// </div>
-
-
-//     )}
-// export default Product;
