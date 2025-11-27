@@ -1,15 +1,12 @@
-import dynamic from 'next/dynamic';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import React from 'react';
+import SmartFlipbook from '@/components/SmartFlipbook';
 
-const CvTesting = dynamic(() => import('@/components/CvTesting'), { ssr: false });
-
-export default function CvTestingPage() {
+const CvTestingPage = () => {
   return (
-    <>
-      <Navbar />
-      <CvTesting />
-      <Footer />
-    </>
+    <div className="padding-container max-container w-full py-10">
+      <SmartFlipbook />
+    </div>
   );
-}
+};
+
+export default CvTestingPage;
