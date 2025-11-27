@@ -1,12 +1,12 @@
 
 import '../app/globals.css'
-import Camp from "@/components/Camp";
-import Guide from "@/components/Guide";
 import Hero from "@/components/Hero";
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Seo from '@/components/Seo';
-
+import About from '@/components/About';
+import Communities from '@/components/Communities';
+// Optionally import Product preview here later if desired
 
 export default function Home() {
   return (
@@ -14,11 +14,9 @@ export default function Home() {
       <Seo />
       <Navbar />
       <Hero />
-      <Camp />
-      <Guide />
+      <About />
+      <Communities />
       <Footer />
     </>
   );
 }
-
-

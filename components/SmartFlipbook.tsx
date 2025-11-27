@@ -12,7 +12,11 @@ GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 type Box = { x: number; y: number; width: number; height: number };
 type PageView = { src: string; width: number; height: number; boxes: Box[] };
 
-const CvTesting: React.FC = () => {
+interface SmartFlipbookProps {
+  fileUrl?: string;
+}
+
+const SmartFlipbook: React.FC<SmartFlipbookProps> = ({ fileUrl }) => {
   const [pages, setPages] = React.useState<PageView[]>([]);
   const [loading, setLoading] = React.useState(false);
   const [errorMsg, setErrorMsg] = React.useState<string | null>(null);
@@ -25,7 +29,7 @@ const CvTesting: React.FC = () => {
   const [manualYTUrl, setManualYTUrl] = React.useState('');
   const [ytSrcPerPage, setYtSrcPerPage] = React.useState<string[]>([]);
   // Flipbook state
-  const [viewMode, setViewMode] = React.useState<'grid' | 'flipbook'>('grid');
+  const [viewMode, setViewMode] = React.useState<'grid' | 'flipbook'>('flipbook');
   const [currentPage, setCurrentPage] = React.useState(0); // index of left page in the spread
   const containerRef = React.useRef<HTMLDivElement | null>(null);
   const [containerWidth, setContainerWidth] = React.useState<number>(0);
@@ -264,19 +268,15 @@ const CvTesting: React.FC = () => {
     return kept;
   };
 
-  const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const f = e.target.files?.[0];
-    if (!f) return;
-    if (f.type !== 'application/pdf') { alert('Please upload a PDF'); return; }
+  const processPdfData = async (data: ArrayBuffer) => {
     setLoading(true);
     setPages([]);
     setErrorMsg(null);
     try {
-      const buf = await f.arrayBuffer();
       // Kick off OpenCV load but don't block PDF processing
       loadOpenCV().catch((err) => console.warn('[OpenCV] load failed (non-fatal):', err));
       // Load PDF
-      const pdf = await pdfjsLib.getDocument({ data: new Uint8Array(buf) }).promise;
+      const pdf = await pdfjsLib.getDocument({ data: new Uint8Array(data) }).promise;
       const out: PageView[] = [];
       const ytList: string[] = [];
       for (let i = 1; i <= pdf.numPages; i++) {
@@ -328,11 +328,38 @@ const CvTesting: React.FC = () => {
       }
     } catch (err) {
       console.error('[CV Testing] Failed to process PDF:', err);
-      setErrorMsg('Failed to process PDF. Check browser console for details.');
+      setErrorMsg('Failed to process PDF. It may be corrupted or missing.');
     } finally {
       setLoading(false);
     }
   };
+
+  const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0];
+    if (!f) return;
+    if (f.type !== 'application/pdf') { alert('Please upload a PDF'); return; }
+    try {
+      const buf = await f.arrayBuffer();
+      await processPdfData(buf);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  React.useEffect(() => {
+    if (fileUrl) {
+      fetch(fileUrl)
+        .then(res => {
+          if (!res.ok) throw new Error('Failed to fetch PDF');
+          return res.arrayBuffer();
+        })
+        .then(buf => processPdfData(buf))
+        .catch(err => {
+          console.error(err);
+          setErrorMsg(`Could not load document: ${fileUrl}. (Note: This is likely a placeholder)`);
+        });
+    }
+  }, [fileUrl]);
 
   // If OpenCV finishes loading after pages are shown, re-run detection automatically
   React.useEffect(() => {
@@ -405,102 +432,63 @@ const CvTesting: React.FC = () => {
       <div className={viewMode === 'flipbook'
         ? "w-screen max-w-none bg-white p-2 md:p-4 md:my-2"
         : "w-full max-w-5xl bg-white shadow rounded-lg p-4 my-6"}>
-        <h1 className="text-2xl font-bold mb-3 text-gray-900">CV TESTING</h1>
-        <p className="text-sm text-gray-600 mb-2">Upload a PDF and detect rectangular boxes (OpenCV.js, threshold + Canny + contours, external). Overlays shown as red boxes.</p>
+
+        {!fileUrl && (
+          <>
+            <h1 className="text-2xl font-bold mb-3 text-gray-900">Digital Flipbook Viewer</h1>
+            <div className="flex items-center gap-3 flex-wrap mb-3">
+              <label className="flex items-center gap-2 text-sm bg-blue-50 px-4 py-2 rounded-lg cursor-pointer hover:bg-blue-100 transition-colors">
+                <span className="text-blue-700 font-semibold">Upload PDF</span>
+                <input type="file" accept="application/pdf" onChange={handleFile} className="hidden" />
+              </label>
+            </div>
+          </>
+        )}
 
         <div className="flex items-center gap-3 flex-wrap mb-3">
-          <label className="flex items-center gap-2 text-sm">
-            <span className="text-gray-700">PDF:</span>
-            <input type="file" accept="application/pdf" onChange={handleFile} />
-          </label>
-          <span className="text-xs text-gray-500">OpenCV: {cvReady ? 'ready' : (cvFailed ? 'failed (using JS fallback)' : 'loading…')}</span>
-          <div className="flex items-center gap-3">
+          {loading && <span className="text-sm text-blue-600 animate-pulse">Processing PDF...</span>}
+
+          <div className="flex items-center gap-3 ml-auto">
+             <div className="text-xs text-gray-400">
+               {cvReady ? 'Engine Ready' : (cvFailed ? 'Basic Engine' : 'Loading Engine...')}
+            </div>
             <label className="flex items-center gap-2 text-sm">
               <input type="radio" name="viewMode" value="grid" checked={viewMode==='grid'} onChange={()=>setViewMode('grid')} />
-              <span className="text-gray-700">Grid</span>
+              <span className="text-gray-700">Grid View</span>
             </label>
             <label className="flex items-center gap-2 text-sm">
               <input type="radio" name="viewMode" value="flipbook" checked={viewMode==='flipbook'} onChange={()=>setViewMode('flipbook')} />
               <span className="text-gray-700">Flipbook</span>
             </label>
           </div>
-          <label className="flex items-center gap-2 text-sm ml-auto">
-            <input type="checkbox" checked={embedYouTube} onChange={(e)=>setEmbedYouTube(e.target.checked)} />
-            <span className="text-gray-700">Embed YouTube overlay</span>
-          </label>
         </div>
 
-        <div className="flex items-center gap-2 mb-3">
-          <span className="text-xs text-gray-600">YouTube URL (optional override):</span>
-          <input
-            type="text"
-            value={manualYTUrl}
-            onChange={(e)=>setManualYTUrl(e.target.value)}
-            placeholder="https://www.youtube.com/watch?v=..."
-            className="flex-1 min-w-0 border rounded px-2 py-1 text-xs"
-          />
-        </div>
+        {/* Advanced controls hidden in a details summary if needed, but keeping clean for end user */}
+        {/* <div className="flex items-center gap-2 mb-3"> ... </div> */}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
-          <label className="flex flex-col">
-            <span className="text-xs text-gray-600">Threshold: {threshold}</span>
-            <input type="range" min={0} max={255} value={threshold} onChange={(e)=>setThreshold(Number(e.target.value))} onMouseUp={rerunDetection} onTouchEnd={rerunDetection} />
-          </label>
-          <label className="flex flex-col">
-            <span className="text-xs text-gray-600">Min size (px): {minSize}</span>
-            <input type="range" min={10} max={200} value={minSize} onChange={(e)=>setMinSize(Number(e.target.value))} onMouseUp={rerunDetection} onTouchEnd={rerunDetection} />
-          </label>
-        </div>
-
-  {loading && <div className="text-gray-700">Processing PDF…</div>}
   {errorMsg && <div className="text-red-600 text-sm mb-2">{errorMsg}</div>}
 
         {pages.length > 0 && viewMode === 'grid' && (
-          <div className="mt-3 space-y-6">
+          <div className="mt-3 grid grid-cols-2 md:grid-cols-4 gap-4">
             {pages.map((p, idx) => (
-              <div key={idx} className="relative inline-block" style={{ width: p.width, height: p.height }}>
-                {/* Page image */}
-                <img src={p.src} alt={`Page ${idx+1}`} width={p.width} height={p.height} className="block" />
-                {/* Boxes overlay */}
-                {p.boxes.map((b, j) => (
-                  <div key={j} className="absolute border-2" style={{ left: b.x, top: b.y, width: b.width, height: b.height, borderColor: '#ff0000' }} />
-                ))}
-                {/* YouTube overlays (match each box size/position) */}
-                {embedYouTube && p.boxes.length > 0 && (() => {
-                  const manualId = extractYouTubeId(manualYTUrl || '') || findYouTubeIdInText(manualYTUrl || '');
-                  const src = manualId ? toYouTubeEmbedUrl(manualId) : (ytSrcPerPage[idx] || '');
-                  if (!src) return null;
-                  return (
-                    <>
-                      {p.boxes.map((b, j) => (
-                        <iframe
-                          key={`yt-${j}`}
-                          src={src}
-                          className="absolute rounded"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                          allowFullScreen
-                          style={{ left: b.x, top: b.y, width: b.width, height: b.height, zIndex: 30, background: '#000' }}
-                          title={`YouTube overlay ${idx+1}-${j+1}`}
-                        />
-                      ))}
-                    </>
-                  );
-                })()}
-                <div className="absolute left-2 top-2 text-xs px-2 py-1 bg-white/80 rounded shadow">Page {idx+1} · {p.boxes.length} boxes</div>
+              <div key={idx} className="relative aspect-[3/4] border rounded overflow-hidden">
+                <img src={p.src} alt={`Page ${idx+1}`} className="w-full h-full object-contain" />
+                <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-xs p-1 text-center">Page {idx+1}</div>
               </div>
             ))}
           </div>
         )}
 
         {pages.length > 0 && viewMode === 'flipbook' && (
-          <div ref={containerRef} className="mt-3 w-screen -mx-2 md:-mx-4">
+          <div ref={containerRef} className="mt-3 w-full">
             {/* Controls */}
-            <div className="flex items-center justify-between mb-2 px-2 md:px-4">
-              <button onClick={() => { beginFlipLock(); bookRef.current?.pageFlip()?.flipPrev(); }} className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 text-sm disabled:opacity-50" disabled={currentPage <= 0}>&larr; Prev</button>
-              <div className="text-sm text-gray-700">Page {currentPage + 1} of {pages.length}</div>
-              <button onClick={() => { beginFlipLock(); bookRef.current?.pageFlip()?.flipNext(); }} className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 text-sm disabled:opacity-50" disabled={currentPage >= pages.length - 1}>Next &rarr;</button>
+            <div className="flex items-center justify-center gap-4 mb-4">
+              <button onClick={() => { beginFlipLock(); bookRef.current?.pageFlip()?.flipPrev(); }} className="px-4 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-sm disabled:opacity-50 transition-colors" disabled={currentPage <= 0}>&larr; Previous</button>
+              <div className="text-sm text-gray-700 font-medium">Page {currentPage + 1} of {pages.length}</div>
+              <button onClick={() => { beginFlipLock(); bookRef.current?.pageFlip()?.flipNext(); }} className="px-4 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-sm disabled:opacity-50 transition-colors" disabled={currentPage >= pages.length - 1}>Next &rarr;</button>
             </div>
-            <div className="w-full flex items-center justify-center"
+
+            <div className="w-full flex items-center justify-center bg-gray-50 py-8 rounded-xl"
                  onMouseDown={() => beginFlipLock()}
                  onTouchStart={() => beginFlipLock()}
                  onDragStart={() => beginFlipLock()}
@@ -512,14 +500,14 @@ const CvTesting: React.FC = () => {
                 size="stretch"
                 minWidth={200}
                 minHeight={220}
-                maxWidth={1200}
-                maxHeight={1800}
+                maxWidth={1000}
+                maxHeight={1414}
                 drawShadow={true}
                 flippingTime={700}
                 useMouseEvents={true}
                 showPageCorners={true}
-                className="shadow-md border rounded-md"
-                style={{ background: '#fff', width: '100%' }}
+                className="shadow-2xl"
+                style={{ width: '100%', height: 'auto' }}
                 startPage={0}
                 mobileScrollSupport={true}
                 swipeDistance={50}
@@ -533,17 +521,9 @@ const CvTesting: React.FC = () => {
                 disableFlipByClick={false}
               >
                 {pages.map((p, i) => (
-                  <div key={i} className="w-full h-full bg-white p-0 m-0 relative">
-                    {/* Page image fills the page */}
+                  <div key={i} className="w-full h-full bg-white relative overflow-hidden">
                     <img src={p.src} alt={`Page ${i + 1}`} className="w-full h-full object-contain select-none" draggable={false} />
-                    {/* Boxes overlay (percentage-based to scale with page) */}
-                    {p.boxes.map((b, j) => (
-                      <div key={j} className="absolute border-2" style={{
-                        ...toPercentStyle(b, p),
-                        borderColor: '#ff0000'
-                      }} />
-                    ))}
-                    {/* YouTube overlay, matched to each box */}
+
                     {embedYouTube && p.boxes.length > 0 && (() => {
                       const manualId = extractYouTubeId(manualYTUrl || '') || findYouTubeIdInText(manualYTUrl || '');
                       const src = manualId ? toYouTubeEmbedUrl(manualId) : (ytSrcPerPage[i] || '');
@@ -554,7 +534,7 @@ const CvTesting: React.FC = () => {
                             <iframe
                               key={`yt-fb-${i}-${j}`}
                               src={src}
-                              className="absolute rounded"
+                              className="absolute rounded shadow-lg border-2 border-white"
                               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                               allowFullScreen
                               style={{ ...toPercentStyle(b, p), zIndex: 30, background: '#000', pointerEvents: inputLock ? 'none' : 'auto' }}
@@ -564,7 +544,6 @@ const CvTesting: React.FC = () => {
                         </>
                       );
                     })()}
-                    <div className="absolute left-2 top-2 text-xs px-2 py-1 bg-white/80 rounded shadow">Page {i+1} · {p.boxes.length} boxes</div>
                   </div>
                 ))}
               </HTMLFlipBook>
@@ -576,4 +555,4 @@ const CvTesting: React.FC = () => {
   );
 };
 
-export default CvTesting;
+export default SmartFlipbook;
