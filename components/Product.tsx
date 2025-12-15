@@ -223,6 +223,14 @@ const Product = () => {
       price: "Soon"
     },
     
+    {
+      id: 'Logika_Iman',
+      image: './logika_iman.jpeg',
+      badge: 'New Released',
+      title: 'Logika Iman menghadirkan sebuah kerangka pemikiran yang tegas dan terang mengenai rasionalitas iman Kristen di tengah dunia modern yang dipenuhi skeptisisme, relativisme, dan pencarian makna yang tak kunjung usai.',
+      price: "Soon"
+    },
+    
   ];
 
   return (
