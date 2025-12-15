@@ -1,10 +1,12 @@
 import '../app/globals.css'
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Seo from "@/components/Seo";
 
 export default function Home() {
   return (
     <>
+      <Seo title="Sejauh Langkah Kaki." description="&quot;Sejauh Langkah Kaki&quot; adalah sebuah kompilasi kisah otentik yang dihimpun dari pengalaman hidup para penjelajah kehidupan yang telah &quot;banyak makan asam garam.&quot; " />
       <Navbar />
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row gap-8">

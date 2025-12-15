@@ -1,10 +1,12 @@
 import '../app/globals.css'
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Seo from "@/components/Seo";
 
 export default function Home() {
   return (
     <>
+      <Seo title="Gereja Penjaga Asa : Membangun fondasi Indonesia Emas 2045 dari ancaman bahaya penyalahgunaan Narkoba." description="Di tengah badai senyap yang mengoyak sendi-sendi bangsa, bahaya Narkoba telah menjelma menjadi ancaman multidimensional yang merenggut tunas harapan dan menganc" />
       <Navbar />
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row gap-8">

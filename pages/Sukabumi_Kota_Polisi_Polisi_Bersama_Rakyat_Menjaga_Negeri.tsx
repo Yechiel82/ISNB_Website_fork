@@ -1,10 +1,12 @@
 import '../app/globals.css'
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Seo from "@/components/Seo";
 
 export default function Home() {
   return (
     <>
+      <Seo title="SUKABUMI KOTA POLISI: Polisi Bersama Rakyat Menjaga Negeri" description="sebuah monumen aksara yang mengabadikan ikatan suci dan takdir sejarah antara Kota Sukabumi dengan denyut nadi institusi kepolisian Republik Indonesia. Di dalam" />
       <Navbar />
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row gap-8">

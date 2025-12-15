@@ -1,10 +1,12 @@
 import '../app/globals.css'
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Seo from "@/components/Seo";
 
 export default function Home() {
   return (
     <>
+      <Seo title="Penggembalaan di Era Digital" description="Buku ini adalah panggilan bagi gereja untuk hadir secara nyata di tengah arus digital yang kian deras—ketika media sosial menjadi ruang perjumpaan baru dan laya" />
       <Navbar />
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row gap-8">

@@ -1,10 +1,12 @@
 import '../app/globals.css'
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Seo from "@/components/Seo";
 
 export default function Home() {
   return (
     <>
+      <Seo title="Dewasa Di tengah Luka, Luka yang Membentuk Kasih yang Menyembuhkan" description="Kenangan adalah mozaik kehidupan yang tersusun dari serpihan masa lalu mengajarkan kita untuk untuk melihat setiap momen, baik manis maupun pahit sebagai bagian" />
       <Navbar />
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row gap-8">

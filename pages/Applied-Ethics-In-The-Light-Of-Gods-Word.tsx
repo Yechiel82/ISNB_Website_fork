@@ -1,10 +1,12 @@
 import '../app/globals.css'
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Seo from "@/components/Seo";
 
 export default function Home() {
   return (
     <>
+      <Seo title="Applied Ethics In The Light Of God's Word" description="Di tengah dunia yang kehilangan kompas moralnya, buku ini hadir sebagai panggilan untuk keberanian intelektual dan spiritual, mengundang Anda untuk menjadi duta" />
       <Navbar />
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row gap-8">
