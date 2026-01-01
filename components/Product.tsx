@@ -231,6 +231,14 @@ const Product = () => {
       price: "Soon"
     },
     
+    {
+      id: 'Tetap_di_sisi-Mu',
+      image: './Tetap_di_sisi-Mu.jpeg',
+      badge: 'New Released',
+      title: 'Buku "Tetap di sisi-Mu: 60 Catatan Hati Perjuangan dan Pemulihan Diri Seorang Pendamping Terminal Illness" karya Pdt. Dr. Arianto adalah sebuah elegi kejujuran sekaligus kidung harapan yang lahir dari kedalaman hati seorang pendamping di tengah badai penyakit terminal yang merenggut peta kehidupan. Melalui enam puluh catatan harian yang intim dan menyentuh sanubari, pembaca diajak menapaki lorong-lorong kelam penuh ketakutan, kelelahan, dan ketidakpastian, di mana setiap langkahnya menjadi pencarian akan Sang Gunung Batu yang tak tergoyahkan saat dunia seolah runtuh. Sejalan dengan janji dalam Yesaya 61:1, bahwa Tuhan mengutus kita untuk menyembuhkan mereka yang remuk hati, buku ini bukan sekadar narasi tentang penderitaan, melainkan kesaksian agung tentang bagaimana tangan Tuhan menjamah setiap luka, memulihkan jiwa yang letih, dan mengubah air mata kesetiaan menjadi mata air pengharapan yang mengalir bagi sesama.',
+      price: "Soon"
+    },
+    
   ];
 
   const [searchQuery, setSearchQuery] = useState('');
