@@ -53,19 +53,21 @@ export default function NewsDetailPage({ newsItem }: NewsDetailPageProps) {
     // Explicitly access fields. Note: Types might be inferred loosely by contentful sdk
     const fields = newsItem.fields;
     const title = fields.title as unknown as string;
-    const author = fields.author as unknown as string;
+    const author = fields.author; // This is an Entry
     const publishedDate = fields.publishedDate as unknown as string;
     const content = fields.content as any; // Document type matches but casting avoids generic mismatch
     const thumbnail = fields.thumbnail as unknown as Asset | undefined;
-    const authorImage = fields.authorImage as unknown as Asset | undefined;
 
     // access nested contentful asset fields
     const thumbnailFile = thumbnail?.fields?.file as unknown as { url: string } | undefined;
     const imageUrl = thumbnailFile?.url ? `https:${thumbnailFile.url}` : null;
 
-    const authorImageFile = authorImage?.fields?.file as unknown as { url: string } | undefined;
-    const authorImageUrl = authorImageFile?.url
-        ? `https:${authorImageFile.url}`
+    // Extract author details
+    const authorName = (author?.fields?.name as unknown as string) || 'Admin';
+    const authorAvatar = author?.fields?.avatar as unknown as Asset | undefined;
+    const authorAvatarFile = authorAvatar?.fields?.file as unknown as { url: string } | undefined;
+    const authorImageUrl = authorAvatarFile?.url
+        ? `https:${authorAvatarFile.url}`
         : '/person-1.png';
 
     return (
@@ -86,12 +88,12 @@ export default function NewsDetailPage({ newsItem }: NewsDetailPageProps) {
                             <div className="flex items-center gap-2">
                                 <Image
                                     src={authorImageUrl}
-                                    alt={author}
+                                    alt={authorName}
                                     width={24}
                                     height={24}
                                     className="rounded-full bg-gray-200"
                                 />
-                                <span>By {author}</span>
+                                <span>By {authorName}</span>
                             </div>
                         </div>
                         <h1 className="bold-40 lg:bold-64 mb-8 leading-tight">{title}</h1>

@@ -8,9 +8,9 @@ interface NewsCardProps {
 }
 
 const NewsCard = ({ news }: NewsCardProps) => {
-    const { title, slug, author, publishedDate } = news.fields;
+    const { title, slug, publishedDate } = news.fields;
+    const author = news.fields.author; // This is now an Entry, not a string
     const thumbnail = news.fields.thumbnail as unknown as Asset | undefined;
-    const authorImage = news.fields.authorImage as unknown as Asset | undefined;
 
     // Contentful images start with //, so we prepend https:
     const thumbnailFile = thumbnail?.fields?.file as unknown as { url: string } | undefined;
@@ -18,9 +18,12 @@ const NewsCard = ({ news }: NewsCardProps) => {
         ? `https:${thumbnailFile.url}`
         : '/satuvisibagiindonesia-removebg.png'; // Fallback to logo or placeholder
 
-    const authorImageFile = authorImage?.fields?.file as unknown as { url: string } | undefined;
-    const authorImageUrl = authorImageFile?.url
-        ? `https:${authorImageFile.url}`
+    // Extract author details safely
+    const authorName = (author?.fields?.name as unknown as string) || 'Admin';
+    const authorAvatar = author?.fields?.avatar as unknown as Asset | undefined;
+    const authorAvatarFile = authorAvatar?.fields?.file as unknown as { url: string } | undefined;
+    const authorImageUrl = authorAvatarFile?.url
+        ? `https:${authorAvatarFile.url}`
         : '/person-1.png';
 
     return (
@@ -40,7 +43,7 @@ const NewsCard = ({ news }: NewsCardProps) => {
 
                     <div className="flex items-center gap-2 mb-2">
                         <Image src={authorImageUrl} alt="author" width={24} height={24} className="rounded-full bg-gray-200" />
-                        <span className="regular-14 text-gray-50">{(author as unknown as string) || 'Admin'}</span>
+                        <span className="regular-14 text-gray-50">{authorName}</span>
                     </div>
                 </div>
 
