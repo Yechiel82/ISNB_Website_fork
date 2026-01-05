@@ -9,7 +9,8 @@ interface NewsCardProps {
 
 const NewsCard = ({ news }: NewsCardProps) => {
     const { title, slug, publishedDate } = news.fields;
-    const author = news.fields.author; // This is now an Entry, not a string
+    // Cast author to any or specific Entry type to avoid 'never' issue
+    const author = news.fields.author as any;
     const thumbnail = news.fields.thumbnail as unknown as Asset | undefined;
 
     // Contentful images start with //, so we prepend https:

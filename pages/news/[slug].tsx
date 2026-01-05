@@ -50,10 +50,18 @@ export default function NewsDetailPage({ newsItem }: NewsDetailPageProps) {
         );
     }
 
+    // Debugging: Parse fields securely to check structure
+    console.log("[NewsDetail] News Item Fields:", JSON.stringify(newsItem.fields, null, 2));
+
     // Explicitly access fields. Note: Types might be inferred loosely by contentful sdk
     const fields = newsItem.fields;
-    const title = fields.title as unknown as string;
-    const author = fields.author; // This is an Entry
+    const rawTitle = fields.title as unknown;
+    // contentful might return title as something else if localization is on or data is bad? safely stringify
+    const title = typeof rawTitle === 'string' ? rawTitle : 'News Article';
+
+    // ... rest of the code ...
+
+    const author = fields.author as any; // Cast to any to avoid TS errors with unresolvable types
     const publishedDate = fields.publishedDate as unknown as string;
     const content = fields.content as any; // Document type matches but casting avoids generic mismatch
     const thumbnail = fields.thumbnail as unknown as Asset | undefined;
@@ -126,17 +134,25 @@ export default function NewsDetailPage({ newsItem }: NewsDetailPageProps) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-    const newsItems = await getNewsItems();
+    try {
+        const newsItems = await getNewsItems();
 
-    // Generate paths for existing news
-    const paths = newsItems.map((item) => ({
-        params: { slug: item.fields.slug as unknown as string },
-    }));
+        // Generate paths for existing news
+        const paths = newsItems.map((item) => ({
+            params: { slug: item.fields.slug as unknown as string },
+        }));
 
-    return {
-        paths,
-        fallback: 'blocking', // Important for ISR: allow new pages to be generated on request
-    };
+        return {
+            paths,
+            fallback: 'blocking', // Important for ISR: allow new pages to be generated on request
+        };
+    } catch (err) {
+        console.error("Error in getStaticPaths:", err);
+        return {
+            paths: [],
+            fallback: 'blocking',
+        };
+    }
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
