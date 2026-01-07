@@ -29,11 +29,11 @@ const Navbar = () => {
       </ul>
 
       <div className="lg:flexCenter hidden">
-        <Button type="button" title="Admin" icon="/user.svg" variant="btn_dark_green" />
+        {/* <Button type="button" title="Admin" icon="/user.svg" variant="btn_dark_green" /> */}
       </div>
 
       {/* Mobile Menu Button */}
-      <button 
+      <button
         onClick={toggleMenu}
         className="inline-block cursor-pointer lg:hidden p-2"
         aria-label="Toggle menu"
@@ -47,11 +47,11 @@ const Navbar = () => {
             </div>
           </div>
         ) : (
-          <Image 
-            src="/menu.svg" 
-            alt="menu" 
-            width={32} 
-            height={32} 
+          <Image
+            src="/menu.svg"
+            alt="menu"
+            width={32}
+            height={32}
           />
         )}
       </button>
@@ -62,8 +62,8 @@ const Navbar = () => {
           <ul className="flex flex-col p-4 space-y-4">
             {NAV_LINKS.map((link) => (
               <li key={link.key}>
-                <Link 
-                  href={link.href} 
+                <Link
+                  href={link.href}
                   className="regular-16 text-gray-50 block py-2 transition-all hover:font-bold"
                   onClick={() => setIsMenuOpen(false)}
                 >
@@ -71,9 +71,9 @@ const Navbar = () => {
                 </Link>
               </li>
             ))}
-            <li className="pt-2">
+            {/* <li className="pt-2">
               <Button type="button" title="Admin" icon="/user.svg" variant="btn_dark_green" />
-            </li>
+            </li> */}
           </ul>
         </div>
       )}
