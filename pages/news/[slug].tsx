@@ -1,8 +1,8 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
-import Head from 'next/head';
 import Image from 'next/image';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import { BLOCKS } from '@contentful/rich-text-types';
+import Seo from '@/components/Seo';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { getNewsItem, getNewsItems } from '@/lib/contentful';
@@ -12,6 +12,7 @@ import { Asset } from 'contentful';
 interface NewsDetailPageProps {
     newsItem: NewsEntry | null;
 }
+
 
 const RichTextOptions = {
     renderNode: {
@@ -78,11 +79,17 @@ export default function NewsDetailPage({ newsItem }: NewsDetailPageProps) {
         ? `https:${authorAvatarFile.url}`
         : '/person-1.png';
 
+    // Construct a description for SEO
+    const seoDescription = `Baca artikel terbaru "${title}" oleh ${authorName} di Yayasan Satu Visi Bagi Indonesia.`;
+
     return (
         <>
-            <Head>
-                <title>{title} | Satu Visi Bagi Indonesia</title>
-            </Head>
+            <Seo
+                title={title}
+                description={seoDescription}
+                image={imageUrl || undefined}
+                url={`https://yayasansatuvisibagiindonesia.com/news/${newsItem.fields.slug}`} // Use variable or env for base URL in future
+            />
 
             <Navbar />
 

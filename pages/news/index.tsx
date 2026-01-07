@@ -1,5 +1,5 @@
 import { GetStaticProps } from 'next';
-import Head from 'next/head';
+import Seo from '@/components/Seo';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import NewsCard from '@/components/NewsCard';
@@ -13,10 +13,11 @@ interface NewsPageProps {
 export default function NewsPage({ news }: NewsPageProps) {
     return (
         <>
-            <Head>
-                <title>Berita & Artikel | Satu Visi Bagi Indonesia</title>
-                <meta name="description" content="Berita dan artikel terbaru dari Yayasan Satu Visi Bagi Indonesia" />
-            </Head>
+            <Seo
+                title="Berita & Artikel"
+                description="Berita dan artikel terbaru dari Yayasan Satu Visi Bagi Indonesia. Dapatkan informasi terkini seputar kegiatan sosial dan kemanusiaan kami."
+                url="https://yayasansatuvisibagiindonesia.com/news" // Assuming this is the real domain, or uses a variable if available
+            />
 
             <Navbar />
 
