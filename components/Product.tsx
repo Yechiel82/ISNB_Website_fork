@@ -245,6 +245,13 @@ const Product = () => {
       title: 'Di tengah riuhnya dunia yang mendewakan performa, buku ini hadir sebagai kompas spiritual untuk menemukan kembali esensi sejati pengikut Kristus melalui metodologi "Saya Pengikut Kristus" (SPK).',
       price: "Soon"
     },
+    {
+      id: 'Jangan_Berhenti_Di_Saya',
+      image: './Jangan_Berhenti_Di_Saya.jpeg',
+      badge: 'New Released',
+      title: 'sebuah panggilan profetis bagi setiap orang percaya untuk keluar dari kekristenan yang statis menuju pemuridan yang hidup, bergerak, dan melipatgandakan kehidupan. Buku ini menegaskan bahwa anugerah Allah tidak pernah dimaksudkan untuk berhenti pada satu pribadi, melainkan mengalir sebagai estafet iman dari generasi ke generasi. Dengan fondasi Firman Tuhan yang kuat dan refleksi teologis yang tajam, pembaca diajak untuk dapat memahami bahwa menjadi murid Kristus bukan sekadar menerima keselamatan saja, tetapi mengalami transformasi jati diri yang nyata dengan iman yang berakar, karakter yang dibentuk, relasi yang dipulihkan, dan hidup yang siap diutus bagi misi Allah.',
+      price: "Soon"
+    },
     
   ];
 
