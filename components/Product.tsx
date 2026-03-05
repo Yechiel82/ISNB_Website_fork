@@ -240,7 +240,7 @@ const Product = () => {
     },
     {
       id: 'Menemukan_Kembali_Jejak_Pemuridan_Didunia_yang_Riuh',
-      image: './Menemukan_Kembali_Jejak_Pemuridan_Didunia_yang_Riuh.jpeg',
+      image: '/MenemukanKembali_LOGO.png',
       badge: 'New Released',
       title: 'Di tengah riuhnya dunia yang mendewakan performa, buku ini hadir sebagai kompas spiritual untuk menemukan kembali esensi sejati pengikut Kristus melalui metodologi "Saya Pengikut Kristus" (SPK).',
       price: "Soon"
