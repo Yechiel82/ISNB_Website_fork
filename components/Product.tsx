@@ -51,7 +51,7 @@ const Product = () => {
       title: 'Empty Nest bukanlah akhir dari sebuah perjalanan, melainkan awal dari penemuan diri yang baru. Dalam keheningan, ada kesempatan untuk bertumbuh, mencintai, dan merangkul harapan. Temukan kebijaksanaan, inspirasi, dan dorongan untuk menjadikan fase ini sebagai momen transformasi yang indah. Mari bersama-sama merayakan setiap langkah menuju masa depan yang penuh kemungkinan.',
       price: "Rp70.000"
     },
-    
+
     {
       id: 'kesehatan-mental',
       image: './kesehatan_mental.jpg',
@@ -206,7 +206,7 @@ const Product = () => {
       title: 'Logika Anugerah adalah sebuah eksplorasi mendalam yang secara kritis membongkar logika marketplace, sebuah sistem transaksional berbasis kinerja, utang, dan ketakutan yang tanpa sadar mendominasi kehidupan kita. Sebagai antitesis yang radikal, buku ini memperkenalkan Logika Anugerah sebagai sistem operasi ilahi yang membebaskan, di mana identitas kita tidak lagi dibangun di atas pencapaian, melainkan di atas penerimaan tak bersyarat di dalam Kristus. ',
       price: "Soon"
     },
-    
+
     {
       id: 'Pulih_Atas_Luka_Emosi',
       image: './Pulih_Atas_Luka_Emosi.jpg',
@@ -214,7 +214,7 @@ const Product = () => {
       title: '“Pulih Atas Luka Emosi” adalah sebuah perjalanan sunyi menuju ruang-ruang batin yang sering kita sembunyikan—tempat di mana rasa sakit memahat kita tanpa suara. Buku ini menuntun pembaca menelusuri jejak luka yang pernah diremehkan, disentuh dengan kelembutan Firman dan kejujuran reflektif yang memulihkan. Setiap halamannya mengajak kita berhenti sejenak, bernapas lebih dalam, dan menyadari bahwa di balik remuknya hati masih tersisa cahaya kasih Allah yang sanggup menata ulang hidup kita. ',
       price: "Soon"
     },
-    
+
     {
       id: 'Panggilanku-Seorang-Guru-3-di-Era-Digital',
       image: './Panggilanku-Seorang-Guru-3-di-Era-Digital.jpeg',
@@ -222,7 +222,7 @@ const Product = () => {
       title: '“Panggilanku Seorang Guru ke-3 di Era Digital” adalah sebuah simfoni refleksi bagi para pejuang di garda depan peradaban—para guru. Buku ini mengajak pembaca menapaki lorong-lorong pemahaman baru tentang panggilan suci, di mana papan tulis digital bertemu dengan hati nurani yang teguh. Di tengah badai disrupsi teknologi, tulisan-tulisan di dalamnya berfungsi sebagai kompas, memandu guru untuk tidak hanya bertahan, namun justru bersinar sebagai Kurator Pengetahuan dan Arsitek Karakter. Ini adalah sebuah deklarasi tentang peran guru yang melampaui sekat kelas; sebuah janji bahwa melalui pemahaman mendalam, penyelesaian masalah yang humanis, dan kontribusi yang signifikan, seorang guru dapat menabur benih makna abadi dalam jiwa anak didiknya, menjadikan teknologi sebagai sayap, bukan rantai, bagi masa depan pendidikan.',
       price: "Soon"
     },
-    
+
     {
       id: 'Logika_Iman',
       image: './logika_iman.jpeg',
@@ -230,7 +230,7 @@ const Product = () => {
       title: 'Logika Iman menghadirkan sebuah kerangka pemikiran yang tegas dan terang mengenai rasionalitas iman Kristen di tengah dunia modern yang dipenuhi skeptisisme, relativisme, dan pencarian makna yang tak kunjung usai.',
       price: "Soon"
     },
-    
+
     {
       id: 'Tetap_di_sisi-Mu',
       image: './Tetap_di_sisi-Mu.jpeg',
@@ -247,7 +247,7 @@ const Product = () => {
     },
     {
       id: 'Jangan_Berhenti_Di_Saya',
-      image: './Jangan_Berhenti_Di_Saya.jpeg',
+      image: './JanganBerhentiDisaya_coverV6_NWM.jpg',
       badge: 'New Released',
       title: 'sebuah panggilan profetis bagi setiap orang percaya untuk keluar dari kekristenan yang statis menuju pemuridan yang hidup, bergerak, dan melipatgandakan kehidupan. Buku ini menegaskan bahwa anugerah Allah tidak pernah dimaksudkan untuk berhenti pada satu pribadi, melainkan mengalir sebagai estafet iman dari generasi ke generasi. Dengan fondasi Firman Tuhan yang kuat dan refleksi teologis yang tajam, pembaca diajak untuk dapat memahami bahwa menjadi murid Kristus bukan sekadar menerima keselamatan saja, tetapi mengalami transformasi jati diri yang nyata dengan iman yang berakar, karakter yang dibentuk, relasi yang dipulihkan, dan hidup yang siap diutus bagi misi Allah.',
       price: "Soon"
@@ -259,7 +259,7 @@ const Product = () => {
       title: 'Dalam dunia yang mengAgungkan keberhasilan, pretasi, kekuasaan, dan pencapaian, Logika Penebusan menghadirkan perspektif yang unik, yang kontras dan membebaskan: Allah menyatakan kemuliaan-Nya justru melalui salib.',
       price: "Soon"
     },
-    
+
   ];
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -342,7 +342,7 @@ const Product = () => {
                     </span>
                   </div>
                 </div>
-                
+
                 <div className="p-4 flex flex-col flex-grow">
                   <div className="mb-4 flex-grow">
                     <p className="line-clamp-2 text-sm text-gray-600">
