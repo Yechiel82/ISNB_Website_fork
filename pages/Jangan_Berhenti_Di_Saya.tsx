@@ -39,7 +39,7 @@ export default function Home() {
           <div className="md:w-1/2">
             <div className="rounded-lg overflow-hidden shadow-md">
               <img
-                src="/JanganBerhentiDisaya_coverV6_NWM.jpg"
+                src="/JanganBerhentiDisayaLOGO.png"
                 alt="Product Image"
                 className="w-full h-auto object-cover"
               />

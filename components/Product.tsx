@@ -247,7 +247,7 @@ const Product = () => {
     },
     {
       id: 'Jangan_Berhenti_Di_Saya',
-      image: './JanganBerhentiDisaya_coverV6_NWM.jpg',
+      image: '/JanganBerhentiDisayaLOGO.png',
       badge: 'New Released',
       title: 'sebuah panggilan profetis bagi setiap orang percaya untuk keluar dari kekristenan yang statis menuju pemuridan yang hidup, bergerak, dan melipatgandakan kehidupan. Buku ini menegaskan bahwa anugerah Allah tidak pernah dimaksudkan untuk berhenti pada satu pribadi, melainkan mengalir sebagai estafet iman dari generasi ke generasi. Dengan fondasi Firman Tuhan yang kuat dan refleksi teologis yang tajam, pembaca diajak untuk dapat memahami bahwa menjadi murid Kristus bukan sekadar menerima keselamatan saja, tetapi mengalami transformasi jati diri yang nyata dengan iman yang berakar, karakter yang dibentuk, relasi yang dipulihkan, dan hidup yang siap diutus bagi misi Allah.',
       price: "Soon"
