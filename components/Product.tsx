@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Image from 'next/image';
 
 const Product = () => {
   const products = [
@@ -345,10 +346,11 @@ const Product = () => {
             >
               <div className="rounded-lg border border-gray-200 bg-white shadow-sm transition-all duration-200 hover:shadow-md flex flex-col h-full">
                 <div className="relative aspect-square overflow-hidden rounded-t-lg">
-                  <img
-                    src={product.image}
+                  <Image
+                    src={product.image.startsWith('/') ? product.image : product.image.startsWith('./') ? product.image.substring(1) : `/${product.image}`}
                     alt={product.title}
-                    className="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
+                    fill
+                    className="object-cover object-center transition-transform duration-300 group-hover:scale-105"
                   />
                   <div className="absolute top-2 right-2">
                     <span className="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-1 text-xs font-medium text-blue-800">
