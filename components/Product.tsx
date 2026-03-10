@@ -259,6 +259,20 @@ const Product = () => {
       title: 'Dalam dunia yang mengAgungkan keberhasilan, pretasi, kekuasaan, dan pencapaian, Logika Penebusan menghadirkan perspektif yang unik, yang kontras dan membebaskan: Allah menyatakan kemuliaan-Nya justru melalui salib.',
       price: "Soon"
     },
+    {
+      id: 'Logika_Kebangkitan',
+      image: './Logika_Kebangkitan.jpeg',
+      badge: 'New Released',
+      title: 'Buku ini lahir dari sebuah kegelisahan yang tenang namun mendesak, hadir di antara iman yang terlalu cepat merasa aman dan skeptisisme yang terlalu lekas merasa unggul. Di ruang yang jujur namun tak nyaman ini, narasi bergerak melampaui sekadar catatan sejarah yang membeku di tepi makam, mengajak jiwa untuk melangkah ke wilayah di mana nalar menemui batasnya dan iman menjadi sebuah langkah yang tak terelakkan. ',
+      price: "Soon"
+    },
+    {
+      id: 'Logika_Kekekalan',
+      image: './Logika_Kekekalan.jpeg',
+      badge: 'New Released',
+      title: 'Buku ini merupakan sebuah eksplorasi intelektual yang berani, berdiri tepat di persimpangan krusial antara iman yang teguh dan rasionalitas yang tajam. Penulis menantang dikotomi klasik yang sering kali memisahkan sejarah dari teologi, mengajak pembaca untuk tidak lagi memenjarakan figur Yesus dalam ruang iman yang kebal kritik atau sekadar mereduksi-Nya menjadi objek sejarah yang kehilangan daya gugahnya. Dengan argumentasi yang solid dan mendalam, buku ini membuktikan bahwa iman Kristen tidak memerlukan perlindungan dari penyelidikan rasional; sebaliknya, keduanya saling menguji dan menerangi untuk menyingkapkan kebenaran yang melampaui waktu.',
+      price: "Soon"
+    },
 
   ];
 
