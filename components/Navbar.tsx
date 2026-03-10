@@ -3,7 +3,6 @@
 import { NAV_LINKS } from "@/constants";
 import Image from "next/image";
 import Link from "next/link";
-import Button from "./Button";
 import { useState } from "react";
 
 const Navbar = () => {
@@ -29,7 +28,7 @@ const Navbar = () => {
       </ul>
 
       <div className="lg:flexCenter hidden">
-        {/* <Button type="button" title="Admin" icon="/user.svg" variant="btn_dark_green" /> */}
+        {/* Spacer to keep desktop navigation centered with justify-between */}
       </div>
 
       {/* Mobile Menu Button */}
@@ -71,9 +70,6 @@ const Navbar = () => {
                 </Link>
               </li>
             ))}
-            {/* <li className="pt-2">
-              <Button type="button" title="Admin" icon="/user.svg" variant="btn_dark_green" />
-            </li> */}
           </ul>
         </div>
       )}
