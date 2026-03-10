@@ -1,0 +1,27 @@
+
+> travel_app@0.1.0 dev
+> next dev
+
+Attention: Next.js now collects completely anonymous telemetry regarding usage.
+This information is used to shape Next.js' roadmap and prioritize features.
+You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+https://nextjs.org/telemetry
+
+  ▲ Next.js 13.5.4
+  - Local:        http://localhost:3000
+
+ ✓ Ready in 1960ms
+ ○ Compiling / ...
+ ✓ Compiled / in 4.8s (272 modules)
+ ○ Compiling /not-found ...
+ ✓ Compiled /not-found in 5s (775 modules)
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, lstat '/app/.next/server/app/not-found_client-reference-manifest.js'
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving '../../../../.next/server/app/not-found_client-reference-manifest' in /app/node_modules/next/dist/server for build dependencies doesn't lead to expected result '/app/.next/server/app/not-found_client-reference-manifest.js', but to 'Error: Can't resolve '../../../../.next/server/app/not-found_client-reference-manifest' in '/app/node_modules/next/dist/server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ../../../../.next/server/app/not-found_client-reference-manifest (expected /app/.next/server/app/not-found_client-reference-manifest.js)
+<w>  at file dependencies /app/node_modules/next/dist/server/load-components.js
+<w>  at file /app/node_modules/next/dist/server/load-components.js
+<w>  at file dependencies /app/node_modules/next/dist/build/utils.js
+<w>  at file /app/node_modules/next/dist/build/utils.js
+<w>  at file dependencies /app/node_modules/next/dist/build/webpack/loaders/next-app-loader.js
+<w>  at file /app/node_modules/next/dist/build/webpack/loaders/next-app-loader.js
+<w>  at resolve commonjs /app/node_modules/next/dist/build/webpack/loaders/next-app-loader.js
