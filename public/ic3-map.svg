@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" width="1000" height="600">
+  <defs>
+    <!-- Filter for shadow -->
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="3" dy="5" stdDeviation="4" flood-opacity="0.2"/>
+    </filter>
+    <!-- Map gradient -->
+    <linearGradient id="mapGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#10b981" stop-opacity="0.2"/>
+    </linearGradient>
+
+    <!-- Pin Icon -->
+    <g id="pin">
+      <path d="M12 0C7.58 0 4 3.58 4 8c0 5.25 8 13 8 13s8-7.75 8-13c0-4.42-3.58-8-8-8zm0 11.5c-1.93 0-3.5-1.57-3.5-3.5S10.07 4.5 12 4.5 15.5 6.07 15.5 8 13.93 11.5 12 11.5z" fill="#ef4444" filter="url(#shadow)"/>
+      <circle cx="12" cy="8" r="3.5" fill="#ffffff"/>
+    </g>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1000" height="600" fill="#f8fafc" rx="20"/>
+  <rect width="1000" height="600" fill="url(#mapGradient)" rx="20"/>
+
+  <!-- Simplified Map of Indonesia (Cartoon-ish Abstract blobs) -->
+  <g fill="#34d399" filter="url(#shadow)" stroke="#10b981" stroke-width="2">
+    <!-- Sumatra -->
+    <path d="M 120,150 Q 150,120 180,180 T 250,280 Q 280,320 230,350 T 150,250 Z" />
+    <!-- Java -->
+    <path d="M 280,400 Q 350,380 420,410 T 550,430 Q 580,450 500,460 T 300,430 Z" />
+    <!-- Kalimantan -->
+    <path d="M 350,200 Q 400,150 480,180 T 520,280 Q 480,320 400,300 T 320,250 Z" />
+    <!-- Sulawesi -->
+    <path d="M 550,250 Q 600,200 650,220 T 630,350 Q 580,380 570,300 T 530,280 Z" />
+    <!-- Bali/Nusa Tenggara -->
+    <path d="M 580,450 Q 620,440 680,460 T 750,480 Q 720,500 600,470 Z" />
+    <!-- Maluku / Papua -->
+    <path d="M 700,200 Q 800,180 880,250 T 920,350 Q 850,380 750,300 T 720,250 Z" />
+  </g>
+
+  <!-- Title Text -->
+  <text x="500" y="80" font-family="Arial, sans-serif" font-size="36" font-weight="bold" fill="#1f2937" text-anchor="middle">
+    IC3 Sudah Ada di 6 Kota di Indonesia
+  </text>
+  <line x1="300" y1="100" x2="700" y2="100" stroke="#10b981" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- PINS & LABELS -->
+
+  <!-- Jakarta -->
+  <g transform="translate(300, 370)">
+    <use href="#pin" transform="scale(1.5) translate(-12, -24)"/>
+    <rect x="-40" y="5" width="80" height="24" fill="#ffffff" rx="12" filter="url(#shadow)"/>
+    <text x="0" y="22" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#1f2937" text-anchor="middle">Jakarta</text>
+  </g>
+
+  <!-- Semarang -->
+  <g transform="translate(400, 390)">
+    <use href="#pin" transform="scale(1.5) translate(-12, -24)"/>
+    <rect x="-45" y="5" width="90" height="24" fill="#ffffff" rx="12" filter="url(#shadow)"/>
+    <text x="0" y="22" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#1f2937" text-anchor="middle">Semarang</text>
+  </g>
+
+  <!-- Surabaya -->
+  <g transform="translate(480, 400)">
+    <use href="#pin" transform="scale(1.5) translate(-12, -24)"/>
+    <rect x="-45" y="5" width="90" height="24" fill="#ffffff" rx="12" filter="url(#shadow)"/>
+    <text x="0" y="22" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#1f2937" text-anchor="middle">Surabaya</text>
+  </g>
+
+  <!-- Bali -->
+  <g transform="translate(600, 430)">
+    <use href="#pin" transform="scale(1.5) translate(-12, -24)"/>
+    <rect x="-35" y="5" width="70" height="24" fill="#ffffff" rx="12" filter="url(#shadow)"/>
+    <text x="0" y="22" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#1f2937" text-anchor="middle">Bali</text>
+  </g>
+
+  <!-- Pontianak -->
+  <g transform="translate(360, 230)">
+    <use href="#pin" transform="scale(1.5) translate(-12, -24)"/>
+    <rect x="-45" y="5" width="90" height="24" fill="#ffffff" rx="12" filter="url(#shadow)"/>
+    <text x="0" y="22" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#1f2937" text-anchor="middle">Pontianak</text>
+  </g>
+
+  <!-- Manado -->
+  <g transform="translate(630, 200)">
+    <use href="#pin" transform="scale(1.5) translate(-12, -24)"/>
+    <rect x="-40" y="5" width="80" height="24" fill="#ffffff" rx="12" filter="url(#shadow)"/>
+    <text x="0" y="22" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#1f2937" text-anchor="middle">Manado</text>
+  </g>
+
+</svg>
