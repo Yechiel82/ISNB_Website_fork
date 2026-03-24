@@ -10,7 +10,7 @@ export default function PercetakanBuku() {
     "/Setiap_Kita_Punya_Cerita.jpeg",
     "/KisahKehidupanDanPelayanan.jpeg",
     "/mei-ai.png",
-    "/percetakan-carousel-5.png",
+    "/buku_rina.jpeg",
     "/Tetap_di_sisi-Mu.jpeg"
   ];
 
