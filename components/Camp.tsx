@@ -124,6 +124,13 @@ const Camp = () => {
           <p className="regular-14 xl:regular-16 mt-5 text-white">
             <strong>Indonesia Christian Cancer Community </strong>hadir pada beragam kota dan siap untuk memperlengkapi anda dalam pengenalan Tuhan dengan benar sehingga para anggota dapat merasakan kehadiran Tuhan dalam hidup mereka.
           </p>
+
+          <div className="mt-8 relative z-20">
+            <a href="/ic3" className="inline-block bg-white text-green-50 font-bold py-3 px-8 rounded-full shadow-lg hover:bg-gray-100 transition-colors">
+              Read More Tentang IC3
+            </a>
+          </div>
+
           <Image 
             src="/quote.svg"
             alt="camp-2"

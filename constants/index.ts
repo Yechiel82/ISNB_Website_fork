@@ -4,7 +4,7 @@ export const NAV_LINKS = [
   { href: '/product', key: 'services', label: 'Toko Buku' },
   { href: '/percetakan-buku', key: 'percetakan-buku', label: 'Percetakan Buku' },
   { href: '/news', key: 'news', label: 'News' },
-  { href: '/contact', key: 'contact', label: 'Contact' },
+  { href: '/ic3', key: 'ic3', label: 'IC3' },
 ];
 
 // CAMP SECTION
