@@ -1,10 +1,29 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Seo from "@/components/Seo";
 
 export default function PercetakanBuku() {
+
+  const carouselImages = [
+    "/Setiap_Kita_Punya_Cerita.jpeg",
+    "/empty-nest.jpg",
+    "/kesehatan_mental.jpg",
+    "/buku_rina.jpeg",
+    "/percetakan-carousel-5.png"
+  ];
+
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % carouselImages.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [carouselImages.length]);
+
   const adminPhone = '62888888888';
   const message = 'Halo admin, Saya ingin konsultasi mengenai percetakan buku';
   const whatsappLink = `https://wa.me/${adminPhone}?text=${encodeURIComponent(message)}`;
@@ -61,14 +80,30 @@ export default function PercetakanBuku() {
           </div>
 
           <div className="order-1 md:order-2 flex justify-center">
-            <div className="relative w-full max-w-md aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl">
-              <Image
-                src="/Setiap_Kita_Punya_Cerita.jpeg"
-                alt="Contoh Hasil Cetak Buku"
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
+            <div className="relative w-full max-w-md aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl group">
+              {carouselImages.map((src, index) => (
+                <Image
+                  key={src}
+                  src={src}
+                  alt={`Contoh Hasil Cetak Buku ${index + 1}`}
+                  fill
+                  className={`object-cover transition-opacity duration-1000 ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'}`}
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  priority={index === 0}
+                />
+              ))}
+
+              {/* Navigation dots */}
+              <div className="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
+                {carouselImages.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentImageIndex(index)}
+                    className={`w-2.5 h-2.5 rounded-full transition-colors ${index === currentImageIndex ? 'bg-white' : 'bg-white/50 hover:bg-white/75'}`}
+                    aria-label={`Go to slide ${index + 1}`}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>
