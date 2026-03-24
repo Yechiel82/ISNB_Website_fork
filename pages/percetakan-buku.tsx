@@ -8,10 +8,10 @@ export default function PercetakanBuku() {
 
   const carouselImages = [
     "/Setiap_Kita_Punya_Cerita.jpeg",
-    "/empty-nest.jpg",
-    "/kesehatan_mental.jpg",
-    "/buku_rina.jpeg",
-    "/percetakan-carousel-5.png"
+    "/KisahKehidupanDanPelayanan.jpeg",
+    "/mei-ai.png",
+    "/percetakan-carousel-5.png",
+    "/Tetap_di_sisi-Mu.jpeg"
   ];
 
 
