@@ -2,9 +2,9 @@
 export const NAV_LINKS = [
   { href: '/', key: 'home', label: 'Home' },
   { href: '/product', key: 'services', label: 'Toko Buku' },
+  { href: '/percetakan-buku', key: 'percetakan-buku', label: 'Percetakan Buku' },
   { href: '/news', key: 'news', label: 'News' },
-  // { href: '/flip-book', key: 'flipbook', label: 'Flip Book' }, // Add this line
-  // { href: '/cv-testing', key: 'cvtesting', label: 'CV Testing' },
+  { href: '/contact', key: 'contact', label: 'Contact' },
 ];
 
 // CAMP SECTION
