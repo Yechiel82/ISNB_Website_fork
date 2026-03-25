@@ -274,6 +274,13 @@ const Product = () => {
       title: 'Buku ini merupakan sebuah eksplorasi intelektual yang berani, berdiri tepat di persimpangan krusial antara iman yang teguh dan rasionalitas yang tajam. Penulis menantang dikotomi klasik yang sering kali memisahkan sejarah dari teologi, mengajak pembaca untuk tidak lagi memenjarakan figur Yesus dalam ruang iman yang kebal kritik atau sekadar mereduksi-Nya menjadi objek sejarah yang kehilangan daya gugahnya. Dengan argumentasi yang solid dan mendalam, buku ini membuktikan bahwa iman Kristen tidak memerlukan perlindungan dari penyelidikan rasional; sebaliknya, keduanya saling menguji dan menerangi untuk menyingkapkan kebenaran yang melampaui waktu.',
       price: "Soon"
     },
+    {
+      id: 'Tidak_apa_apa_menangis_sebentar',
+      image: './Tidak_apa_apa_menangis_sebentar.png',
+      badge: 'New Released',
+      title: 'Buku ini hadir sebagai sebuah pelukan sunyi bagi setiap perempuan yang telah terlalu lama berdiri tegak demi orang lain hingga lupa cara untuk duduk dan beristirahat tanpa rasa bersalah. Melalui untaian narasi yang mendalam dan teduh, Pdt. Dr. Erika Fanny mengajak pembaca untuk merobohkan tembok kebohongan halus yang menyatakan bahwa air mata adalah tanda runtuhnya iman.',
+      price: "Soon"
+    },
 
   ];
 
