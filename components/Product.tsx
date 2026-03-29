@@ -281,6 +281,34 @@ const Product = () => {
       title: 'Buku ini hadir sebagai sebuah pelukan sunyi bagi setiap perempuan yang telah terlalu lama berdiri tegak demi orang lain hingga lupa cara untuk duduk dan beristirahat tanpa rasa bersalah. Melalui untaian narasi yang mendalam dan teduh, Pdt. Dr. Erika Fanny mengajak pembaca untuk merobohkan tembok kebohongan halus yang menyatakan bahwa air mata adalah tanda runtuhnya iman.',
       price: "Soon"
     },
+    {
+      id: 'kuasa_menabur_dan_menuai_dalam_hidup_pernikahan_kristen',
+      image: '/Rev. Dr. Henry Ekacahya Putra, S.Tm, M.M..webp',
+      badge: 'New Released',
+      title: 'Pernikahan bukanlah sekadar pertemuan dua hati yang terikat cinta, melainkan sebuah ladang ilahi yang dipercayakan Tuhan untuk diolah dengan penuh kesadaran rohani.',
+      price: "Soon"
+    },
+    {
+      id: 'Cara_memahami_kerangka_berpikir_jurnal_penelitian_kualitatif_bagi_pemula',
+      image: '/Cara_memahami_kerangka_berpikir_jurnal_penelitian_kualitatif_bagi_pemula.jpeg',
+      badge: 'New Released',
+      title: 'Buku Logika Cara Memahami Kerangka Berpikir Sebelum Membuat Jurnal Penelitian Kualitatif Bagi Pemula menghadirkan sebuah pendekatan yang unik dengan mengintegrasikan teologi, logika, dan pengalaman kehidupan dalam memahami proses penelitian kualitatif.',
+      price: "Soon"
+    },
+    {
+      id: 'Cara_memahami_kerangka_berpikir_jurnal_penelitian_kuantitatif_bagi_pemula',
+      image: '/Cara_memahami_kerangka_berpikir_jurnal_penelitian_kuantitatif_bagi_pemula.jpeg',
+      badge: 'New Released',
+      title: 'Buku Logika Cara Memahami Kerangka Berpikir Sebelum Membuat Jurnal Penelitian Kuantitatif Bagi Pemula menghadirkan sebuah pendekatan yang unik dan mendalam dalam memahami dunia penelitian, dengan menempatkan logika, iman, dan metode ilmiah sebagai satu kesatuan yang saling melengkapi.',
+      price: "Soon"
+    },
+    {
+      id: 'Logika_doa_bapa_kami',
+      image: '/Logika_doa_bapa_kami.jpeg',
+      badge: 'New Released',
+      title: 'Banyak orang terjebak dalam rutinitas doa sebagai sekadar rangkaian kata tanpa memahami kedalaman makna di baliknya. Buku ini hadir untuk membongkar sekat tersebut dengan mengeksplorasi "Logika Doa Bapa Kami" bukan hanya sebagai liturgi, melainkan sebagai cetak biru rasionalitas ilahi yang menata ulang prioritas hidup manusia. ',
+      price: "Soon"
+    },
 
   ];
 
