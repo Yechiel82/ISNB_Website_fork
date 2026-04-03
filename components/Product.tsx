@@ -306,7 +306,84 @@ const Product = () => {
       id: 'Logika_doa_bapa_kami',
       image: '/Logika_doa_bapa_kami.jpeg',
       badge: 'New Released',
-      title: 'Banyak orang terjebak dalam rutinitas doa sebagai sekadar rangkaian kata tanpa memahami kedalaman makna di baliknya. Buku ini hadir untuk membongkar sekat tersebut dengan mengeksplorasi "Logika Doa Bapa Kami" bukan hanya sebagai liturgi, melainkan sebagai cetak biru rasionalitas ilahi yang menata ulang prioritas hidup manusia. ',
+      title: 'Banyak orang terjebak dalam rutinitas doa sebagai sekadar rangkaian kata tanpa memahami kedalaman makna di baliknya. Buku ini hadir untuk membongkar sekat tersebut dengan mengeksplorasi "Logika Doa Bapa Kami" bukan hanya sebagai cetak biru rasionalitas ilahi yang menata ulang prioritas hidup manusia. ',
+      price: "Soon"
+    },
+    {
+      id: 'Logika-Kuasa-dalam-Perjanjian-Pernikahan-Kristen',
+      image: '/Logika Kuasa dalam Perjanjian Pernikahan Kristen.jpeg',
+      badge: 'New Released',
+      title: 'Logika Kuasa dalam Perjanjian Pernikahan Kristen',
+      price: "Soon"
+    },
+    {
+      id: 'Logika-Kuasa-Dua-Menjadi-Satu',
+      image: '/Logika Kuasa Dua Menjadi Satu.jpeg',
+      badge: 'New Released',
+      title: 'Logika Kuasa Dua Menjadi Satu',
+      price: "Soon"
+    },
+    {
+      id: 'Logika-Kuasa-Keintiman-Fisik-dalam-Hubungan-Suami-Istri',
+      image: '/Logika Kuasa Keintiman Fisik dalam Hubungan Suami Istri.jpeg',
+      badge: 'New Released',
+      title: 'Logika Kuasa Keintiman Fisik dalam Hubungan Suami Istri',
+      price: "Soon"
+    },
+    {
+      id: 'Logika-Kuasa-Keintiman-Rohani-dalam-Kehidupan-Pernikahan',
+      image: '/Logika Kuasa Keintiman Rohani dalam Kehidupan Pernikahan.jpeg',
+      badge: 'New Released',
+      title: 'Logika Kuasa Keintiman Rohani dalam Kehidupan Pernikahan',
+      price: "Soon"
+    },
+    {
+      id: 'Logika-Kuasa-Kesatuan-dalam-Pernikahan-Kristen',
+      image: '/Logika Kuasa Kesatuan dalam Pernikahan Kristen.jpeg',
+      badge: 'New Released',
+      title: 'Logika Kuasa Kesatuan dalam Pernikahan Kristen',
+      price: "Soon"
+    },
+    {
+      id: 'Logika-Kuasa-Kesepakatan-dalam-Hubungan-Suami-Istri',
+      image: '/Logika Kuasa Kesepakatan dalam Hubungan Suami Istri.jpeg',
+      badge: 'New Released',
+      title: 'Logika Kuasa Kesepakatan dalam Hubungan Suami Istri',
+      price: "Soon"
+    },
+    {
+      id: 'Logika-Kuasa-Kesinergian',
+      image: '/Logika Kuasa Kesinergian.jpeg',
+      badge: 'New Released',
+      title: 'Logika Kuasa Kesinergian',
+      price: "Soon"
+    },
+    {
+      id: 'Logika-Kuasa-Lidah-Perkataan',
+      image: '/Logika Kuasa Lidah Perkataan.jpeg',
+      badge: 'New Released',
+      title: 'Logika Kuasa Lidah Perkataan',
+      price: "Soon"
+    },
+    {
+      id: 'Logika-Kuasa-Peperangan-Rohani-dalam-Keluarga-Kristen',
+      image: '/logika kuasa peperangan rohani dalam keluarga kristen.jpeg',
+      badge: 'New Released',
+      title: 'Logika Kuasa Peperangan Rohani dalam Keluarga Kristen',
+      price: "Soon"
+    },
+    {
+      id: 'Logika-Kuasa-Transformasi-dalam-Rumah-Tangga-Kristen',
+      image: '/logika kuasa transformasi dalam rumah tangga kristen.jpeg',
+      badge: 'New Released',
+      title: 'Logika Kuasa Transformasi dalam Rumah Tangga Kristen',
+      price: "Soon"
+    },
+    {
+      id: 'Mengenal-Berkat-Abraham-Ishak-dan-Yakub',
+      image: '/mengenal berkat abraham ishak dan yakub.jpeg',
+      badge: 'New Released',
+      title: 'Mengenal Berkat Abraham Ishak dan Yakub',
       price: "Soon"
     },
 
