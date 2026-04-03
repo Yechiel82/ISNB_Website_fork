@@ -313,77 +313,77 @@ const Product = () => {
       id: 'Logika-Kuasa-dalam-Perjanjian-Pernikahan-Kristen',
       image: '/Logika Kuasa dalam Perjanjian Pernikahan Kristen.jpeg',
       badge: 'New Released',
-      title: 'Logika Kuasa dalam Perjanjian Pernikahan Kristen',
+      title: 'Logika Kuasa dalam Perjanjian Pernikahan Kristen adalah karya inspiratif yang menuntun pasangan suami istri, calon pasangan, maupun pelayan Tuhan untuk memahami pernikahan dari perspektif Kerajaan Allah.',
       price: "Soon"
     },
     {
       id: 'Logika-Kuasa-Dua-Menjadi-Satu',
       image: '/Logika Kuasa Dua Menjadi Satu.jpeg',
       badge: 'New Released',
-      title: 'Logika Kuasa Dua Menjadi Satu',
+      title: 'Buku Logika Kuasa Dua Menjadi Satu mengajak pembaca menyelami misteri terdalam dari pernikahan Kristen sebagai sebuah kesatuan ilahi yang melampaui sekadar ikatan sosial atau emosional.',
       price: "Soon"
     },
     {
       id: 'Logika-Kuasa-Keintiman-Fisik-dalam-Hubungan-Suami-Istri',
       image: '/Logika Kuasa Keintiman Fisik dalam Hubungan Suami Istri.jpeg',
       badge: 'New Released',
-      title: 'Logika Kuasa Keintiman Fisik dalam Hubungan Suami Istri',
+      title: 'Buku Logika Kuasa Keintiman Fisik dalam Hubungan Suami Istri: Teologi Tubuh, Kasih, dan Perjanjian menghadirkan sebuah refleksi teologis yang mendalam mengenai makna keintiman dalam pernikahan Kristen.',
       price: "Soon"
     },
     {
       id: 'Logika-Kuasa-Keintiman-Rohani-dalam-Kehidupan-Pernikahan',
       image: '/Logika Kuasa Keintiman Rohani dalam Kehidupan Pernikahan.jpeg',
       badge: 'New Released',
-      title: 'Logika Kuasa Keintiman Rohani dalam Kehidupan Pernikahan',
+      title: 'Logika Kuasa Keintiman Rohani dalam Kehidupan Pernikahan mengajak pembaca menyelami makna terdalam pernikahan sebagai lebih dari sekadar ikatan sosial atau emosional.',
       price: "Soon"
     },
     {
       id: 'Logika-Kuasa-Kesatuan-dalam-Pernikahan-Kristen',
       image: '/Logika Kuasa Kesatuan dalam Pernikahan Kristen.jpeg',
       badge: 'New Released',
-      title: 'Logika Kuasa Kesatuan dalam Pernikahan Kristen',
+      title: 'Buku Logika Kuasa Kesatuan dalam Pernikahan Kristen mengajak pembaca memasuki pemahaman yang lebih dalam tentang makna pernikahan sebagai misteri ilahi, bukan sekadar hubungan sosial atau emosional.',
       price: "Soon"
     },
     {
       id: 'Logika-Kuasa-Kesepakatan-dalam-Hubungan-Suami-Istri',
       image: '/Logika Kuasa Kesepakatan dalam Hubungan Suami Istri.jpeg',
       badge: 'New Released',
-      title: 'Logika Kuasa Kesepakatan dalam Hubungan Suami Istri',
+      title: 'Buku Logika Kuasa Kesepakatan dalam Hubungan Suami Istri: Menemukan, Mengusahakan, dan Menuai Kuasa Kesatuan dalam Perjanjian Pernikahan mengangkat sebuah kebenaran mendasar bahwa kekuatan terbesar dalam pernikahan bukan terletak pada dominasi, melainkan pada kesepakatan yang dibangun di atas kasih, komitmen, dan kesadaran akan perjanjian ilahi.',
       price: "Soon"
     },
     {
       id: 'Logika-Kuasa-Kesinergian',
       image: '/Logika Kuasa Kesinergian.jpeg',
       badge: 'New Released',
-      title: 'Logika Kuasa Kesinergian',
+      title: 'Keluarga sering kali dipandang sebagai unit sosial yang sederhana, namun di baliknya tersimpan dinamika mendalam yang mempertemukan antara kasih manusia dan anugerah Ilahi.',
       price: "Soon"
     },
     {
       id: 'Logika-Kuasa-Lidah-Perkataan',
       image: '/Logika Kuasa Lidah Perkataan.jpeg',
       badge: 'New Released',
-      title: 'Logika Kuasa Lidah Perkataan',
+      title: 'Buku Logika Kuasa Lidah Perkataan: Teologi Firman, Paradoks Kata, dan Transformasi Hidup membawa pembaca masuk ke dalam pemahaman mendalam bahwa kata bukan sekadar alat komunikasi, melainkan kekuatan rohani yang membentuk realitas hidup manusia.',
       price: "Soon"
     },
     {
       id: 'Logika-Kuasa-Peperangan-Rohani-dalam-Keluarga-Kristen',
       image: '/logika kuasa peperangan rohani dalam keluarga kristen.jpeg',
       badge: 'New Released',
-      title: 'Logika Kuasa Peperangan Rohani dalam Keluarga Kristen',
+      title: 'Banyak keluarga Kristen yang sering kali terjebak dalam pemahaman bahwa ancaman terbesar rumah tangga berasal dari faktor eksternal seperti tekanan ekonomi atau pengaruh budaya.',
       price: "Soon"
     },
     {
       id: 'Logika-Kuasa-Transformasi-dalam-Rumah-Tangga-Kristen',
       image: '/logika kuasa transformasi dalam rumah tangga kristen.jpeg',
       badge: 'New Released',
-      title: 'Logika Kuasa Transformasi dalam Rumah Tangga Kristen',
+      title: 'Rumah tangga sering kali dipandang sekadar sebagai institusi sosial atau rutinitas domestik untuk membesarkan anak dan menjalani hidup bersama.',
       price: "Soon"
     },
     {
       id: 'Mengenal-Berkat-Abraham-Ishak-dan-Yakub',
       image: '/mengenal berkat abraham ishak dan yakub.jpeg',
       badge: 'New Released',
-      title: 'Mengenal Berkat Abraham Ishak dan Yakub',
+      title: 'Buku Mengenal Berkat Abraham, Ishak, dan Yakub: Rahasia Perjanjian Allah dan Transformasi Hidup Orang Percaya mengajak pembaca menelusuri jejak iman para bapa leluhur sebagai fondasi untuk memahami karya Allah yang tidak pernah terputus dalam sejarah umat-Nya.',
       price: "Soon"
     },
 
